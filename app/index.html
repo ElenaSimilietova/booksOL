@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="booksOL" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Books OL</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <a href="#!/sign-in">Sign In</a> | <a href="#!/create-account">Create an account</a>
+  <ul class="menu">
+    <li><a href="#!/main">Main Page</a></li>
+    <li><a href="#!/book">Book Page</a></li>
+    <li><a href="#!/search-results">Search Results Page</a></li>
+    <li><a href="#!/profile">Profile</a></li>
+  </ul>
+
+  <search></search>
+
+  <div ng-view></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
+  <script src="app.js"></script>
+  <script src="pages/main/MainModule.js"></script>
+  <script src="pages/book/BookModule.js"></script>
+  <script src="pages/searchResults/SearchResultsModule.js"></script>
+  <script src="pages/signIn/SignInModule.js"></script>
+  <script src="pages/createAccount/CreateAccountModule.js"></script>
+  <script src="pages/profile/ProfileModule.js"></script>
+  <script src="pages/admin/AdminModule.js"></script>
+  <script src="directives/search/search.directive.js"></script>
+
+</body>
+</html>
