@@ -6,23 +6,33 @@
   <title>Books OL</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="app.css">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-  <a href="#!/sign-in">Sign In</a> | <a href="#!/create-account">Create an account</a>
-  <ul class="menu">
-    <li><a href="#!/main">Main Page</a></li>
-    <li><a href="#!/book">Book Page</a></li>
-    <li><a href="#!/search-results">Search Results Page</a></li>
-    <li><a href="#!/profile">Profile</a></li>
-  </ul>
+  <div class="header">
+      <a href="#!/sign-in">Sign In</a> | <a href="#!/create-account">Create an account</a>
+      <ul class="menu">
+        <li><a href="#!/main">Main Page</a></li>
+        <li><a href="#!/book">Book Page</a></li>
+        <li><a href="#!/search-results">Search Results Page</a></li>
+        <li><a href="#!/profile">Profile</a></li>
+      </ul>
 
-  <search></search>
-
-  <div ng-view></div>
+      <search></search>
+  </div>
+  <div class="content">
+    <div ng-view></div>
+  </div>
+  <div class="footer">
+  </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
+  <script src="services/booksFactory.js"></script>
+  <script src="services/authorsFactory.js"></script>
+  <script src="services/genresFactory.js"></script>
   <script src="app.js"></script>
   <script src="pages/main/MainModule.js"></script>
   <script src="pages/book/BookModule.js"></script>
@@ -32,6 +42,9 @@
   <script src="pages/profile/ProfileModule.js"></script>
   <script src="pages/admin/AdminModule.js"></script>
   <script src="directives/search/search.directive.js"></script>
+  <script src="directives/popular-authors/popular-authors.directive.js"></script>
+  <script src="directives/genres/genres.directive.js"></script>
+  
 
 </body>
 </html>
