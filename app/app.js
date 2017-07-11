@@ -10,10 +10,15 @@ angular.module('booksOL', [
   'SignInModule',
   'CreateAccountModule',
   'ProfileModule',
-  'AdminModule'
+  'AdminModule',
+  'BooksFactoryModule',
+  'PopularAuthorsModule',
+  'AuthorsFactoryModule',
+  'GenresModule',
+  'GenresFactoryModule'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
+  $locationProvider.hashPrefix('');
 
   $routeProvider.otherwise({redirectTo: '/main'});
 }]);

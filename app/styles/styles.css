@@ -1,0 +1,55 @@
+/* app css stylesheet */
+
+h2 {
+  font: normal 30px Georgia, serif;
+  color:  #555555;
+}
+
+a.rightlink {
+  font: normal 18px Georgia, serif;
+  color:  #2f96b4;
+}
+
+a.rightlink:hover {
+  font: normal 18px Georgia, serif;
+  color:  #2f96b4;
+  text-decoration: underline;
+}
+
+li {
+  list-style-type: none;
+  margin-top: 5px;
+}
+
+ul {
+  margin-left: 0px;
+  margin-top: 15px;
+  padding-left: 5px;
+}
+
+div.main {
+  padding-left: 70px;
+}
+
+.menu {
+  list-style: none;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li + li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
