@@ -5,12 +5,36 @@ h2 {
   color:  #555555;
 }
 
+h3 {
+  font: normal 18px Georgia, serif;
+  color:  #2f96b4;
+  font-weight: bold;
+}
+
 a.rightlink {
   font: normal 18px Georgia, serif;
+  text-decoration: none;
   color:  #2f96b4;
 }
 
 a.rightlink:hover {
+  font: normal 18px Georgia, serif;
+  color:  #2f96b4;
+  text-decoration: underline;
+}
+
+p.details {
+  font: normal 18px Georgia, serif;
+  color:  #555555;
+}
+
+p.details a {
+  font: normal 18px Georgia, serif;
+  text-decoration: none;
+  color:  #2f96b4;
+}
+
+p.details a:hover {
   font: normal 18px Georgia, serif;
   color:  #2f96b4;
   text-decoration: underline;
