@@ -5,3 +5,4 @@ angular.module('SearchModule', [])
         template: `Here will be search directive`,
     };
 });
+
