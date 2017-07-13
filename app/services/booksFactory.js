@@ -14,7 +14,25 @@ app.factory('BooksFactory', ['$http', function($http) {
                         'description': 'blah blah blah' 
                     };
         return book;
-        //return $http.get('/' + id);
+        //return $http.get(urlBase + '/' + id);
+    };
+
+    BooksFactory.getInfo = function(id) {
+        var book = {
+                        'id': 1,
+                        'name': 'Book1',
+                        'pages_num': 10 
+                    };
+        return book;
+        //return $http.get(urlBase + '/info/' + id);
+    };
+
+    BooksFactory.getContent = function(id, pageNum) {
+        var book = {
+                        'text': 'blah blah blah blah blah blah blah blah blah blah blah blah'
+                    };
+        return book;
+        //return $http.get(urlBase + '/content/' + id + '/' + pageNum);
     };
 
     BooksFactory.getMostPopular = function(num) {

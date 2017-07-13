@@ -1,42 +1,42 @@
 /* app css stylesheet */
 
 h2 {
-  font: normal 30px Georgia, serif;
   color:  #555555;
+  font: normal 30px Georgia, serif;
 }
 
 h3 {
-  font: normal 18px Georgia, serif;
   color:  #2f96b4;
+  font: normal 18px Georgia, serif;
   font-weight: bold;
 }
 
 a.rightlink {
+  color:  #2f96b4;
   font: normal 18px Georgia, serif;
   text-decoration: none;
-  color:  #2f96b4;
 }
 
 a.rightlink:hover {
-  font: normal 18px Georgia, serif;
   color:  #2f96b4;
+  font: normal 18px Georgia, serif;
   text-decoration: underline;
 }
 
 p.details {
-  font: normal 18px Georgia, serif;
   color:  #555555;
+  font: normal 18px Georgia, serif;
 }
 
 p.details a {
+  color:  #2f96b4;
   font: normal 18px Georgia, serif;
   text-decoration: none;
-  color:  #2f96b4;
 }
 
 p.details a:hover {
-  font: normal 18px Georgia, serif;
   color:  #2f96b4;
+  font: normal 18px Georgia, serif;
   text-decoration: underline;
 }
 
@@ -53,6 +53,30 @@ ul {
 
 div.main {
   padding-left: 70px;
+}
+
+div.book_content {
+  width: 70%;
+  padding: 30px;
+  border: solid 1px #7a7a7a;
+  background-color: #eeeeee;
+  color:  #333333;
+  font: normal 14px Georgia, serif;
+  
+}
+
+div.pagination, div.pagination a {
+  color:  #333333;
+  font: normal 18px Georgia, serif;
+}
+
+span.page_num {
+  margin: 0px 50px 0px 50px;
+}
+
+input.new_page {
+  width: 40px;
+  text-align: center;
 }
 
 .menu {
