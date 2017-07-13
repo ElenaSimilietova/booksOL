@@ -1,2 +1,27 @@
-<h2>{{book.name}}</h2>
+<div class="main">
+    <h2>{{book.name}}</h2>
+
+    <div class="book_content">
+
+        {{content.text}}
+
+    </div>
+
+    <div class="pagination row" style="width:900px">
+        <div class="col col-md-8">
+            <a ng-click="newPage=newPage - 1;showPage(newPage)">&lt;&lt;Prev</a> 
+            <span class="page_num">Page {{page}}/{{book.pages_num}}</span> 
+            <a ng-click="newPage=newPage + 1;showPage(newPage)">Next&gt;&gt;</a></div>
+        <div class="col-6 col-md-4" style="text-align:right">
+            To page <input type="text" class="new_page" ng-model="newPage"> 
+            <button class="btn btn-primary btn-sm active" ng-click="showPage(newPage)">GO</button>
+        </div>
+    </div>
+
+</div>
+
+        
+
+
+    
 

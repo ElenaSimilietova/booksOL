@@ -16,9 +16,25 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule'])
 .controller('BookController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
   var bookId = $routeParams.id;
   $scope.book = BooksFactory.getBook(bookId);
-  
+
 }])
 .controller('ReadController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
   var bookId = $routeParams.id;
-  $scope.book = BooksFactory.getBook(bookId);
+
+  $scope.book = BooksFactory.getInfo(bookId);
+  $scope.content = BooksFactory.getContent(bookId, 1);
+  $scope.newPage = 1;
+
+  $scope.showPage = function() {
+
+    if ($scope.newPage < 1) {
+      $scope.newPage = 1;
+    } else if ($scope.newPage > $scope.book.pages_num){
+       $scope.newPage = $scope.book.pages_num;
+    }
+  
+    $scope.content = BooksFactory.getContent(bookId, $scope.newPage);
+    $scope.page = $scope.newPage;
+  }
+
 }]);
