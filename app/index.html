@@ -12,20 +12,16 @@
 </head>
 <body>
   <div class="header">
-    <div class="col col-md-8 left-header">
+    <div class="col-md-6 left-header">
       <p><a href="#/"><img src="images/design/logo.png"></a></p>
       <p>Your service for reading online</p>
     </div>
-    <div class="col-6 col-md-4 right-header" style="text-align:right">
+    <div class="col-md-6 right-header">
       <search></search>
-      <a href="#/sign-in">Sign In</a> | <a href="#/create-account">Create an account</a>
+      <p><a href="#/sign-in">Sign In</a> | <a href="#/create-account">Create an account</a></p>
     </div>    
   </div>
-  <ul class="menu">
-        <li><a href="#/main">Main Page</a></li>
-        <li><a href="#/search-results">Search Results Page</a></li>
-        <li><a href="#/profile">Profile</a></li>
-      </ul>
+  
   <div class="content">
     <div ng-view></div>
   </div>
@@ -37,6 +33,7 @@
   <script src="services/booksFactory.js"></script>
   <script src="services/authorsFactory.js"></script>
   <script src="services/genresFactory.js"></script>
+  <script src="services/searchFactory.js"></script>
   <script src="app.js"></script>
   <script src="pages/main/MainModule.js"></script>
   <script src="pages/book/BookModule.js"></script>
@@ -48,7 +45,7 @@
   <script src="directives/search/search.directive.js"></script>
   <script src="directives/popular-authors/popular-authors.directive.js"></script>
   <script src="directives/genres/genres.directive.js"></script>
-  
+  <script src="directives/on-enter/on-enter.directive.js"></script>
 
 </body>
 </html>

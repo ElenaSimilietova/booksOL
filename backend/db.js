@@ -10,15 +10,15 @@ exports.database_connect = function() {
         database: 'books_ol'
     });
 
-    connection.connect(function(error){
-    if(!!error){
-    console.log('Error');
-    }
-    else {
-    console.log('Connected mysql');
+    connection.connect(function(error) {
+        if (error) {
+            console.log('Error');
+        }
+        else {
+            console.log('Connected mysql');
 
-    }
-    })
+        }
+    });
 
     return connection;
 };

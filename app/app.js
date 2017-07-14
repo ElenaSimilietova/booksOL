@@ -7,6 +7,7 @@ angular.module('booksOL', [
   'BookModule',
   'SearchModule',
   'SearchResultsModule',
+  'SearchFactoryModule',
   'SignInModule',
   'CreateAccountModule',
   'ProfileModule',
@@ -15,10 +16,24 @@ angular.module('booksOL', [
   'PopularAuthorsModule',
   'AuthorsFactoryModule',
   'GenresModule',
-  'GenresFactoryModule'
-]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+  'GenresFactoryModule',
+  'OnEnterModule'
+])
+.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('');
 
   $routeProvider.otherwise({redirectTo: '/main'});
+}])
+.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
+  var original = $location.path;
+  $location.path = function (path, reload) {
+      if (reload === false) {
+          var lastRoute = $route.current;
+          var un = $rootScope.$on('$locationChangeSuccess', function () {
+              $route.current = lastRoute;
+              un();
+          });
+      }
+      return original.apply($location, [path]);
+  };
 }]);
