@@ -15,7 +15,9 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule'])
 
 .controller('BookController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
   var bookId = $routeParams.id;
-  $scope.book = BooksFactory.getBook(bookId);
+  BooksFactory.getBook(bookId).then(function(response) {
+    $scope.book = response.data;
+  });
 
 }])
 .controller('ReadController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {

@@ -7,6 +7,8 @@ angular.module('GenresModule', ['GenresFactoryModule'])
     };
 
     function controller($scope, GenresFactory) {
-      $scope.genres = GenresFactory.getAll(); 
+        GenresFactory.getAll().then(function(response) {
+            $scope.genres = response.data;
+        });    
     }
 });

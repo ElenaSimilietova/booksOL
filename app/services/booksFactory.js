@@ -6,15 +6,7 @@ app.factory('BooksFactory', ['$http', function($http) {
     var BooksFactory = {};
 
     BooksFactory.getBook = function(id) {
-        var book = {
-                        'id': 1,
-                        'name': 'Book1',
-                        'author': 'Author1',
-                        'genre': 'Genre1',
-                        'description': 'blah blah blah' 
-                    };
-        return book;
-        //return $http.get(urlBase + '/' + id);
+        return $http.get(urlBase + '/' + id);
     };
 
     BooksFactory.getInfo = function(id) {
