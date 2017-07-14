@@ -12,16 +12,20 @@
 </head>
 <body>
   <div class="header">
-      <a href="#!/sign-in">Sign In</a> | <a href="#!/create-account">Create an account</a>
-      <ul class="menu">
-        <li><a href="#!/main">Main Page</a></li>
-        <li><a href="#!/book">Book Page</a></li>
-        <li><a href="#!/search-results">Search Results Page</a></li>
-        <li><a href="#!/profile">Profile</a></li>
-      </ul>
-
+    <div class="col col-md-8 left-header">
+      <p><a href="#/"><img src="images/design/logo.png"></a></p>
+      <p>Your service for reading online</p>
+    </div>
+    <div class="col-6 col-md-4 right-header" style="text-align:right">
       <search></search>
+      <a href="#/sign-in">Sign In</a> | <a href="#/create-account">Create an account</a>
+    </div>    
   </div>
+  <ul class="menu">
+        <li><a href="#/main">Main Page</a></li>
+        <li><a href="#/search-results">Search Results Page</a></li>
+        <li><a href="#/profile">Profile</a></li>
+      </ul>
   <div class="content">
     <div ng-view></div>
   </div>
