@@ -6,9 +6,12 @@
   "license": "MIT",
   "devDependencies": {
     "http-server": "^0.9.0",
-    "pdf2json": "^0.6.2"
+    "pdf2json": "^0.6.2",
+    "express": "^4.14.0",
+    "express-myconnection": "1.0.4",
+    "mysql": "^2.10.2" 
   },
   "scripts": {
-    "start": "http-server -a localhost -p 8000 -c-1 ./app"
+    "start": "http-server -a localhost -p 7002 -c-1 ./app"
   }
 }
