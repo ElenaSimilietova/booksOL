@@ -61,20 +61,21 @@ div.header {
 
 div.main  {
   padding-left: 70px;
-  font: normal 14px Georgia, serif;
+  font: normal 16px Georgia, serif;
 }
 
 div.main a {
   font: normal 18px Georgia, serif;
 }
 
+div.search-result {
+  font: normal 14px Georgia, serif;
+  margin: 0px 0px 50px 0px;
+}
+
 div.book-general {
   font: normal 18px Georgia, serif;
   margin: 40px 0px 0px 0px;
-}
-
-div.book_info {
-
 }
 
 div.book_content {
@@ -99,11 +100,27 @@ div.left-header {
 
 div.right-header {
   font: normal 16px Georgia, serif;
-  padding: 40px 20px 0px 0px;
+  padding: 60px 50px 0px 0px;
+  text-align:right;
 }
 
 span.page_num {
   margin: 0px 50px 0px 50px;
+}
+
+input.search {
+  width: 450px;
+  height: 30px;
+  border-radius: 3px; 
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  outline: none;
+  background-image: url('/images/design/search.png');
+  background-position: 7px 5px; 
+  background-repeat: no-repeat;
+  border: solid 1px #7a7a7a;
+  padding: 12px 20px 12px 35px;
 }
 
 input.new_page {
