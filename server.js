@@ -2,10 +2,11 @@ var express = require("express");
 var app = express();
 var path = require("path");
 
-var dbscripts = require("./app/dbscripts/sql.js"); 
+var books = require("./backend/books.js");
+var genres = require("./backend/genres.js");
 
-app.get('/api/books/:id', dbscripts.getBooksbyId); 
-app.get('/genres', dbscripts.genres); 
+app.get('/api/books/:id', books.getBookById);
+app.get('/api/genres', genres.getGenres);
 
 app.use(express.static(path.join(__dirname, 'app/')));
 
