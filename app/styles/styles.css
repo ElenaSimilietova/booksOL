@@ -1,5 +1,7 @@
 /* app css stylesheet */
-
+body {
+  font: normal 18px Georgia, serif;
+}
 h2 {
   color:  #555555;
   font: normal 30px Georgia, serif;
@@ -51,8 +53,28 @@ ul {
   padding-left: 5px;
 }
 
-div.main {
+div.header {
+  width: 100%;
+  height: 150px;
+  background-color: #d9edf7;
+}
+
+div.main  {
   padding-left: 70px;
+  font: normal 14px Georgia, serif;
+}
+
+div.main a {
+  font: normal 18px Georgia, serif;
+}
+
+div.book-general {
+  font: normal 18px Georgia, serif;
+  margin: 40px 0px 0px 0px;
+}
+
+div.book_info {
+
 }
 
 div.book_content {
@@ -68,6 +90,16 @@ div.book_content {
 div.pagination, div.pagination a {
   color:  #333333;
   font: normal 18px Georgia, serif;
+}
+
+div.left-header {
+  font: normal 16px Georgia, serif;
+  padding: 40px 0px 0px 50px;
+}
+
+div.right-header {
+  font: normal 16px Georgia, serif;
+  padding: 40px 20px 0px 0px;
 }
 
 span.page_num {
