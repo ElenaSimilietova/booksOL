@@ -5,9 +5,9 @@ exports.getBooksbyId = function(req, res){
 
   var db = database_connect();
 
-  db.query('SELECT id, name, id_genre, big_pic, description FROM books WHERE id = ?',[id], function (err, rows) {
+  db.query('SELECT b.id, b.name, b.id_genre, b.big_pic, b.description FROM books b, authors a WHERE b.id_author = a.id and b.id = ?',[id], function (err, rows) {
  
-
+q
       if (err) throw err
         console.log('BOOKS_OL.JS');
         console.log(rows[0].name);
