@@ -19,7 +19,7 @@ exports.getBookById = function(req, res){
   
 };
 
-exports.booksMostPop = function(req, res){
+exports.getBooksMostPopular = function(req, res){
 
   var db = database_connect();
   var num = req.params.num;  
@@ -37,7 +37,7 @@ exports.booksMostPop = function(req, res){
  }) 
 
 };
-exports.booksPagesNumber = function(req, res){
+exports.getBooksPagesNumber = function(req, res){
 
   var db = database_connect();
   var num = req.params.id;  
