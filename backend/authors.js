@@ -1,6 +1,6 @@
 var sql = require("./db.js");
 
-exports.authorsNum = function(req, res){
+exports.getAuthorsNumer = function(req, res){
 
   var num = req.params.num;
 
@@ -20,7 +20,7 @@ exports.authorsNum = function(req, res){
 
 };
 
-exports.authorsPop = function(req, res){
+exports.getAuthorsMostPopular = function(req, res){
 
   var num = req.params.num;
 
