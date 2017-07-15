@@ -8,9 +8,11 @@ var authors = require("./backend/authors.js");
 
 app.get('/api/books/:id', books.getBookById);
 app.get('/api/genres', genres.getGenres);
-app.get('/api/äuthors/:num', authors.authorsNum);
-app.get('/api/books/info/:id', books.booksPagesNumber);
-app.get('/api/äuthors/popular/:num', authors.authorsPop);
+app.get('/api/authors/:num', authors.getAuthorsNumer);
+app.get('/api/books/info/:id', books.getBooksPagesNumber);
+app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
+app.get('/api/books/popular/:num', books.getBooksMostPopular);  
+
 
 app.use(express.static(path.join(__dirname, 'app/')));
 
