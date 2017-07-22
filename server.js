@@ -4,11 +4,17 @@ var path = require("path");
 
 var books = require("./backend/books.js");
 var genres = require("./backend/genres.js");
+var authors = require("./backend/authors.js");
 
 app.get('/api/books/:id', books.getBookById);
 app.get('/api/books/content/:id/:pageNum', books.getPageContent);
 
 app.get('/api/genres', genres.getGenres);
+app.get('/api/authors/:num', authors.getAuthorsNumer);
+app.get('/api/books/info/:id', books.getBooksPagesNumber);
+app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
+app.get('/api/books/popular/:num', books.getBooksMostPopular);  
+
 
 app.use(express.static(path.join(__dirname, 'app/')));
 
