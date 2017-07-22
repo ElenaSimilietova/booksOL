@@ -19,12 +19,8 @@ app.factory('BooksFactory', ['$http', function($http) {
         //return $http.get(urlBase + '/info/' + id);
     };
 
-    BooksFactory.getContent = function(id, pageNum) {
-        var book = {
-                        'text': 'blah blah blah blah blah blah blah blah blah blah blah blah'
-                    };
-        return book;
-        //return $http.get(urlBase + '/content/' + id + '/' + pageNum);
+    BooksFactory.getPageContent = function(id, pageNum) {
+        return $http.get(urlBase + '/content/' + id + '/' + pageNum);
     };
 
     BooksFactory.getMostPopular = function(num) {
