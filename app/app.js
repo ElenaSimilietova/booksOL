@@ -17,7 +17,8 @@ angular.module('booksOL', [
   'AuthorsFactoryModule',
   'GenresModule',
   'GenresFactoryModule',
-  'OnEnterModule'
+  'OnEnterModule',
+  'PageContentModule'
 ])
 .config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('');

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BookModule', ['ngRoute', 'BooksFactoryModule'])
+angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/book/:id', {
@@ -24,7 +24,12 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule'])
   var bookId = $routeParams.id;
 
   $scope.book = BooksFactory.getInfo(bookId);
-  $scope.content = BooksFactory.getContent(bookId, 1);
+
+  BooksFactory.getPageContent(bookId, 1).then(function(response) {
+     $scope.content = decodeURIComponent(response.data.content);
+  });
+  
+  $scope.page = 1;
   $scope.newPage = 1;
 
   $scope.showPage = function() {
@@ -35,7 +40,10 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule'])
        $scope.newPage = $scope.book.pages_num;
     }
   
-    $scope.content = BooksFactory.getContent(bookId, $scope.newPage);
+    BooksFactory.getPageContent(bookId, $scope.newPage).then(function(response) {
+      $scope.content = decodeURIComponent(response.data.content);
+    });
+
     $scope.page = $scope.newPage;
   }
 

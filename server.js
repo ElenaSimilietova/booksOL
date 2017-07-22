@@ -6,6 +6,8 @@ var books = require("./backend/books.js");
 var genres = require("./backend/genres.js");
 
 app.get('/api/books/:id', books.getBookById);
+app.get('/api/books/content/:id/:pageNum', books.getPageContent);
+
 app.get('/api/genres', genres.getGenres);
 
 app.use(express.static(path.join(__dirname, 'app/')));
