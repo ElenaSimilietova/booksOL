@@ -11,7 +11,7 @@ exports.getBookById = function(req, res) {
     var result;
 
     if (err) {
-      result = {'data': 'SQL error'};
+      result = {'error': 'SQL error'};
     }
     else {
       result = res.json(rows[0]);
@@ -30,7 +30,7 @@ exports.getBooksMostPopular = function(req, res){
   db.query("SELECT id, name, id_author, small_pic, sum_points/votes_number as 'rating' FROM books order by rating desc limit " + [num], function (err, rows) {
     var result;
     if (err) {
-      result = {'data': 'SQL error'};
+      result = {'error': 'SQL error'};
     }
     else {
       result = res.json(rows[0]);
@@ -48,7 +48,7 @@ exports.getBooksPagesNumber = function(req, res){
   db.query('SELECT id, name, pages_number FROM books where id = ?',[id], function (err, rows) {
     var result;
     if (err) {
-      result = {'data': 'SQL error'};
+      result = {'error': 'SQL error'};
     }
     else {
       result = res.json(rows[0]);
@@ -66,11 +66,11 @@ exports.getPageContent = function(req, res) {
   var pageNum = req.params.pageNum;
   var booksFolder = '/books';
 
-  db.query('SELECT file FROM books WHERE id = ?',[id], function (err, rows) {
+  db.query('SELECT file FROM books WHERE id = ?', [id], function (err, rows) {
     var result;
 
     if (err) {
-      result = {'data': 'SQL error'};
+      result = {'error': 'SQL error'};
       db.end();
       return result;
     }
