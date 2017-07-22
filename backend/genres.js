@@ -7,7 +7,7 @@ exports.getGenres = function(req, res) {
 
     var result;
     if (err) {
-      result = {'data': 'SQL error'};
+      result = {'error': 'SQL error'};
     }
     else {
       result = res.json(rows);

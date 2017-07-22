@@ -7,6 +7,8 @@ angular.module('PopularAuthorsModule', ['AuthorsFactoryModule'])
     };
 
     function controller($scope, AuthorsFactory) {
-      $scope.authors = AuthorsFactory.getMostPopular(5);
+        AuthorsFactory.getMostPopular(5).then(function(response) {
+            $scope.authors = response.data;
+        });
     }
 });
