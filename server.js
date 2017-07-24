@@ -8,7 +8,7 @@ var authors = require("./backend/authors.js");
 
 app.get('/api/books/:id', books.getBookById);
 app.get('/api/books/content/:id/:pageNum', books.getPageContent);
-app.get('/api/books/info/:id', books.getBooksPagesNumber);
+app.get('/api/books/info/:id', books.getBookInfo);
 app.get('/api/books/popular/:num', books.getBooksMostPopular); 
 
 app.get('/api/genres', genres.getGenres);
