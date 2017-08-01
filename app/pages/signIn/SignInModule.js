@@ -3,7 +3,7 @@
 angular.module('SignInModule', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/sign-in', {
+  $routeProvider.when('/users/sign-in', {
     templateUrl: 'pages/signIn/SignInView.html',
     controller: 'SignInController'
   });
