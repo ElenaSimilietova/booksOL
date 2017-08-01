@@ -24,38 +24,39 @@ exports.getBookById = function(req, res) {
 
 exports.getBooksMostPopular = function(req, res){
 
-  var db = database_connect();
+  var db = sql.database_connect();
   var num = req.params.num;  
 
   db.query("SELECT id, name, id_author, small_pic, sum_points/votes_number as 'rating' FROM books order by rating desc limit " + [num], function (err, rows) {
     var result;
     if (err) {
-      result = {'error': 'SQL error'};
+      result = res.json({'error': 'SQL error'});
     }
     else {
       result = res.json(rows[0]);
     }
     db.end();
     return result;
- }) 
+ }); 
 
 };
+
 exports.getBookInfo = function(req, res){
 
-  var db = database_connect();
-  var num = req.params.id;  
+  var db = sql.database_connect();
+  var id = req.params.id;  
 
   db.query('SELECT id, name, pages_number FROM books where id = ?',[id], function (err, rows) {
     var result;
     if (err) {
-      result = {'error': 'SQL error'};
+      result = res.json({'error': 'SQL error'});
     }
     else {
       result = res.json(rows[0]);
     }
     db.end();
     return result;
- }) 
+ }); 
 
 };
 
@@ -70,7 +71,7 @@ exports.getPageContent = function(req, res) {
     var result;
 
     if (err) {
-      result = {'error': 'SQL error'};
+      result = res.json({'error': 'SQL error'});
       db.end();
       return result;
     }

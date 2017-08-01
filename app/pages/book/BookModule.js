@@ -23,7 +23,11 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
 .controller('ReadController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
   var bookId = $routeParams.id;
 
-  $scope.book = BooksFactory.getInfo(bookId);
+  $scope.bookId = bookId;
+  BooksFactory.getInfo(bookId).then(function(response){
+    $scope.bookName = response.data.name;
+    $scope.bookPagesNumber = response.data.pages_number;
+  });
 
   BooksFactory.getPageContent(bookId, 1).then(function(response) {
      $scope.content = decodeURIComponent(response.data.content);
@@ -36,8 +40,8 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
 
     if ($scope.newPage < 1) {
       $scope.newPage = 1;
-    } else if ($scope.newPage > $scope.book.pages_num){
-       $scope.newPage = $scope.book.pages_num;
+    } else if ($scope.newPage > $scope.bookPagesNumber){
+       $scope.newPage = $scope.bookPagesNumber;
     }
   
     BooksFactory.getPageContent(bookId, $scope.newPage).then(function(response) {

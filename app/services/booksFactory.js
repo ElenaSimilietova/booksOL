@@ -10,13 +10,7 @@ app.factory('BooksFactory', ['$http', function($http) {
     };
 
     BooksFactory.getInfo = function(id) {
-        var book = {
-                        'id': 1,
-                        'name': 'Book1',
-                        'pages_num': 10 
-                    };
-        return book;
-        //return $http.get(urlBase + '/info/' + id);
+        return $http.get(urlBase + '/info/' + id);
     };
 
     BooksFactory.getPageContent = function(id, pageNum) {
