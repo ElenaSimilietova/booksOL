@@ -110,8 +110,26 @@ div.right-header {
   text-align:right;
 }
 
+div.formLabel {
+  padding-left: 0px;
+}
+
+div.validation {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+div.field {
+  margin-top: 20px;
+}
+
 span.page_num {
   margin: 0px 50px 0px 50px;
+}
+
+button.createAccountButton {
+  width:180px;
 }
 
 input.search {
