@@ -23,19 +23,20 @@ exports.getBookById = function(req, res) {
 };
 
 exports.getBooksMostPopular = function(req, res){
-
+  
   var db = sql.database_connect();
   var num = req.params.num;  
 
-  db.query("SELECT id, name, id_author, small_pic, sum_points/votes_number as 'rating' FROM books order by rating desc limit " + [num], function (err, rows) {
+  db.query("SELECT b.id, b.name, a.name as author, b.id_author, b.small_pic, b.sum_points/b.votes_number as 'rating' FROM books b, authors a where b.id_author = a.id order by rating desc limit " + [num], function (err, rows) {
     var result;
     if (err) {
       result = res.json({'error': 'SQL error'});
     }
     else {
-      result = res.json(rows[0]);
+      result = res.json(rows);
     }
     db.end();
+    
     return result;
  }); 
 
