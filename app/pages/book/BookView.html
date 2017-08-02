@@ -1,10 +1,14 @@
 <div class="col-md-8 main">
-    <div>
+    <div class="col-md-3">
+    	</br>
+    	<img src="./images/books/{{book.id}}b.jpg"  alt="{{book.name}}" style="width:266px;height:400px;" class="big-picture"/>
+    </div>
+    <div class="col-md-8 book-description">
         <h3>{{book.name}}</h3>
         <p class="details">Author: <a href="">{{book.author}}</a></p>
         <p class="details">Genre: <a href="">{{book.genre}}</a></p>
         <p class="description">{{book.description}}</p>
-
+        </br>
         <a href="/#/book/read/{{book.id}}" class="btn btn-primary btn-md active" role="button">Read this book</a>
     </div>
 </div>
@@ -12,4 +16,5 @@
     <popular-authors></popular-authors>
 
     <genres></genres>
+    
 </div>

@@ -75,7 +75,7 @@ div.search-result {
 
 div.book-general {
   font: normal 18px Georgia, serif;
-  margin: 40px 0px 0px 0px;
+  margin: 10px 0px 0px 0px;
 }
 
 div.book_content {
@@ -173,4 +173,14 @@ input.new_page {
 .menu > li + li:before {
   content: "|";
   padding-right: 0.3em;
+}
+
+.thumbnails {  
+  float: left;  
+  
+}
+
+.book-description{
+  margin-left: 65px;
+  padding-left: 2.3em;
 }
