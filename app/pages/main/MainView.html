@@ -3,7 +3,7 @@
     <div class="row">
     	<div class="col-md-6 book-general" ng-repeat="book in books">
         	<a href="/#book/{{book.id}}" id="{{book.name}}"><br>
-    		<img src="./images/books/small/{{book.id}}.jpg" style="width:133px;height:199px;" alt="{{book.name}}" class="thumbnails">
+    		<img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails">
     		<div class="col-md-6 book-text">
     			{{book.name}}</a><br>{{book.author}}
     		</div>
