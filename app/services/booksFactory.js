@@ -18,8 +18,7 @@ app.factory('BooksFactory', ['$http', function($http) {
     };
 
     BooksFactory.getMostPopular = function(num) {
-        
-       return $http.get(urlBase + '/popular/' + num);
+      return $http.get(urlBase + '/popular/' + num);
     }
 
     return BooksFactory;
