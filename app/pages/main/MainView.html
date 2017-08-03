@@ -1,16 +1,17 @@
 <div class="col-md-8 main">
-    <h2>The most popular</h2>
+	<h2>The most popular</h2>
     <div class="row">
-        <div class="col-md-6 book-general" ng-repeat="book in books">
+    	<div class="col-md-6 book-general" ng-repeat="book in books">
         	<a href="/#book/{{book.id}}" id="{{book.name}}"><br>
-    		<img src="./images/books/{{book.id}}.jpg" style="width:133px;height:199px;" alt="{{book.name}}" class="thumbnails"><div class="col-md-6 book-text">{{book.name}}</a><br>{{book.author}}</div>
-          </div>
+    		<img src="./images/books/small/{{book.id}}.jpg" style="width:133px;height:199px;" alt="{{book.name}}" class="thumbnails">
+    		<div class="col-md-6 book-text">
+    			{{book.name}}</a><br>{{book.author}}
+    		</div>
+        </div>
     </div>
-
 </div>
 <div class="col-md-4">
     <popular-authors></popular-authors>
-
     <genres></genres>
 </div>
 
