@@ -124,6 +124,24 @@ div.field {
   margin-top: 20px;
 }
 
+div.content {
+  width: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex:1 0 auto;
+  padding-bottom: 50px;
+}
+
+div.footer {
+  height: 45px;
+  background-color: #e6e6e6;
+  padding-top:13px;
+  color: #555555;
+}
+
 span.page_num {
   margin: 0px 50px 0px 50px;
 }
@@ -152,29 +170,6 @@ input.new_page {
   text-align: center;
 }
 
-.menu {
-  list-style: none;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
-
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li + li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
 .thumbnails {  
   float: left;  
 }
@@ -182,8 +177,4 @@ input.new_page {
 .book-description{
   margin-left: 65px;
   padding-left: 2.3em;
-}
-
-footer {
-  font: normal 15px Georgia, serif;
 }

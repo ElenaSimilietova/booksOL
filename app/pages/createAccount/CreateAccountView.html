@@ -4,7 +4,7 @@
     <div class="col-sm-3 registration-form" style="margin-top:20px;">
         <form name="createAccountForm" novalidate>
         <div class="row field">
-            <div class="col-xs-4 col-sm-6 formLabel">First name</div>
+            <div class="col-xs-8 col-sm-6 formLabel">First name</div>
             <div class="col-xs-4 col-sm-6"><input type="text" name="firstName" ng-model="firstName.value" ng-pattern="firstName.pattern" required></div>
         </div>
         <div class="row validation text-danger" ng-if="(!createAccountForm.firstName.$valid) && createAccountForm.firstName.$dirty">
