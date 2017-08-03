@@ -6,7 +6,7 @@ exports.getGenres = function(req, res) {
       connection.release();
       res.status(500).send(err);
     }
-    connection.query("SELECT id, name FROM genres", function (err, rows) {
+    connection.query("SELECT id, name FROM genres order by name", function (err, rows) {
       connection.release();
       if (err) {
         res.status(500).send(err);
