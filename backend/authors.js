@@ -1,20 +1,20 @@
-var sql = require("./db.js");
+var pool = require('./db/db.js');
 
 exports.getAuthorsMostPopular = function(req, res){
-
   var num = req.params.num;
-  var db = sql.database_connect();
-  
-  db.query("SELECT id, name FROM authors order by rating desc limit " + [num], function (err, rows) {
-   var result;
+  pool.getConnection(function(err,connection) {
     if (err) {
-      result = {'error': 'SQL error'};
+      connection.release();
+      res.status(500).send(err);
     }
-    else {
-      result = res.json(rows);
-    }
-    db.end();
-    
-    return result;
- }); 
+    connection.query("SELECT id, name FROM authors ORDER BY rating DESC LIMIT " + [num], function (err, rows) {
+      connection.release();
+      if (err) {
+        res.status(500).send(err);
+      }
+      else {
+        res.json(rows);
+      }
+    }); 
+  });
 };
