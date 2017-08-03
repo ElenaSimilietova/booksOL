@@ -11,7 +11,9 @@ angular.module('MainModule', ['ngRoute', 'BooksFactoryModule', 'PopularAuthorsMo
 
 .controller('MainController', ['$scope', 'BooksFactory', function($scope, BooksFactory) {
 
-  $scope.books = BooksFactory.getMostPopular(6);
+  BooksFactory.getMostPopular(6).then(function(response) {
+    $scope.books = response.data;
+  });
 
 }]);
 
