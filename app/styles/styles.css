@@ -183,3 +183,7 @@ input.new_page {
   margin-left: 65px;
   padding-left: 2.3em;
 }
+
+footer {
+  font: normal 15px Georgia, serif;
+}
