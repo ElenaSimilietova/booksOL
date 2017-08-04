@@ -1,6 +1,7 @@
 /* app css stylesheet */
 body {
   font: normal 18px Georgia, serif;
+  height:auto !important;
 }
 h2 {
   color:  #555555;
@@ -126,6 +127,7 @@ div.field {
 
 div.content {
   width: 100%;
+  min-height: 70vh;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -136,10 +138,15 @@ div.content {
 }
 
 div.footer {
-  height: 45px;
-  background-color: #e6e6e6;
-  padding-top:13px;
   color: #555555;
+  background-color: #e6e6e6;
+  width: 100%;
+  height: 45px;
+  padding: 13px 0px 0px 0px;
+}
+
+div.registration-form {
+  margin-top:20px;
 }
 
 span.page_num {
@@ -148,6 +155,12 @@ span.page_num {
 
 button.createAccountButton {
   width:180px;
+  font-size: 18px;
+}
+
+button.signInButton {
+  width:180px;
+  font-size: 18px;
 }
 
 input.search {

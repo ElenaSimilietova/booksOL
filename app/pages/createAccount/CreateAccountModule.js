@@ -78,7 +78,7 @@ angular.module('CreateAccountModule', ['ngRoute', 'UsersFactoryModule'])
                   'lastName': $scope.lastName.value,
                   'email': $scope.email.value,
                   'password': $scope.password1.value,
-                  'role': 1 
+                  'role': 2 
       };
 
       UsersFactory.saveUser(user).then(function(response) {
