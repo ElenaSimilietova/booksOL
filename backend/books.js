@@ -89,3 +89,21 @@ exports.getPageContent = function(req, res) {
   });
 };
 
+exports.getBooksByGenre = function(req, res) {
+  var genreName = req.params.genreName;
+  pool.getConnection(function(err,connection) {
+    if (err) {
+      connection.release();
+      res.status(500).send(err);
+    }
+    connection.query("SELECT b.id, b.name, a.name AS author, g.name AS genre FROM books b, authors a, genres g WHERE b.id_author = a.id AND b.id_genre = g.id AND g.name = '" + [genreName] + "'" + " ORDER BY name;", function (err, rows) {
+      connection.release();
+      if (err) {
+        res.status(500).send(err);
+      }
+      else {
+        res.json(rows);
+      }
+    }); 
+  });
+};
