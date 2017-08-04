@@ -22,7 +22,7 @@ app.factory('BooksFactory', ['$http', function($http) {
     }
 
     BooksFactory.getBooksByGenre = function(genreName) {
-      return $http.get(urlBase + '/byGenre/' + genreName);
+      return $http.get(urlBase + '/genre/' + genreName);
     }
 
     return BooksFactory;

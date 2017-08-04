@@ -10,6 +10,10 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
   .when('/book/read/:id', {
     templateUrl: 'pages/book/ReadView.html',
     controller: 'ReadController'
+  })
+  .when('/books/:genre', {
+    templateUrl: 'pages/book/BookByGenreView.html',
+    controller: 'BookByGenreController'
   });
 }])
 
@@ -51,4 +55,16 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
     $scope.page = $scope.newPage;
   }
 
+
+}])
+
+.controller('BookByGenreController', ['$scope','$routeParams','BooksFactory', function($scope, $routeParams, BooksFactory) {
+  var genre =  $routeParams.genre;
+  $scope.genreName = genre;
+  
+  BooksFactory.getBooksByGenre(genre).then(function(response) {
+    $scope.books = response.data;
+    if ($scope.books == "")
+      $scope.messageNoResults = "No books in " + $scope.genreName + " genre.";
+  });
 }]);
