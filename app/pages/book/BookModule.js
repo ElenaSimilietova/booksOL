@@ -11,7 +11,7 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
     templateUrl: 'pages/book/ReadView.html',
     controller: 'ReadController'
   })
-  .when('/books/:genre', {
+  .when('/books/:genre/:id', {
     templateUrl: 'pages/book/BookByGenreView.html',
     controller: 'BookByGenreController'
   });
@@ -59,10 +59,10 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
 }])
 
 .controller('BookByGenreController', ['$scope','$routeParams','BooksFactory', function($scope, $routeParams, BooksFactory) {
-  var genre =  $routeParams.genre;
-  $scope.genreName = genre;
+  var genreId =  $routeParams.id;
+  $scope.genreName = $routeParams.genre;
   
-  BooksFactory.getBooksByGenre(genre).then(function(response) {
+  BooksFactory.getBooksByGenre(genreId).then(function(response) {
     $scope.books = response.data;
     if ($scope.books == "")
       $scope.messageNoResults = "No books in " + $scope.genreName + " genre.";
