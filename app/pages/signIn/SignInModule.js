@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('SignInModule', ['ngRoute'])
+angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/sign-in', {
@@ -9,27 +9,31 @@ angular.module('SignInModule', ['ngRoute'])
   });
 }])
 
-.controller('SignInController', ['$scope', function($scope) {
+.controller('SignInController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+  $scope.message = null;
   $scope.signIn = function() {
 
     var user = {
                   'email': $scope.email.value,
                   'password': $scope.password.value,
     };
-
-    UsersFactory.signInUser(user).then(function(response) {
-      // TODO: to implement after back-end implementation
-      /*
-      var path = '';
-      if (response.status == 200) {
-        path = '/success/' + encodeURIComponent(user.firstName + ' ' + user.lastName);
-      } else {
-        path = '/fail';
-      }
-      $location.path('/users/create-account' + path); */
-      
-    });
     
+    UsersFactory.signInUser(user).then(function(response) { 
+      if(response.data.token) {
+        sessionStorage.setItem('token', response.data.token);
+        $location.path('/users/profile'); 
+      }  
+      else {
+        $scope.message = "Something went wrong. Please, try to sign in again.";
+      } 
+    }, function(reason) {
+      // rejection
+      if (reason.status == 401) {
+        $scope.message = "Wrong password. Please, try to sign in again.";
+      } else {
+        $scope.message = "Something went wrong. Please, try to sign in again.";
+      }
+    });
   }
 
   $scope.createAcconut = function() {

@@ -3,7 +3,7 @@
 angular.module('ProfileModule', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/profile', {
+  $routeProvider.when('/users/profile', {
     templateUrl: 'pages/profile/ProfileView.html',
     controller: 'ProfileController'
   });

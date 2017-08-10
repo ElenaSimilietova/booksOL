@@ -1,6 +1,7 @@
 var express = require("express");
 var path = require("path");
 var bodyParser = require('body-parser');
+var config = require("./config");
 
 var app = express();
 
@@ -14,6 +15,8 @@ var genres = require("./backend/genres.js");
 var authors = require("./backend/authors.js");
 var users = require("./backend/users.js");
 
+app.set('tokenString', config.tokenString);
+
 app.get('/api/books/:id', books.getBookById);
 app.get('/api/books/content/:id/:pageNum', books.getPageContent);
 app.get('/api/books/info/:id', books.getBookInfo);
@@ -25,6 +28,7 @@ app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
 
 app.get('/api/users/email/check/:email', users.checkEmail);
 app.post('/api/users/save', users.saveUser);
+app.post('/api/users/sign-in', users.signIn);
  
 app.use(express.static(path.join(__dirname, 'app/')));
 
