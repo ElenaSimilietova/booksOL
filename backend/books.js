@@ -9,7 +9,7 @@ exports.getBookById = function(req, res) {
       connection.release();
       res.status(500).send(err);
     }
-    connection.query("SELECT a.name as author, g.name as genre, b.id, b.name, b.id_genre, b.big_pic, b.description " + 
+    connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_genre AS genreId , b.big_pic, b.description " + 
       " FROM books b, authors a, genres g WHERE b.id = " + id + " AND b.id_author = a.id AND b.id_genre = g.id", function (err, rows) {
       connection.release();
       if (err) {
@@ -89,3 +89,21 @@ exports.getPageContent = function(req, res) {
   });
 };
 
+exports.getBooksByGenre = function(req, res) {
+  var genreId = req.params.id;
+  pool.getConnection(function(err,connection) {
+    if (err) {
+      connection.release();
+      res.status(500).send(err);
+    }
+    connection.query("SELECT b.id, b.name, a.name AS author, g.name AS genre FROM books b, authors a, genres g WHERE b.id_author = a.id AND b.id_genre = g.id AND g.id = '" + [genreId] + "'" + " ORDER BY name;", function (err, rows) {
+      connection.release();
+      if (err) {
+        res.status(500).send(err);
+      }
+      else {
+        res.json(rows);
+      }
+    }); 
+  });
+};

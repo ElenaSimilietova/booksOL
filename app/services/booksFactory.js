@@ -21,5 +21,9 @@ app.factory('BooksFactory', ['$http', function($http) {
       return $http.get(urlBase + '/popular/' + num);
     }
 
+    BooksFactory.getBooksByGenre = function(id) {
+      return $http.get(urlBase + '/genre/' + id);
+    }
+
     return BooksFactory;
 }]);

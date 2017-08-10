@@ -20,7 +20,8 @@ app.set('tokenString', config.tokenString);
 app.get('/api/books/:id', books.getBookById);
 app.get('/api/books/content/:id/:pageNum', books.getPageContent);
 app.get('/api/books/info/:id', books.getBookInfo);
-app.get('/api/books/popular/:num', books.getBooksMostPopular); 
+app.get('/api/books/popular/:num', books.getBooksMostPopular);
+app.get('/api/books/genre/:id', books.getBooksByGenre);
 
 app.get('/api/genres', genres.getGenres);
 

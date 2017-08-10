@@ -1,0 +1,19 @@
+<div class="main">
+<div class="col-md-8 book-by-genre">
+	<h2>{{genreName}}</h2>
+    <div class="row">
+    	<div class="col-md-6 book-general" ng-repeat="book in books">
+        	<a href="/#book/{{book.id}}" id="{{book.name}}"><br>
+    		<img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails">
+    		<div class="col-md-6 book-text">
+    			{{book.name}}</a><br>{{book.author}}
+    		</div>
+        </div>
+    </div>
+    {{messageNoResults}}
+</div>
+<div class="col-md-4">
+    <popular-authors></popular-authors>
+    <genres></genres>
+</div>
+</div>
