@@ -1,19 +1,23 @@
 <div class="main">
 	<div class="col-md-6">
         <h2>Sign in:</h2>
-		<form name="signInForm">
-            <div class="col-sm-3">
-                <div class="row field">
-                    <div class="col-xs-8 col-sm-6 formLabel">Email</div>
-                    <div class="col-xs-4 col-sm-6"><input type="text" name="email" ng-model="email.value" required></div>
+		<form name="signInForm" ng-submit="signIn();">
+            
+          <div style="padding-left:15px;">
+                <div class="row field text-danger" ng-if="message">
+                    {{message}}
                 </div>
                 <div class="row field">
-                    <div class="col-xs-8 col-sm-6 formLabel">Password</div>
-                    <div class="col-xs-4 col-sm-6"><input type="password" name="password" ng-model="password.value" ng-pattern="password.pattern" required></div>
+                    <div class="col-md-2 formLabel">Email</div>
+                    <div class="col-md-10"><input type="text" name="email" ng-model="email.value" required></div>
                 </div>
                 <div class="row field">
-                    <div class="col-xs-8 col-sm-6 formLabel"></div>
-                    <div class="col-xs-4 col-sm-6"><button class="btn btn-primary signInButton" ng-submit="signIn()">Sign In</button></div>
+                    <div class="col-md-2 formLabel">Password</div>
+                    <div class="col-md-10"><input type="password" name="password" ng-model="password.value" ng-pattern="password.pattern" required></div>
+                </div>
+                <div class="row field">
+                    <div class="col-md-2 formLabel"></div>
+                    <div class="col-md-10"><input type="submit" class="btn btn-primary signInButton" value="Sign In"></div>
                 </div>
             </div>
         </form>
