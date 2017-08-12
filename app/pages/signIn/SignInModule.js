@@ -29,7 +29,7 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
     }, function(reason) {
       // rejection
       if (reason.status == 401) {
-        $scope.message = "Wrong password. Please, try to sign in again.";
+        $scope.message = "Wrong email or password. Please, try to sign in again.";
       } else {
         $scope.message = "Something went wrong. Please, try to sign in again.";
       }
