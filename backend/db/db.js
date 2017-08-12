@@ -1,11 +1,12 @@
 var mysql = require('mysql');
+var config = require("./../../config");
 
 var pool = mysql.createPool({
     connectionLimit: 100,
-    host: 'booksol.ctx6ytn0upt5.eu-west-2.rds.amazonaws.com',
-    user: 'books_ol_user',
-    password: 'gcDHx5KRW2',
-    database: 'books_ol',
+    host: config.database.host,
+    user: config.database.user,
+    password: config.database.password,
+    database: config.database.db_name,
     debug: false
 });
 
