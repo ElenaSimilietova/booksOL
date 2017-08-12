@@ -68,32 +68,36 @@ exports.signIn = function(req, res) {
     }
     connection.query("SELECT id, password FROM users WHERE email = '" + email  + "'", function (err, rows) {
       if (err) {
+        console.log("email doesn't exist");
         res.status(500).send(err);
       } else {
-        var passhwordHash = rows[0].password;
-        bcrypt.compare(password, passhwordHash, function(err, result) {
-          if(err) {
-            connection.release();
-            res.status(500).send(err);
-          } else {
-            if(result) {
-                // Passwords match             
-                var token = jwt.sign({user : rows[0].id}, req.app.get('tokenString'), { expiresIn:3600 }, function(err, token) {
-                if(err) {
-                  connection.release();
-                  res.status(500).send(err);
-                } else {
-                  res.json({token: token});
-                }
-              });
-
-            } else {
-              // Passwords don't match
+        if (rows.length > 0) {
+          var passhwordHash = rows[0].password;
+          bcrypt.compare(password, passhwordHash, function(err, result) {
+            if(err) {
               connection.release();
-              res.status(401).send(err);
-            } 
-          }         
-        });
+              res.status(500).send(err);
+            } else {
+              if(result) {
+                  // Passwords match
+                  var token = jwt.sign({user : rows[0].id}, req.app.get('tokenString'), { expiresIn:3600 }, function(err, token) {
+                  if(err) {
+                    connection.release();
+                    res.status(500).send(err);
+                  } else {
+                    res.json({token: token});
+                  }
+                });
+              } else {
+                // Passwords don't match
+                connection.release();
+                res.status(401).send(err);
+              }
+            }
+          });
+        } else {
+          res.status(401).send(err);
+        }
       }
     }); 
   });
