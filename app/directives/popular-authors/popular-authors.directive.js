@@ -3,6 +3,7 @@ angular.module('PopularAuthorsModule', ['AuthorsFactoryModule'])
     return {
         restrict: 'AE',
         controller: controller, 
+        scope: true,
         templateUrl: './directives/popular-authors/index.html'
     };
 

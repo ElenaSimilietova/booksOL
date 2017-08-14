@@ -1,13 +1,28 @@
 <div class="col-md-8 main">
-    <h2>Search results</h2>
-
-    <div>
-        <div class="search-result" ng-repeat="book in books">
-            <a href="/#/book/{{book.id}}">{{book.name}}</a><br>
-            {{book.author}}
-        </div>
+    <h2>Search results</h2></br>
+    <p class="search">You were searching for: <span>{{searchString}}</span></p>
+    </br>
+    <div ng-if="message">
+        </br>{{message}}
     </div>
-
+    <div ng-if="!message">
+        <div ng-if="keys(authors).length > 0">
+            <p class="search-res">Authors:</p>
+            <p ng-repeat="author in authors">
+                <a href="/#author/{{author.id}}">{{author.name}}</a>
+            </p>
+        </div>
+        <div ng-if="keys(books).length > 0">
+            <p class="search-res">Books:</p>
+            <div class="search-result" ng-repeat="book in books">
+                <a href="/#book/{{book.id}}" id="{{book.name}}"><br>
+                <img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails">
+                <div class="col-md-6 book-text">
+                    {{book.title}}</a><br>{{book.author}}
+                </div>
+            </div>
+        </div>     
+    </div>
 </div>
 <div class="col-md-4">
     <popular-authors></popular-authors>

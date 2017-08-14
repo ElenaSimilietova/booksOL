@@ -14,6 +14,7 @@ var books = require("./backend/books.js");
 var genres = require("./backend/genres.js");
 var authors = require("./backend/authors.js");
 var users = require("./backend/users.js");
+var search = require("./backend/search.js");
 
 app.set('tokenString', config.tokenString);
 
@@ -30,6 +31,8 @@ app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
 app.get('/api/users/email/check/:email', users.checkEmail);
 app.post('/api/users/save', users.saveUser);
 app.post('/api/users/sign-in', users.signIn);
+
+app.get('/api/search/:searchString', search.getSearchResults);
  
 app.use(express.static(path.join(__dirname, 'app/')));
 

@@ -37,10 +37,25 @@ p.details a {
   text-decoration: none;
 }
 
+p.search-res {
+  font-size:17px;
+}
+
 p.details a:hover {
   color:  #2f96b4;
   font: normal 18px Georgia, serif;
   text-decoration: underline;
+}
+
+p.search {
+  font-size: 15px;
+  color: #777777;
+}
+
+p.search span {
+  font-size: 19px;
+  color: #2f96b4;
+  margin-left: 7px;
 }
 
 li {
