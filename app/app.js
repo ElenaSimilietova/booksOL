@@ -27,6 +27,9 @@ angular.module('booksOL', [
   $routeProvider.otherwise({redirectTo: '/main'});
 }])
 .run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
+  // For checking object size in views
+  $rootScope.keys = Object.keys;
+  
   var original = $location.path;
   $location.path = function (path, reload) {
       if (reload === false) {

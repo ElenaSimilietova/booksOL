@@ -3,6 +3,7 @@ angular.module('GenresModule', ['GenresFactoryModule'])
     return {
         restrict: 'AE',
         controller: controller, 
+        scope: true,
         templateUrl: './directives/genres/index.html'
     };
 

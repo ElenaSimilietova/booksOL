@@ -11,11 +11,22 @@ angular.module('SearchResultsModule', ['ngRoute', 'SearchFactoryModule'])
 
 .controller('SearchResultsController', ['$scope','$routeParams', 'SearchFactory', function($scope, $routeParams, SearchFactory) {
   var searchString = $routeParams.str;
-
-  $scope.books = SearchFactory.search(searchString);
-  /*
+  $scope.authors = {};
+  $scope.books = {};
+  
   SearchFactory.search(searchString).then(function(response) {
-    $scope.books = response.data;
-  });*/
+    $scope.authors = response.data.authors;
+    $scope.books = response.data.books;
+    $scope.message = null;
+    if ((Object.keys($scope.authors).length == 0) && (Object.keys($scope.books).length == 0)) {
+      $scope.message = 'Sorry, no results';
+    } else {
+
+    }
+    $scope.searchString = decodeURIComponent(searchString);
+  }, function(reason) {
+    // rejection
+    $scope.message = "Error. Something went wrong.";
+  });
   
 }]);
