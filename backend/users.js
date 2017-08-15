@@ -68,7 +68,6 @@ exports.signIn = function(req, res) {
     }
     connection.query("SELECT id, password FROM users WHERE email = '" + email  + "'", function (err, rows) {
       if (err) {
-        console.log("email doesn't exist");
         res.status(500).send(err);
       } else {
         if (rows.length > 0) {
@@ -80,12 +79,12 @@ exports.signIn = function(req, res) {
             } else {
               if(result) {
                   // Passwords match
-                  var token = jwt.sign({user : rows[0].id}, req.app.get('tokenString'), { expiresIn:3600 }, function(err, token) {
+                  var token = jwt.sign({user : rows[0].id}, req.app.get('tokenString'), { expiresIn: 3600 }, function(err, token) {
                   if(err) {
                     connection.release();
                     res.status(500).send(err);
                   } else {
-                    res.json({token: token});
+                    res.json({token: token, expiresIn: (Date.now() + 3600 * 1000)});
                   }
                 });
               } else {
