@@ -6,6 +6,10 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
   $routeProvider.when('/users/sign-in', {
     templateUrl: 'pages/signIn/SignInView.html',
     controller: 'SignInController'
+  })
+  .when('/users/log-out', {
+    template: '',
+    controller: 'LogOutController'
   });
 }])
 
@@ -19,8 +23,9 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
     };
     
     UsersFactory.signInUser(user).then(function(response) { 
-      if(response.data.token) {
+      if(response.data.token && response.data.expiresIn) {
         sessionStorage.setItem('token', response.data.token);
+        sessionStorage.setItem('expiresIn', response.data.expiresIn);
         $location.path('/users/profile'); 
       }  
       else {
@@ -39,4 +44,16 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
   $scope.createAcconut = function() {
     $location.path('/users/create-account'); 
   }
-}]);
+}])
+
+.controller('LogOutController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+  var token = sessionStorage.getItem('token');
+  var expiresIn = sessionStorage.getItem('expiresIn');
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('expiresIn');
+
+  // Here will be removing token information from backend after creating token implementation will be fixed
+
+  $location.path('/main'); 
+
+ }]);
