@@ -15,6 +15,7 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
 
 .controller('SignInController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
   $scope.message = null;
+
   $scope.signIn = function() {
 
     var user = {
@@ -42,7 +43,7 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
   }
 
   $scope.createAcconut = function() {
-    $location.path('/users/create-account'); 
+    $location.path('/users/create-account');
   }
 }])
 
@@ -52,8 +53,7 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('expiresIn');
 
-  // Here will be removing token information from backend after creating token implementation will be fixed
-
-  $location.path('/main'); 
-
+  UsersFactory.logOutUser(token).then(function(response) {
+    $location.path('/main');
+  });
  }]);

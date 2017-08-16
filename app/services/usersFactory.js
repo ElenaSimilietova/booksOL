@@ -42,5 +42,17 @@ app.factory('UsersFactory', ['$http', function($http) {
         });
     }
 
+    UsersFactory.logOutUser = function(token) {
+
+        $http.defaults.headers.post['access-token'] = token;
+
+        return $http({
+            method: 'POST',
+            url: urlBase + '/log-out',
+            data: $.param({}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    }
+
     return UsersFactory;
 }]);

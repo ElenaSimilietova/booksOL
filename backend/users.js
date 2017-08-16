@@ -79,7 +79,7 @@ exports.signIn = function(req, res) {
             } else {
               if(result) {
                   // Passwords match
-                  var token = jwt.sign({user : rows[0].id}, req.app.get('tokenString'), { expiresIn: 3600 }, function(err, token) {
+                  var token = jwt.sign({userID : rows[0].id}, req.app.get('tokenString'), { expiresIn: 3600 }, function(err, token) {
                   if(err) {
                     connection.release();
                     res.status(500).send(err);
@@ -101,4 +101,38 @@ exports.signIn = function(req, res) {
     }); 
   });
 
+};
+
+exports.logOut = function(req, res) {
+  var token = req.headers['access-token'];
+  
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err) {
+      connection.release();
+      res.status(500).send(err);
+    } else if (!user) {
+      connection.release();
+      res.status(401).send({message: 'Token is expired'});
+    } else {
+
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          connection.release();
+          res.status(500).send({message: 'DB connection error'});
+        }
+
+        connection.query("INSERT INTO invalid_tokens (id_user, token) VALUES ("
+          + user.userID + ", '" + token + "')", function (err, rows) {
+
+          connection.release();
+          if (err) {
+            res.status(500).send({ message: 'Logout error'});
+          }
+          else {
+            res.status(200).send('{}');
+          }
+        });
+      });
+    }
+  });
 };
