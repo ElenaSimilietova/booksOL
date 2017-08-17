@@ -19,11 +19,15 @@ app.factory('BooksFactory', ['$http', function($http) {
 
     BooksFactory.getMostPopular = function(num) {
       return $http.get(urlBase + '/popular/' + num);
-    }
+    };
 
     BooksFactory.getBooksByGenre = function(id) {
       return $http.get(urlBase + '/genre/' + id);
-    }
+    };
+
+    BooksFactory.getBooksByAuthor = function(id) {
+      return $http.get(urlBase + '/author/' + id);
+    };
 
     return BooksFactory;
 }]);

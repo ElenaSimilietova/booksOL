@@ -1,0 +1,25 @@
+<div class="main">
+    <div class="col-md-8">
+        <div class="row">
+            <h2>{{author.name}}</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-8 row" ng-repeat="book in books">
+                <div>
+                    </br>
+                    <a href="/#book/{{book.id}}">
+                        <img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.title}}" class="thumbnails">
+                    </a>
+                </div>
+                <div class="book-info">
+                    <p><a href="/#book/{{book.id}}">{{book.title}}</a></p>
+                    <p>{{book.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <popular-authors></popular-authors>
+        <genres></genres>
+    </div>
+</div>
