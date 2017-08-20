@@ -1,1 +1,19 @@
-<p>Here is you profile</p>
+<div class="main">
+	<div class="col-md-8">
+		<h2>Your Profile</h2>
+		<div class="row">
+			<div class="col-md-10 profile-general"">
+			<h2>Hello, {{firstName}}</h2>
+			<br>
+			{{subscriptionInfo}}			
+			</br></br>
+			<button class="btn btn-primary payMonthButton"  ng--disabled="first" ng-click="submitPayment(1)">Pay for a month</button>
+			<button class="btn btn-primary payYearButton"  ng-disabled="first" ng-click="submitPayment(12)">Pay for a year</button>
+			<div data-ng-init="getPayment()">
+    		</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+ 

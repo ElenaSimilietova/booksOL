@@ -9,7 +9,7 @@ exports.getBookById = function(req, res) {
       connection.release();
       res.status(500).send(err);
     }
-    connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_genre AS genreId , b.big_pic, b.pages_number AS pagesNum, b.description " + 
+    connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_genre AS genreId, b.pages_number AS pagesNum, b.description " + 
       " FROM books b, authors a, genres g WHERE b.id = " + id + " AND b.id_author = a.id AND b.id_genre = g.id", function (err, rows) {
       connection.release();
       if (err) {
@@ -29,7 +29,7 @@ exports.getBooksMostPopular = function(req, res) {
       connection.release();
       res.status(500).send(err);
     }
-    connection.query("SELECT b.id, b.name, a.name AS author, b.id_author, b.small_pic, b.sum_points/b.votes_number as 'rating' FROM books b, authors a WHERE b.id_author = a.id ORDER BY rating DESC LIMIT " + [num], function (err, rows) {
+    connection.query("SELECT b.id, b.name, a.name AS author, b.id_author, b.sum_points/b.votes_number as 'rating' FROM books b, authors a WHERE b.id_author = a.id ORDER BY rating DESC LIMIT " + [num], function (err, rows) {
       connection.release();
       if (err) {
         res.status(500).send(err);

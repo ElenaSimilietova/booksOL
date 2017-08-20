@@ -42,6 +42,23 @@ app.factory('UsersFactory', ['$http', function($http) {
         });
     }
 
+     UsersFactory.paymentPeriod = function(token,period) {
+        
+        $http.defaults.headers.post['access-token'] = token;
+
+        return $http({
+            method: 'POST',
+            url: urlBase + '/profile',
+            data: $.param({value: period.value}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    }
+
+
+    UsersFactory.getPayment = function(email) {
+        return $http.get(urlBase + '/payment/' + email);
+    }
+
     UsersFactory.logOutUser = function(token) {
 
         $http.defaults.headers.post['access-token'] = token;

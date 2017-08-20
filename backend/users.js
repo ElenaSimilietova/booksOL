@@ -105,7 +105,7 @@ exports.signIn = function(req, res) {
 
 exports.logOut = function(req, res) {
   var token = req.headers['access-token'];
-  
+
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
     if (err) {
       connection.release();
@@ -136,3 +136,60 @@ exports.logOut = function(req, res) {
     }
   });
 };
+
+
+exports.paymentPeriod = function(req, res) { 
+  var token = req.headers['access-token'];
+  var value = req.body.value;
+    
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err) {
+      connection.release();
+      res.status(500).send(err);
+    } else if (!user) {
+      connection.release();
+      res.status(401).send({message: 'Token is expired'});
+    } else {
+
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          connection.release();
+          res.status(500).send({message: 'DB connection error'});
+        }
+        connection.query("UPDATE users SET due_date = CURRENT_TIMESTAMP + INTERVAL '" + value + "' MONTH WHERE ID = '" + user.userID + "'"
+        , function (err, rows) {
+
+          connection.release();
+          if (err) {
+            res.status(500).send({ message: 'Query error'});
+          }
+          else {
+            res.status(200).send('{}');
+          }
+        });
+      });
+    }
+  });
+
+};
+
+exports.getPaymentPeriod = function(req, res) {
+  var email = req.params.email;
+
+  pool.getConnection(function(err,connection) {
+    if (err) {
+      connection.release();
+      res.status(500).send(err);
+    }
+    connection.query("SELECT id, first_name, last_name, due_date,  due_date < current_timestamp AS subscription, registration_date FROM users WHERE email = '" + email + "'", function (err, rows) {
+      connection.release();
+      if (err) {
+        res.status(500).send(err);
+      }
+      else {
+        res.json(rows[0]);
+      }
+    }); 
+  });
+};
+
