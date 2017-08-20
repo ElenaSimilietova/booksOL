@@ -22,17 +22,30 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
 }])
 
 .controller('BookController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
-  var bookId = $routeParams.id;
+ var period = sessionStorage.getItem('period');
+
+ if(period == 'null' || period == null || period == 1){
+    $scope.first = true;
+    $scope.subscription = "Your subscription is over.";
+ }
+ else
+ {
+    $scope.first = false;
+    $scope.subscription = "";
+ }  
+
+ var bookId = $routeParams.id;
   BooksFactory.getBook(bookId).then(function(response) {
     $scope.book = response.data;
   });
 
 }])
-.controller('ReadController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
+.controller('ReadController', ['$scope', '$routeParams', 'BooksFactory', 'UsersFactory', function($scope, $routeParams, BooksFactory) {
+   
   var bookId = $routeParams.id;
-
   $scope.bookId = bookId;
   BooksFactory.getInfo(bookId).then(function(response){
+
     $scope.bookName = response.data.name;
     $scope.bookPagesNumber = response.data.pages_number;
   });
