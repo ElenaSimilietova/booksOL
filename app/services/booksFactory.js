@@ -9,11 +9,13 @@ app.factory('BooksFactory', ['$http', function($http) {
         return $http.get(urlBase + '/' + id);
     };
 
-    BooksFactory.getInfo = function(id) {
+    BooksFactory.getInfo = function(id, token) {
+        $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
         return $http.get(urlBase + '/info/' + id);
     };
 
     BooksFactory.getPageContent = function(id, pageNum) {
+        $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
         return $http.get(urlBase + '/content/' + id + '/' + pageNum);
     };
 

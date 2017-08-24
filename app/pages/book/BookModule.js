@@ -26,23 +26,47 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
   BooksFactory.getBook(bookId).then(function(response) {
     $scope.book = response.data;
   });
-
 }])
-.controller('ReadController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
+.controller('ReadController', ['$scope','$routeParams', '$location', 'BooksFactory', 'ReadingListService', function($scope, $routeParams, $location, BooksFactory, ReadingListService) {
   var bookId = $routeParams.id;
 
   $scope.bookId = bookId;
+  $scope.page = 1;
+  $scope.newPage = 1;
+
   BooksFactory.getInfo(bookId).then(function(response){
     $scope.bookName = response.data.name;
     $scope.bookPagesNumber = response.data.pages_number;
-  });
 
-  BooksFactory.getPageContent(bookId, 1).then(function(response) {
-     $scope.content = decodeURIComponent(response.data.content);
+    if (response.data.currentPage) {
+      $scope.bookInReadingList = true;
+      $scope.page = response.data.currentPage;
+      
+    } else {
+      $scope.bookInReadingList = false;
+      $scope.page = 1;
+    }
+
+    $scope.newPage = ($scope.newPage < $scope.bookPagesNumber)? $scope.page + 1 : $scope.bookPagesNumber;
+    
+    BooksFactory.getPageContent(bookId, $scope.page).then(function(response) {
+      $scope.content = decodeURIComponent(response.data.content);
+    }, function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = reason.data.message;
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
+    });
+  }, function(reason) {
+    // rejection
+    if (reason.status == 500) {
+      $scope.message = reason.data.message;
+    } else if (reason.status == 401) {
+      $location.path('/users/sign-in');
+    }
   });
-  
-  $scope.page = 1;
-  $scope.newPage = 1;
 
   $scope.showPage = function() {
 
@@ -54,10 +78,52 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
   
     BooksFactory.getPageContent(bookId, $scope.newPage).then(function(response) {
       $scope.content = decodeURIComponent(response.data.content);
+    }, function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = reason.data.message;
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
     });
-
+    
     $scope.page = $scope.newPage;
+    $scope.newPage = ($scope.newPage < $scope.bookPagesNumber)? $scope.page + 1 : $scope.bookPagesNumber;
+  };
+
+  $scope.addBookToReadingList = function(currentPage) {
+    ReadingListService.saveBookPage(bookId, currentPage).then(function(response) {
+      if (response.status == 200) {
+        if($scope.bookInReadingList == false) {
+          $scope.bookInReadingList = true;
+        }
+      }
+    }, function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = reason.data.message;
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
+    });
   }
+
+  $scope.removeBookFromReadingList = function() {
+    ReadingListService.removeBookFromReadingList(bookId).then(function(response) {
+      if (response.status == 200) {
+        if($scope.bookInReadingList == true) {
+          $scope.bookInReadingList = false;
+        }
+      }
+    }, function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = reason.data.message;
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
+    });
+  };
 
 
 }])
