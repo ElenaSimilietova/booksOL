@@ -43,7 +43,7 @@ app.factory('UsersFactory', ['$http', function($http) {
     }
 
     UsersFactory.logOutUser = function(token) {
-
+        $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
         $http.defaults.headers.post['access-token'] = token;
 
         return $http({
