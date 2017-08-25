@@ -107,12 +107,8 @@ exports.logOut = function(req, res) {
   var token = req.headers['access-token'];
   
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err) {
-      connection.release();
+    if (err || !user) {
       res.status(500).send({ message: 'Token error' });
-    } else if (!user) {
-      connection.release();
-      res.status(401).send({  message: 'Token is expired'});
     } else {
 
       pool.getConnection(function(err,connection) {

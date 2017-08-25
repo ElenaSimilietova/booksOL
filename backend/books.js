@@ -49,11 +49,8 @@ exports.getBookInfo = function(req, res) {
   var result = {};
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err) {
+    if (err || !user) {
       res.status(401).send({ message: 'Token error' });
-    } else if (!user) {
-      connection.release();
-      res.status(401).send({ message: 'Token is expired'});
     } else {
       pool.getConnection(function(err,connection) {
         if (err) {
@@ -91,12 +88,8 @@ exports.getPageContent = function(req, res) {
   var booksFolder = '/books';
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err) {
-      connection.release();
+    if (err || !user) {
       res.status(401).send({ message: 'Token error' });
-    } else if (!user) {
-      connection.release();
-      res.status(401).send({ message: 'Token is expired'});
     } else {
       pool.getConnection(function(err,connection) {
         if (err) {
@@ -135,7 +128,6 @@ exports.getBooksByGenre = function(req, res) {
   var genreId = req.params.id;
   pool.getConnection(function(err,connection) {
     if (err) {
-      connection.release();
       res.status(500).send(err);
     }
     connection.query("SELECT b.id, b.name, a.name AS author, g.name AS genre FROM books b, authors a, genres g WHERE b.id_author = a.id AND b.id_genre = g.id AND g.id = '" + [genreId] + "'" + " ORDER BY name;", function (err, rows) {
@@ -155,7 +147,6 @@ exports.getBooksByAuthor = function(req, res) {
   pool.getConnection(function(err,connection) {
     if (err) {
       res.status(500).send(err);
-      connection.release();
     }
     connection.query("SELECT name FROM authors WHERE id = " + authorID, function (err, rows) {
       if (err) {
@@ -189,12 +180,8 @@ exports.savePageIntoReadingList = function(req, res) {
   var token = req.headers['access-token'];
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err) {
-      connection.release();
+    if (err || !user) {
       res.status(401).send({ message: 'Token error' });
-    } else if (!user) {
-      connection.release();
-      res.status(401).send({ message: 'Token is expired'});
     } else {
       pool.getConnection(function(err,connection) {
         if (err) {
@@ -242,12 +229,8 @@ exports.deletePagesFromReadingList = function(req, res) {
   var token = req.headers['access-token'];
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err) {
-      connection.release();
+    if (err || !user) {
       res.status(401).send({ message: 'Token error' });
-    } else if (!user) {
-      connection.release();
-      res.status(401).send({ message: 'Token is expired'});
     } else {
       pool.getConnection(function(err,connection) {
         if (err) {

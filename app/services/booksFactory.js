@@ -9,7 +9,7 @@ app.factory('BooksFactory', ['$http', function($http) {
         return $http.get(urlBase + '/' + id);
     };
 
-    BooksFactory.getInfo = function(id, token) {
+    BooksFactory.getGeneralInfo = function(id) {
         $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
         return $http.get(urlBase + '/info/' + id);
     };
