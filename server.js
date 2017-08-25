@@ -34,9 +34,10 @@ app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
 app.post('/api/users/subscription/dueDate', users.getDueDate);
 app.get('/api/users/email/check/:email', users.checkEmail);
 app.post('/api/users/save', users.saveUser);
-app.post('/api/users/sign-in', users.signIn);
-app.post('/api/users/log-out', users.logOut);
 app.post('/api/users/subscription/', users.subscribe);
+
+app.post('/api/sign-in', users.signIn);
+app.post('/api/log-out', users.logOut);
 
 app.get('/api/search/:searchString', search.getSearchResults);
  

@@ -27,6 +27,7 @@ app.factory('User', ['$http', function($http) {
         });
     }
 
+// <<<<<<< HEAD
     User.signInUser = function(user) {
         // default post header
         $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -78,7 +79,6 @@ app.factory('User', ['$http', function($http) {
         });
 
     }
-
 
     return User;
 }]);

@@ -1,19 +1,19 @@
 'use strict';
 
-angular.module('signInModule', ['ngRoute', 'userFactoryModule'])
+angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/users/sign-in', {
+  $routeProvider.when('/sign-in', {
     templateUrl: 'pages/signIn/signIn.html',
     controller: 'SignInController'
   })
-  .when('/users/log-out', {
+  .when('/log-out', {
     template: '',
     controller: 'LogOutController'
   });
 }])
 
-.controller('SignInController', ['$scope','$location', 'User', function($scope, $location, User) {
+.controller('SignInController', ['$scope','$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
   $scope.message = null;
 
   $scope.signIn = function() {
@@ -23,7 +23,7 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule'])
                   'password': $scope.password.value,
     };
     
-    User.signInUser(user).then(function(response) { 
+    AuthenticationService.signInUser(user).then(function(response) { 
       if(response.data.token && response.data.expiresIn) {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('expiresIn', response.data.expiresIn);
@@ -47,18 +47,16 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule'])
   }
 }])
 
-.controller('LogOutController', ['$scope','$location', 'User', function($scope, $location, User) {
+.controller('LogOutController', ['$scope','$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
 
-  var token = sessionStorage.getItem('token');
-  var expiresIn = sessionStorage.getItem('expiresIn');
-  sessionStorage.removeItem('token');
-  sessionStorage.removeItem('expiresIn');
-  sessionStorage.removeItem('period');   
+   var token = sessionStorage.getItem('token');
+   var expiresIn = sessionStorage.getItem('expiresIn');
+  
+  AuthenticationService.logOutUser().then(function(response) {
 
-
-  User.logOutUser().then(function(response) {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('period');   
     $location.path('/main');
   });
  }]);

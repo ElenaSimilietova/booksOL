@@ -4,7 +4,7 @@ angular.module('searchResultsModule', ['ngRoute', 'searchFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/search-results/:str', {
-    templateUrl: 'pages/searchResults/SearchResultsView.html',
+    templateUrl: 'pages/searchResults/searchResults.html',
     controller: 'SearchResultsController'
   });
 }])
