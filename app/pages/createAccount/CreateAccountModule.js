@@ -17,7 +17,7 @@ angular.module('createAccountModule', ['ngRoute', 'userFactoryModule'])
   });
 }])
 
-.controller('createAccountController', ['$scope', '$location', 'User', function($scope, $location, User) {
+.controller('CreateAccountController', ['$scope', '$location', 'User', function($scope, $location, User) {
   $scope.firstName = {'value': '',
                       'pattern': /^[a-z ,.'-]+$/i,
                       'message': 'Invalid first name'
