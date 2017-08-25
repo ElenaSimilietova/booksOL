@@ -12,14 +12,14 @@ angular.module('booksOL', [
   'CreateAccountModule',
   'ProfileModule',
   'AdminModule',
-  'BooksFactoryModule',
+  'BookFactoryModule',
   'PopularAuthorsModule',
-  'AuthorsFactoryModule',
+  'AuthorFactoryModule',
   'GenresModule',
-  'GenresFactoryModule',
+  'GenreFactoryModule',
   'OnEnterModule',
   'PageContentModule',
-  'UsersFactoryModule',
+  'UserFactoryModule',
   'AccountLinksModule',
   'ReadingListServiceModule'
 ])

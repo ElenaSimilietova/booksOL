@@ -1,15 +1,15 @@
-var app = angular.module("UsersFactoryModule", []);
+var app = angular.module("UserFactoryModule", []);
 
-app.factory('UsersFactory', ['$http', function($http) {
+app.factory('User', ['$http', function($http) {
 
     var urlBase = '/api/users';
     var UsersFactory = {};
 
-    UsersFactory.checkEmail = function(email) {
+    User.checkEmail = function(email) {
         return $http.get(urlBase + '/email/check/' + email);
     }
 
-    UsersFactory.saveUser = function(user) {
+    User.saveUser = function(user) {
         // default post header
         $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
         // send user data
@@ -27,7 +27,7 @@ app.factory('UsersFactory', ['$http', function($http) {
         });
     }
 
-    UsersFactory.signInUser = function(user) {
+    User.signInUser = function(user) {
         // default post header
         $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
         // send user data
@@ -42,7 +42,7 @@ app.factory('UsersFactory', ['$http', function($http) {
         });
     }
 
-    UsersFactory.logOutUser = function(token) {
+    User.logOutUser = function(token) {
         $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
         $http.defaults.headers.post['access-token'] = token;
 
@@ -54,5 +54,5 @@ app.factory('UsersFactory', ['$http', function($http) {
         });
     }
 
-    return UsersFactory;
+    return User;
 }]);
