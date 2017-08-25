@@ -34,7 +34,7 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
   $scope.page = 1;
   $scope.newPage = 1;
 
-  BooksFactory.getInfo(bookId).then(function(response){
+  BooksFactory.getGeneralInfo(bookId).then(function(response){
     $scope.bookName = response.data.name;
     $scope.bookPagesNumber = response.data.pages_number;
 
