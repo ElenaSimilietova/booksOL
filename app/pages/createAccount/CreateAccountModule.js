@@ -5,7 +5,7 @@ angular.module('createAccountModule', ['ngRoute', 'userFactoryModule'])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/create-account', {
     templateUrl: 'pages/createAccount/createAccount.html',
-    controller: 'CreateAccountController'
+    controller: 'createAccountController'
   })
   .when('/users/create-account/success/:name', {
     templateUrl: 'pages/createAccount/createAccountSuccess.html',
