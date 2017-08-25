@@ -1,4 +1,4 @@
-var app = angular.module("BookFactoryModule", []);
+var app = angular.module("bookFactoryModule", []);
 
 app.factory('Book', ['$http', function($http) {
 

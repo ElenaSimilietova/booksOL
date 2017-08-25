@@ -1,9 +1,9 @@
-var app = angular.module("UserFactoryModule", []);
+var app = angular.module("userFactoryModule", []);
 
 app.factory('User', ['$http', function($http) {
 
     var urlBase = '/api/users';
-    var UsersFactory = {};
+    var User = {};
 
     User.checkEmail = function(email) {
         return $http.get(urlBase + '/email/check/' + email);
@@ -44,7 +44,7 @@ app.factory('User', ['$http', function($http) {
 
     User.logOutUser = function(token) {
         $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-        $http.defaults.headers.post['access-token'] = token;
+        $http.defaults.headers.post['access-token'] = sessionStorage.getItem('token');
 
         return $http({
             method: 'POST',

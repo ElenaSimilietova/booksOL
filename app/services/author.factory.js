@@ -1,4 +1,4 @@
-var app = angular.module("AuthorFactoryModule", []);
+var app = angular.module("authorFactoryModule", []);
 
 app.factory('Author', ['$http', function($http) {
 
