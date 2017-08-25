@@ -1,4 +1,4 @@
-angular.module('PopularAuthorsModule', ['AuthorsFactoryModule'])
+angular.module('PopularAuthorsModule', ['AuthorFactoryModule'])
 .directive('popularAuthors', function() {
     return {
         restrict: 'AE',
@@ -7,8 +7,8 @@ angular.module('PopularAuthorsModule', ['AuthorsFactoryModule'])
         templateUrl: './directives/popular-authors/index.html'
     };
 
-    function controller($scope, AuthorsFactory) {
-        AuthorsFactory.getMostPopular(5).then(function(response) {
+    function controller($scope, Author) {
+        Author.getMostPopular(5).then(function(response) {
             $scope.authors = response.data;
         });
     }

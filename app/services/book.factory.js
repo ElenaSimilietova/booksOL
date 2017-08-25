@@ -1,35 +1,35 @@
-var app = angular.module("BooksFactoryModule", []);
+var app = angular.module("BookFactoryModule", []);
 
-app.factory('BooksFactory', ['$http', function($http) {
+app.factory('Book', ['$http', function($http) {
 
     var urlBase = '/api/books';
-    var BooksFactory = {};
+    var Book = {};
 
-    BooksFactory.getBook = function(id) {
+    Book.getBook = function(id) {
         return $http.get(urlBase + '/' + id);
     };
 
-    BooksFactory.getGeneralInfo = function(id) {
+    Book.getGeneralInfo = function(id) {
         $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
         return $http.get(urlBase + '/info/' + id);
     };
 
-    BooksFactory.getPageContent = function(id, pageNum) {
+    Book.getPageContent = function(id, pageNum) {
         $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
         return $http.get(urlBase + '/content/' + id + '/' + pageNum);
     };
 
-    BooksFactory.getMostPopular = function(num) {
+    Book.getMostPopular = function(num) {
       return $http.get(urlBase + '/popular/' + num);
     };
 
-    BooksFactory.getBooksByGenre = function(id) {
+    Book.getBooksByGenre = function(id) {
       return $http.get(urlBase + '/genre/' + id);
     };
 
-    BooksFactory.getBooksByAuthor = function(id) {
+    Book.getBooksByAuthor = function(id) {
       return $http.get(urlBase + '/author/' + id);
     };
 
-    return BooksFactory;
+    return Book;
 }]);

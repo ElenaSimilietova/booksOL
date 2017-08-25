@@ -9,12 +9,11 @@ angular.module('SearchResultsModule', ['ngRoute', 'SearchFactoryModule'])
   });
 }])
 
-.controller('SearchResultsController', ['$scope','$routeParams', 'SearchFactory', function($scope, $routeParams, SearchFactory) {
+.controller('SearchResultsController', ['$scope','$routeParams', 'Search', function($scope, $routeParams, Search) {
   var searchString = $routeParams.str;
   $scope.authors = {};
   $scope.books = {};
-  
-  SearchFactory.search(searchString).then(function(response) {
+  Search.search(searchString).then(function(response) {
     $scope.authors = response.data.authors;
     $scope.books = response.data.books;
     $scope.message = null;

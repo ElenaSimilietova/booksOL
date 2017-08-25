@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModule'])
+angular.module('BookModule', ['ngRoute', 'BookFactoryModule', 'PageContentModule', 'ReadingListServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/book/:id', {
@@ -21,20 +21,20 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
   });
 }])
 
-.controller('BookController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
+.controller('BookController', ['$scope','$routeParams', 'Book', function($scope, $routeParams, Book) {
   var bookId = $routeParams.id;
-  BooksFactory.getBook(bookId).then(function(response) {
+  Book.getBook(bookId).then(function(response) {
     $scope.book = response.data;
   });
 }])
-.controller('ReadController', ['$scope','$routeParams', '$location', 'BooksFactory', 'ReadingListService', function($scope, $routeParams, $location, BooksFactory, ReadingListService) {
+.controller('ReadController', ['$scope','$routeParams', '$location', 'Book', 'ReadingList', function($scope, $routeParams, $location, Book, ReadingList) {
   var bookId = $routeParams.id;
 
   $scope.bookId = bookId;
   $scope.page = 1;
   $scope.newPage = 1;
 
-  BooksFactory.getGeneralInfo(bookId).then(function(response){
+  Book.getGeneralInfo(bookId).then(function(response){
     $scope.bookName = response.data.name;
     $scope.bookPagesNumber = response.data.pages_number;
 
@@ -49,7 +49,7 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
 
     $scope.newPage = ($scope.newPage < $scope.bookPagesNumber)? $scope.page + 1 : $scope.bookPagesNumber;
     
-    BooksFactory.getPageContent(bookId, $scope.page).then(function(response) {
+    Book.getPageContent(bookId, $scope.page).then(function(response) {
       $scope.content = decodeURIComponent(response.data.content);
     }, function(reason) {
       // rejection
@@ -76,7 +76,7 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
        $scope.newPage = $scope.bookPagesNumber;
     }
   
-    BooksFactory.getPageContent(bookId, $scope.newPage).then(function(response) {
+    Book.getPageContent(bookId, $scope.newPage).then(function(response) {
       $scope.content = decodeURIComponent(response.data.content);
     }, function(reason) {
       // rejection
@@ -92,7 +92,7 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
   };
 
   $scope.addBookToReadingList = function(currentPage) {
-    ReadingListService.saveBookPage(bookId, currentPage).then(function(response) {
+    ReadingList.saveBookPage(bookId, currentPage).then(function(response) {
       if (response.status == 200) {
         if($scope.bookInReadingList == false) {
           $scope.bookInReadingList = true;
@@ -109,7 +109,7 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
   }
 
   $scope.removeBookFromReadingList = function() {
-    ReadingListService.removeBookFromReadingList(bookId).then(function(response) {
+    ReadingList.removeBookFromReadingList(bookId).then(function(response) {
       if (response.status == 200) {
         if($scope.bookInReadingList == true) {
           $scope.bookInReadingList = false;
@@ -128,21 +128,21 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
 
 }])
 
-.controller('BookByGenreController', ['$scope','$routeParams','BooksFactory', function($scope, $routeParams, BooksFactory) {
+.controller('BookByGenreController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {
   var genreId =  $routeParams.id;
   $scope.genreName = $routeParams.genre;
   
-  BooksFactory.getBooksByGenre(genreId).then(function(response) {
+  Book.getBooksByGenre(genreId).then(function(response) {
     $scope.books = response.data;
     if ($scope.books == "")
       $scope.messageNoResults = "No books in " + $scope.genreName + " genre.";
   });
 }])
 
-.controller('BookByAuthorController', ['$scope','$routeParams','BooksFactory', function($scope, $routeParams, BooksFactory) {
+.controller('BookByAuthorController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {
   var authorID =  $routeParams.id;
   
-  BooksFactory.getBooksByAuthor(authorID).then(function(response) {
+  Book.getBooksByAuthor(authorID).then(function(response) {
     $scope.author = response.data.author;
     $scope.books = response.data.books;
   });
