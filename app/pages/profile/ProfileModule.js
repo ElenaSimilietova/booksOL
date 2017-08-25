@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('ProfileModule', ['ngRoute'])
+angular.module('profileModule', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/profile', {
-    templateUrl: 'pages/profile/ProfileView.html',
+    templateUrl: 'pages/profile/profile.html',
     controller: 'ProfileController'
   });
 }])

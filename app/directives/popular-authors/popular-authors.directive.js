@@ -1,4 +1,4 @@
-angular.module('PopularAuthorsModule', ['AuthorFactoryModule'])
+angular.module('popularAuthorsModule', ['authorFactoryModule'])
 .directive('popularAuthors', function() {
     return {
         restrict: 'AE',

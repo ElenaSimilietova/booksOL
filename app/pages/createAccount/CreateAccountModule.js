@@ -1,23 +1,23 @@
 'use strict';
 
-angular.module('CreateAccountModule', ['ngRoute', 'UserFactoryModule'])
+angular.module('createAccountModule', ['ngRoute', 'userFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/create-account', {
-    templateUrl: 'pages/createAccount/CreateAccountView.html',
+    templateUrl: 'pages/createAccount/createAccount.html',
     controller: 'CreateAccountController'
   })
   .when('/users/create-account/success/:name', {
-    templateUrl: 'pages/createAccount/CreateAccountSuccessView.html',
+    templateUrl: 'pages/createAccount/createAccountSuccess.html',
     controller: 'CreateAccountSuccessController'
   })
   .when('/users/create-account/fail', {
-    templateUrl: 'pages/createAccount/CreateAccountFailView.html',
+    templateUrl: 'pages/createAccount/createAccountFail.html',
     controller: 'CreateAccountFailController'
   });
 }])
 
-.controller('CreateAccountController', ['$scope', '$location', 'User', function($scope, $location, User) {
+.controller('createAccountController', ['$scope', '$location', 'User', function($scope, $location, User) {
   $scope.firstName = {'value': '',
                       'pattern': /^[a-z ,.'-]+$/i,
                       'message': 'Invalid first name'

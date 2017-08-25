@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('MainModule', ['ngRoute', 'BookFactoryModule', 'PopularAuthorsModule', 'GenresModule'])
+angular.module('mainModule', ['ngRoute', 'bookFactoryModule', 'popularAuthorsModule', 'genresModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/main', {
-    templateUrl: 'pages/main/MainView.html',
+    templateUrl: 'pages/main/main.html',
     controller: 'MainController'
   });
 }])
