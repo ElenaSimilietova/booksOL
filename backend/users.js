@@ -138,9 +138,9 @@ exports.logOut = function(req, res) {
 };
 
 
-exports.paymentPeriod = function(req, res) { 
+exports.subscribe = function(req, res) { 
   var token = req.headers['access-token'];
-  var value = req.body.value;
+  var subscribePeriod = req.body.subscribePeriod;
     
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
     if (err) {
@@ -156,7 +156,7 @@ exports.paymentPeriod = function(req, res) {
           connection.release();
           res.status(500).send({message: 'DB connection error'});
         }
-        connection.query("UPDATE users SET due_date = CURRENT_TIMESTAMP + INTERVAL '" + value + "' MONTH WHERE ID = '" + user.userID + "'"
+        connection.query("UPDATE users SET due_date = CURRENT_TIMESTAMP + INTERVAL '" + subscribePeriod + "' MONTH WHERE ID = '" + user.userID + "'"
         , function (err, rows) {
 
           connection.release();
@@ -173,23 +173,37 @@ exports.paymentPeriod = function(req, res) {
 
 };
 
-exports.getPaymentPeriod = function(req, res) {
-  var email = req.params.email;
+exports.getDueDate = function(req, res) { 
+  var token = req.headers['access-token'];
 
-  pool.getConnection(function(err,connection) {
+ jwt.verify(token, req.app.get('tokenString'), function(err, user, location) {
     if (err) {
+        if (!user) {
+          res.status(401).send({message: 'Invalid user in user/profile'});
+        }      
+     connection.release();
+     res.status(500).send(err);  
+    } else if (!user) {
       connection.release();
-      res.status(500).send(err);
-    }
-    connection.query("SELECT id, first_name, last_name, due_date,  due_date < current_timestamp AS subscription, registration_date FROM users WHERE email = '" + email + "'", function (err, rows) {
-      connection.release();
-      if (err) {
         res.status(500).send(err);
-      }
-      else {
-        res.json(rows[0]);
-      }
-    }); 
+    } else {
+
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          connection.release();
+            res.status(500).send(err);
+        }
+        connection.query("SELECT id, first_name, last_name, due_date,  due_date < current_timestamp AS subscription, registration_date FROM users WHERE id = '" + user.userID + "'", function (err, rows) {
+
+          connection.release();
+          if (err) {
+              res.status(500).send(err);
+          }
+          else {
+              res.json(rows[0]);
+          }
+        });
+      });
+    }
   });
 };
-

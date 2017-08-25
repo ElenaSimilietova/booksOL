@@ -29,12 +29,12 @@ app.get('/api/genres', genres.getGenres);
 
 app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
 
-app.get('/api/users/payment/:email', users.getPaymentPeriod);
+app.post('/api/users/subscription/dueDate', users.getDueDate);
 app.get('/api/users/email/check/:email', users.checkEmail);
 app.post('/api/users/save', users.saveUser);
 app.post('/api/users/sign-in', users.signIn);
 app.post('/api/users/log-out', users.logOut);
-app.post('/api/users/profile/', users.paymentPeriod);
+app.post('/api/users/subscription/', users.subscribe);
 
 app.get('/api/search/:searchString', search.getSearchResults);
  

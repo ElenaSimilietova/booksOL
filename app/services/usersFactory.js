@@ -42,21 +42,30 @@ app.factory('UsersFactory', ['$http', function($http) {
         });
     }
 
-     UsersFactory.paymentPeriod = function(token,period) {
+     UsersFactory.subscribe = function(token, subscribePeriod) {
         
         $http.defaults.headers.post['access-token'] = token;
 
         return $http({
             method: 'POST',
-            url: urlBase + '/profile',
-            data: $.param({value: period.value}),
+            url: urlBase + '/subscription/',
+            data: $.param({subscribePeriod: subscribePeriod.value}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     }
 
 
-    UsersFactory.getPayment = function(email) {
-        return $http.get(urlBase + '/payment/' + email);
+    UsersFactory.getDueDate = function(token) {
+        
+        $http.defaults.headers.post['access-token'] = token;
+
+        return $http({
+            method: 'POST',
+            url: urlBase + '/subscription/dueDate',
+            data: $.param({}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
     }
 
     UsersFactory.logOutUser = function(token) {
