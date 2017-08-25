@@ -1,4 +1,4 @@
-angular.module('GenresModule', ['GenresFactoryModule'])
+angular.module('GenresModule', ['GenreFactoryModule'])
 .directive('genres', function() {
     return {
         restrict: 'AE',
@@ -7,8 +7,8 @@ angular.module('GenresModule', ['GenresFactoryModule'])
         templateUrl: './directives/genres/index.html'
     };
 
-    function controller($scope, GenresFactory) {
-        GenresFactory.getAll().then(function(response) {
+    function controller($scope, Genre) {
+        Genre.getAll().then(function(response) {
             $scope.genres = response.data;
         });    
     }

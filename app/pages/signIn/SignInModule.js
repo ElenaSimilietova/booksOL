@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
+angular.module('SignInModule', ['ngRoute', 'UserFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/sign-in', {
@@ -13,7 +13,7 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
   });
 }])
 
-.controller('SignInController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+.controller('SignInController', ['$scope','$location', 'User', function($scope, $location, User) {
   $scope.message = null;
 
   $scope.signIn = function() {
@@ -23,7 +23,7 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
                   'password': $scope.password.value,
     };
     
-    UsersFactory.signInUser(user).then(function(response) { 
+    User.signInUser(user).then(function(response) { 
       if(response.data.token && response.data.expiresIn) {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('expiresIn', response.data.expiresIn);
@@ -47,14 +47,14 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
   }
 }])
 
-.controller('LogOutController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+.controller('LogOutController', ['$scope','$location', 'User', function($scope, $location, User) {
   var token = sessionStorage.getItem('token');
   var expiresIn = sessionStorage.getItem('expiresIn');
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('expiresIn');
   sessionStorage.removeItem('period');   
 
-  UsersFactory.logOutUser(token).then(function(response) {
+  User.logOutUser(token).then(function(response) {
     $location.path('/main');
   });
  }]);

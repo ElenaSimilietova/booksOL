@@ -1,4 +1,4 @@
-angular.module('AccountLinksModule', ['UsersFactoryModule'])
+angular.module('AccountLinksModule', ['UserFactoryModule'])
 .directive('accountLinks', ['$location', function(location) {
     return {
         restrict: 'AE',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModule'])
+angular.module('BookModule', ['ngRoute', 'BookFactoryModule', 'PageContentModule', 'ReadingListServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/book/:id', {
@@ -21,41 +21,64 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
   });
 }])
 
-.controller('BookController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
- var period = sessionStorage.getItem('period');
+.controller('BookController', ['$scope','$routeParams', 'Book', function($scope, $routeParams, Book) {
+var period = sessionStorage.getItem('period');
 
  if(period == 'null' || period == null || period == 1){
-    $scope.first = true;
+    $scope.disableButton = true;
     $scope.subscription = "Your subscription is over.";
  }
  else
  {
-    $scope.first = false;
+    $scope.disableButton = false;
     $scope.subscription = "";
- }  
+} 
 
- var bookId = $routeParams.id;
-  BooksFactory.getBook(bookId).then(function(response) {
+  var bookId = $routeParams.id;
+  Book.getBook(bookId).then(function(response) {
     $scope.book = response.data;
   });
-
 }])
-.controller('ReadController', ['$scope', '$routeParams', 'BooksFactory', 'UsersFactory', function($scope, $routeParams, BooksFactory) {
-   
+.controller('ReadController', ['$scope','$routeParams', '$location', 'Book', 'ReadingList', function($scope, $routeParams, $location, Book, ReadingList) {
   var bookId = $routeParams.id;
+
   $scope.bookId = bookId;
-  BooksFactory.getInfo(bookId).then(function(response){
-
-    $scope.bookName = response.data.name;
-    $scope.bookPagesNumber = response.data.pages_number;
-  });
-
-  BooksFactory.getPageContent(bookId, 1).then(function(response) {
-     $scope.content = decodeURIComponent(response.data.content);
-  });
-  
   $scope.page = 1;
   $scope.newPage = 1;
+
+  Book.getGeneralInfo(bookId).then(function(response){
+    $scope.bookName = response.data.name;
+    $scope.bookPagesNumber = response.data.pages_number;
+
+    if (response.data.currentPage) {
+      $scope.bookInReadingList = true;
+      $scope.page = response.data.currentPage;
+      
+    } else {
+      $scope.bookInReadingList = false;
+      $scope.page = 1;
+    }
+
+    $scope.newPage = ($scope.newPage < $scope.bookPagesNumber)? $scope.page + 1 : $scope.bookPagesNumber;
+    
+    Book.getPageContent(bookId, $scope.page).then(function(response) {
+      $scope.content = decodeURIComponent(response.data.content);
+    }, function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = reason.data.message;
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
+    });
+  }, function(reason) {
+    // rejection
+    if (reason.status == 500) {
+      $scope.message = reason.data.message;
+    } else if (reason.status == 401) {
+      $location.path('/users/sign-in');
+    }
+  });
 
   $scope.showPage = function() {
 
@@ -65,31 +88,73 @@ angular.module('BookModule', ['ngRoute', 'BooksFactoryModule', 'PageContentModul
        $scope.newPage = $scope.bookPagesNumber;
     }
   
-    BooksFactory.getPageContent(bookId, $scope.newPage).then(function(response) {
+    Book.getPageContent(bookId, $scope.newPage).then(function(response) {
       $scope.content = decodeURIComponent(response.data.content);
+    }, function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = reason.data.message;
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
     });
-
+    
     $scope.page = $scope.newPage;
+    $scope.newPage = ($scope.newPage < $scope.bookPagesNumber)? $scope.page + 1 : $scope.bookPagesNumber;
+  };
+
+  $scope.addBookToReadingList = function(currentPage) {
+    ReadingList.saveBookPage(bookId, currentPage).then(function(response) {
+      if (response.status == 200) {
+        if($scope.bookInReadingList == false) {
+          $scope.bookInReadingList = true;
+        }
+      }
+    }, function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = reason.data.message;
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
+    });
   }
+
+  $scope.removeBookFromReadingList = function() {
+    ReadingList.removeBookFromReadingList(bookId).then(function(response) {
+      if (response.status == 200) {
+        if($scope.bookInReadingList == true) {
+          $scope.bookInReadingList = false;
+        }
+      }
+    }, function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = reason.data.message;
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
+    });
+  };
 
 
 }])
 
-.controller('BookByGenreController', ['$scope','$routeParams','BooksFactory', function($scope, $routeParams, BooksFactory) {
+.controller('BookByGenreController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {
   var genreId =  $routeParams.id;
   $scope.genreName = $routeParams.genre;
   
-  BooksFactory.getBooksByGenre(genreId).then(function(response) {
+  Book.getBooksByGenre(genreId).then(function(response) {
     $scope.books = response.data;
     if ($scope.books == "")
       $scope.messageNoResults = "No books in " + $scope.genreName + " genre.";
   });
 }])
 
-.controller('BookByAuthorController', ['$scope','$routeParams','BooksFactory', function($scope, $routeParams, BooksFactory) {
+.controller('BookByAuthorController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {
   var authorID =  $routeParams.id;
   
-  BooksFactory.getBooksByAuthor(authorID).then(function(response) {
+  Book.getBooksByAuthor(authorID).then(function(response) {
     $scope.author = response.data.author;
     $scope.books = response.data.books;
   });

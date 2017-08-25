@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('MainModule', ['ngRoute', 'BooksFactoryModule', 'PopularAuthorsModule', 'GenresModule'])
+angular.module('MainModule', ['ngRoute', 'BookFactoryModule', 'PopularAuthorsModule', 'GenresModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/main', {
@@ -9,8 +9,8 @@ angular.module('MainModule', ['ngRoute', 'BooksFactoryModule', 'PopularAuthorsMo
   });
 }])
 
-.controller('MainController', ['$scope', 'BooksFactory', function($scope, BooksFactory) {
-  BooksFactory.getMostPopular(6).then(function(response) {
+.controller('MainController', ['$scope', 'Book', function($scope, Book) {
+  Book.getMostPopular(6).then(function(response) {
     $scope.books = response.data;
   });
 }]);

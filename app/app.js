@@ -12,15 +12,16 @@ angular.module('booksOL', [
   'CreateAccountModule',
   'ProfileModule',
   'AdminModule',
-  'BooksFactoryModule',
+  'BookFactoryModule',
   'PopularAuthorsModule',
-  'AuthorsFactoryModule',
+  'AuthorFactoryModule',
   'GenresModule',
-  'GenresFactoryModule',
+  'GenreFactoryModule',
   'OnEnterModule',
   'PageContentModule',
-  'UsersFactoryModule',
-  'AccountLinksModule'
+  'UserFactoryModule',
+  'AccountLinksModule',
+  'ReadingListServiceModule'
 ])
 .config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('');

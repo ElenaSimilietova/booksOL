@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ProfileModule', ['ngRoute', 'UsersFactoryModule'])
+angular.module('ProfileModule', ['ngRoute', 'UserFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/profile', {
@@ -10,11 +10,11 @@ angular.module('ProfileModule', ['ngRoute', 'UsersFactoryModule'])
 }])
 
 
-.controller('ProfileController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+.controller('ProfileController', ['$scope','$location', 'User', function($scope, $location, User) {
  var token = sessionStorage.getItem('token');
  
- UsersFactory.getDueDate(token).then(function(response) {
-
+ User.getDueDate(token).then(function(response) {
+         
        if (response.data.subscription  == 1) {
           $scope.subscriptionInfo = "Your subscription is over. To use Books OL service, please, subscribe again. You can pay for monthly or annual subscription below:"
           $scope.disableButton = false;
@@ -50,7 +50,7 @@ angular.module('ProfileModule', ['ngRoute', 'UsersFactoryModule'])
     $location.path('/users/sign-in');
   };
 	 
- 	 UsersFactory.subscribe(token, subscribePeriod).then(function(response) {
+ 	 User.subscribe(token, subscribePeriod).then(function(response) {
    		$location.path('/users/profile');
   	});
   } 
