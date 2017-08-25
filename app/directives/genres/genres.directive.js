@@ -1,4 +1,4 @@
-angular.module('GenresModule', ['GenreFactoryModule'])
+angular.module('genresModule', ['genreFactoryModule'])
 .directive('genres', function() {
     return {
         restrict: 'AE',

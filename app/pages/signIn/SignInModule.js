@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('SignInModule', ['ngRoute', 'UserFactoryModule'])
+angular.module('signInModule', ['ngRoute', 'userFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/sign-in', {
-    templateUrl: 'pages/signIn/SignInView.html',
+    templateUrl: 'pages/signIn/signIn.html',
     controller: 'SignInController'
   })
   .when('/users/log-out', {
@@ -48,13 +48,17 @@ angular.module('SignInModule', ['ngRoute', 'UserFactoryModule'])
 }])
 
 .controller('LogOutController', ['$scope','$location', 'User', function($scope, $location, User) {
+
   var token = sessionStorage.getItem('token');
   var expiresIn = sessionStorage.getItem('expiresIn');
   sessionStorage.removeItem('token');
   sessionStorage.removeItem('expiresIn');
   sessionStorage.removeItem('period');   
 
-  User.logOutUser(token).then(function(response) {
+
+  User.logOutUser().then(function(response) {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('expiresIn');
     $location.path('/main');
   });
  }]);

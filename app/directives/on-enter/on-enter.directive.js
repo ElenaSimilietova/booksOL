@@ -1,4 +1,4 @@
-angular.module('OnEnterModule', [])
+angular.module('onEnterModule', [])
 .directive('onEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress keyup", function (event) {

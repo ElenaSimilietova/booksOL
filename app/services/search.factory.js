@@ -1,4 +1,4 @@
-var app = angular.module("SearchFactoryModule", []);
+var app = angular.module("searchFactoryModule", []);
 
 app.factory('Search', ['$http', function($http) {
 

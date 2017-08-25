@@ -1,4 +1,4 @@
-var app = angular.module("ReadingListServiceModule", []);
+var app = angular.module("readingListServiceModule", []);
 
 app.service('ReadingList', ['$http', function($http) {
 

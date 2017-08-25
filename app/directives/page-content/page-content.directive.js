@@ -1,4 +1,4 @@
-angular.module('PageContentModule', [])
+angular.module('pageContentModule', [])
 .directive('pageContent', [ '$compile', '$rootScope', function($compile, $rootScope) {
     return {
         restrict: 'E',

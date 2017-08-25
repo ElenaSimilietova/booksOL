@@ -1,22 +1,22 @@
 'use strict';
 
-angular.module('BookModule', ['ngRoute', 'BookFactoryModule', 'PageContentModule', 'ReadingListServiceModule'])
+angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/book/:id', {
-    templateUrl: 'pages/book/BookView.html',
+    templateUrl: 'pages/book/book.html',
     controller: 'BookController'
   })
   .when('/book/read/:id', {
-    templateUrl: 'pages/book/ReadView.html',
+    templateUrl: 'pages/book/readBook.html',
     controller: 'ReadController'
   })
   .when('/books/:genre/:id', {
-    templateUrl: 'pages/book/BookByGenreView.html',
+    templateUrl: 'pages/book/bookByGenre.html',
     controller: 'BookByGenreController'
   })
   .when('/book/author/:id', {
-    templateUrl: 'pages/book/BookByAuthorView.html',
+    templateUrl: 'pages/book/bookByAuthor.html',
     controller: 'BookByAuthorController'
   });
 }])
