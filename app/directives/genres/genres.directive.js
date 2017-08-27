@@ -8,8 +8,11 @@ angular.module('genresModule', ['genreFactoryModule'])
     };
 
     function controller($scope, Genre) {
+        $scope.message = null;
         Genre.getAll().then(function(response) {
             $scope.genres = response.data;
+        }, function(reason) {
+            $scope.message = 'Sorry, but something went wrong.';
         });    
     }
 });

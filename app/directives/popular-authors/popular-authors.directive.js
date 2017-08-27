@@ -8,8 +8,11 @@ angular.module('popularAuthorsModule', ['authorFactoryModule'])
     };
 
     function controller($scope, Author) {
+        $scope.message = null;
         Author.getMostPopular(5).then(function(response) {
             $scope.authors = response.data;
+        }, function() {
+            $scope.message = 'Sorry, but something went wrong.';
         });
     }
 });

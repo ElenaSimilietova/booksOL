@@ -5,12 +5,12 @@ exports.getAuthorsMostPopular = function(req, res){
   pool.getConnection(function(err,connection) {
     if (err) {
       connection.release();
-      res.status(500).send(err);
+      res.status(500).send({});
     }
     connection.query("SELECT id, name FROM authors ORDER BY rating DESC LIMIT " + [num], function (err, rows) {
       connection.release();
       if (err) {
-        res.status(500).send(err);
+        res.status(500).send({});
       }
       else {
         res.json(rows);

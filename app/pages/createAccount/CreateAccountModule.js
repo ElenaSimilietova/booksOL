@@ -49,6 +49,8 @@ angular.module('createAccountModule', ['ngRoute', 'userFactoryModule'])
   $scope.doPasswordsMatch = true;
   $scope.doesEmailExist = false;
 
+  $scope.message = null;
+
   $scope.emailValidate = function(isEmailValid) {
     if (isEmailValid) {
       User.checkEmail($scope.email.value).then(function(response) {
@@ -58,6 +60,8 @@ angular.module('createAccountModule', ['ngRoute', 'userFactoryModule'])
         } else {
           $scope.doesEmailExist = false;
         }
+      }, function(reason) {
+        $scope.message = 'Sorry, but something went wrong.';
       });
     }
   }
@@ -90,12 +94,15 @@ angular.module('createAccountModule', ['ngRoute', 'userFactoryModule'])
         }
         $location.path('/users/create-account' + path); 
         
+      }, function(reason) {
+        $scope.message = 'Sorry, but something went wrong.';
       });
     }
     else {
       angular.forEach($scope.createAccountForm.$error.required, function(field) {
           field.$setDirty();
       });
+      $scope.message = 'Please, fill all the fields properly.';
     }
   }
 

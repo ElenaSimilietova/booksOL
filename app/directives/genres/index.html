@@ -1,5 +1,5 @@
 <h2>Genres</h2>
-
+<p ng-if="message"></br>{{message}}</p>
 <ul>
     <li ng-repeat="genre in genres"><a class="rightlink" href="#/books/{{genre.name}}/{{genre.id}}">{{genre.name}}</a>
 </ul>

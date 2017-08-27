@@ -13,10 +13,12 @@ angular.module('searchResultsModule', ['ngRoute', 'searchFactoryModule'])
   var searchString = $routeParams.str;
   $scope.authors = {};
   $scope.books = {};
+  $scope.message = null;
+  
   Search.search(searchString).then(function(response) {
     $scope.authors = response.data.authors;
     $scope.books = response.data.books;
-    $scope.message = null;
+    
     if ((Object.keys($scope.authors).length == 0) && (Object.keys($scope.books).length == 0)) {
       $scope.message = 'Sorry, no results';
     } else {
