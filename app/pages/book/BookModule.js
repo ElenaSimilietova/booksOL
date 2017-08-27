@@ -23,8 +23,11 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 
 .controller('BookController', ['$scope','$routeParams', 'Book', function($scope, $routeParams, Book) {
   var bookId = $routeParams.id;
+  $scope.message = null;
   Book.getBook(bookId).then(function(response) {
     $scope.book = response.data;
+  }, function(reason) {
+    $scope.message = 'Sorry, but something went wrong.';
   });
 }])
 .controller('ReadController', ['$scope','$routeParams', '$location', 'Book', 'ReadingList', function($scope, $routeParams, $location, Book, ReadingList) {
@@ -33,8 +36,9 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   $scope.bookId = bookId;
   $scope.page = 1;
   $scope.newPage = 1;
+  $scope.message = null;
 
-  Book.getGeneralInfo(bookId).then(function(response){
+  Book.getGeneralInfo(bookId).then(function(response) {
     $scope.bookName = response.data.name;
     $scope.bookPagesNumber = response.data.pages_number;
 
@@ -54,7 +58,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     }, function(reason) {
       // rejection
       if (reason.status == 500) {
-        $scope.message = reason.data.message;
+        $scope.message = 'Sorry, but something went wrong.';
       } else if (reason.status == 401) {
         $location.path('/users/sign-in');
       }
@@ -62,7 +66,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   }, function(reason) {
     // rejection
     if (reason.status == 500) {
-      $scope.message = reason.data.message;
+      $scope.message = 'Sorry, but something went wrong.';
     } else if (reason.status == 401) {
       $location.path('/users/sign-in');
     }
@@ -81,7 +85,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     }, function(reason) {
       // rejection
       if (reason.status == 500) {
-        $scope.message = reason.data.message;
+        $scope.message = 'Sorry, but something went wrong.';
       } else if (reason.status == 401) {
         $location.path('/users/sign-in');
       }
@@ -101,7 +105,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     }, function(reason) {
       // rejection
       if (reason.status == 500) {
-        $scope.message = reason.data.message;
+        $scope.message = 'Sorry, but something went wrong.';
       } else if (reason.status == 401) {
         $location.path('/users/sign-in');
       }
@@ -118,7 +122,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     }, function(reason) {
       // rejection
       if (reason.status == 500) {
-        $scope.message = reason.data.message;
+        $scope.message = 'Sorry, but something went wrong.';
       } else if (reason.status == 401) {
         $location.path('/users/sign-in');
       }
@@ -131,11 +135,14 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 .controller('BookByGenreController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {
   var genreId =  $routeParams.id;
   $scope.genreName = $routeParams.genre;
+  $scope.message = null;
   
   Book.getBooksByGenre(genreId).then(function(response) {
     $scope.books = response.data;
     if ($scope.books == "")
-      $scope.messageNoResults = "No books in " + $scope.genreName + " genre.";
+      $scope.message = 'There are no books in ' + $scope.genreName + ' genre.';
+  }, function(reason) {
+      $scope.message = 'Sorry, but something went wrong.';
   });
 }])
 
@@ -145,5 +152,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   Book.getBooksByAuthor(authorID).then(function(response) {
     $scope.author = response.data.author;
     $scope.books = response.data.books;
+  }, function(reason) {
+      $scope.message = 'Sorry, but something went wrong.';
   });
 }]);

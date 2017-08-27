@@ -8,13 +8,13 @@ exports.getBookById = function(req, res) {
   pool.getConnection(function(err,connection) {
     if (err) {
       connection.release();
-      res.status(500).send(err);
+      res.status(500).send({});
     }
     connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_genre AS genreId, b.pages_number AS pagesNum, b.description " + 
       " FROM books b, authors a, genres g WHERE b.id = " + id + " AND b.id_author = a.id AND b.id_genre = g.id", function (err, rows) {
       connection.release();
       if (err) {
-        res.status(500).send(err);
+        res.status(500).send({});
       }
       else {
         res.json(rows[0]);
@@ -28,13 +28,12 @@ exports.getBooksMostPopular = function(req, res) {
   pool.getConnection(function(err,connection) {
     if (err) {
       connection.release();
-      res.status(500).send(err);
+      res.status(500).send({});
     }
     connection.query("SELECT b.id, b.name, a.name AS author, b.id_author, b.sum_points/b.votes_number as 'rating' FROM books b, authors a WHERE b.id_author = a.id ORDER BY rating DESC LIMIT " + [num], function (err, rows) {
       connection.release();
       if (err) {
-        console.log(err);
-        res.status(500).send(err);
+        res.status(500).send({});
       }
       else {
         res.json(rows);
@@ -50,17 +49,17 @@ exports.getBookInfo = function(req, res) {
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
     if (err || !user) {
-      res.status(401).send({ message: 'Token error' });
+      res.status(401).send({});
     } else {
       pool.getConnection(function(err,connection) {
         if (err) {
           connection.release();
-          res.status(500).send(err);
+          res.status(500).send({});
         } else {
 
           connection.query("SELECT id, name, pages_number FROM books WHERE id = " + id, function (err, rows) {
             if (err) {
-              res.status(500).send(err);
+              res.status(500).send({});
               connection.release();
             }
             else {
@@ -89,25 +88,25 @@ exports.getPageContent = function(req, res) {
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
     if (err || !user) {
-      res.status(401).send({ message: 'Token error' });
+      res.status(401).send({});
     } else {
       pool.getConnection(function(err,connection) {
         if (err) {
           connection.release();
-          res.status(500).send({ message: 'DB error' });
+          res.status(500).send({});
         }
         connection.query("SELECT file FROM books WHERE id = " + [id], function (err, rows) {
           
           if (err) {
             connection.release();
-            res.status(500).send({ message: 'DB error' });
+            res.status(500).send({});
           }
           else {
             var dirName = rows[0].file;
 
             fs.readFile(path.join(__dirname, booksFolder, dirName, pageNum + '.txt'), 'utf8', (err, data) => {
               if (err) {
-                res.status(500).send({ message: 'Reading file error' });
+                res.status(500).send({});
               }
               // Check, if book is in the reading lists table, update there current page information
               connection.query("UPDATE reading_lists SET current_page = " + pageNum + " WHERE id_user = " + 
@@ -146,11 +145,11 @@ exports.getBooksByAuthor = function(req, res) {
   var authorID = req.params.id;
   pool.getConnection(function(err,connection) {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).send({});
     }
     connection.query("SELECT name FROM authors WHERE id = " + authorID, function (err, rows) {
       if (err) {
-        res.status(500).send(err);
+        res.status(500).send({});
         connection.release();
       } else {
         if (rows.length > 0) {
@@ -160,8 +159,7 @@ exports.getBooksByAuthor = function(req, res) {
             " AND b.id_genre = g.id", function (err, rows) {
 
               if (err) {
-                console.log(err);
-                res.status(500).send({message: 'Server error'});
+                res.status(500).send({});
               } else {
                 res.json({ author: author, books: rows });
               }

@@ -53,5 +53,9 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
     $location.path('/main');
-  });
+  }, function(reason) {
+    // rejection
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('expiresIn');
+    });
  }]);
