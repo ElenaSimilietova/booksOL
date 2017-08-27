@@ -49,9 +49,14 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
 
 .controller('LogOutController', ['$scope','$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
 
+   var token = sessionStorage.getItem('token');
+   var expiresIn = sessionStorage.getItem('expiresIn');
+  
   AuthenticationService.logOutUser().then(function(response) {
+
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('period');   
     $location.path('/main');
   }, function(reason) {
     // rejection

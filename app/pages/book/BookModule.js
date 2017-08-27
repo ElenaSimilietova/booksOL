@@ -22,6 +22,18 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 }])
 
 .controller('BookController', ['$scope','$routeParams', 'Book', function($scope, $routeParams, Book) {
+var period = sessionStorage.getItem('period');
+
+ if(period == 'null' || period == null || period == 1){
+    $scope.disableButton = true;
+    $scope.subscription = "Your subscription is over.";
+ }
+ else
+ {
+    $scope.disableButton = false;
+    $scope.subscription = "";
+} 
+
   var bookId = $routeParams.id;
   $scope.message = null;
   Book.getBook(bookId).then(function(response) {
