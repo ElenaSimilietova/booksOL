@@ -1,19 +1,19 @@
 'use strict';
 
-angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
+angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/users/sign-in', {
-    templateUrl: 'pages/signIn/SignInView.html',
+  $routeProvider.when('/sign-in', {
+    templateUrl: 'pages/signIn/signIn.html',
     controller: 'SignInController'
   })
-  .when('/users/log-out', {
+  .when('/log-out', {
     template: '',
     controller: 'LogOutController'
   });
 }])
 
-.controller('SignInController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+.controller('SignInController', ['$scope','$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
   $scope.message = null;
 
   $scope.signIn = function() {
@@ -23,7 +23,7 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
                   'password': $scope.password.value,
     };
     
-    UsersFactory.signInUser(user).then(function(response) { 
+    AuthenticationService.signInUser(user).then(function(response) { 
       if(response.data.token && response.data.expiresIn) {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('expiresIn', response.data.expiresIn);
@@ -48,15 +48,25 @@ angular.module('SignInModule', ['ngRoute', 'UsersFactoryModule'])
   }
 }])
 
-.controller('LogOutController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
-  var token = sessionStorage.getItem('token');
-  var expiresIn = sessionStorage.getItem('expiresIn');
-  sessionStorage.removeItem('token');
-  sessionStorage.removeItem('expiresIn');
-  sessionStorage.removeItem('period'); 
-  sessionStorage.removeItem('userEmail'); 
+// <<<<<<< HEAD
+// .controller('LogOutController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+//   var token = sessionStorage.getItem('token');
+//   var expiresIn = sessionStorage.getItem('expiresIn');
+//   sessionStorage.removeItem('token');
+//   sessionStorage.removeItem('expiresIn');
+//   sessionStorage.removeItem('period'); 
+//   sessionStorage.removeItem('userEmail'); 
+// =======
+.controller('LogOutController', ['$scope','$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
+// >>>>>>> 8376985d50b43d515af5e83c729cc5887d1a3510
 
-  UsersFactory.logOutUser(token).then(function(response) {
+  AuthenticationService.logOutUser().then(function(response) {
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('expiresIn');
     $location.path('/main');
-  });
+  }, function(reason) {
+    // rejection
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('expiresIn');
+    });
  }]);

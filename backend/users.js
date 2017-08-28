@@ -9,12 +9,12 @@ exports.checkEmail = function(req, res) {
   pool.getConnection(function(err,connection) {
     if (err) {
       connection.release();
-      res.status(500).send(err);
+      res.status(500).send({});
     }
     connection.query("SELECT count(*) AS count FROM users WHERE email = '" + email + "'", function (err, rows) {
       connection.release();
       if (err) {
-        res.status(500).send(err);
+        res.status(500).send({});
       }
       else {
         res.json(rows[0]);
@@ -33,13 +33,13 @@ exports.saveUser = function(req, res) {
 
   bcrypt.hash(password, 12, function(err, hash) {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).send({});
     } else {
 
       pool.getConnection(function(err,connection) {
         if (err) {
           connection.release();
-          res.status(500).send(err);
+          res.status(500).send({});
         }
         connection.query("INSERT INTO users (first_name, last_name, email, password, registration_date, id_role) VALUES ('" 
           + firstName + "', '" + lastName + "', '" + email + "', '" + hash 
@@ -47,10 +47,10 @@ exports.saveUser = function(req, res) {
 
           connection.release();
           if (err) {
-            res.status(500).send(err);
+            res.status(500).send({});
           }
           else {
-            res.status(200).send('{}');
+            res.status(200).send({});
           }
         }); 
       });
@@ -64,7 +64,7 @@ exports.signIn = function(req, res) {
   pool.getConnection(function(err,connection) {
     if (err) {
       connection.release();
-      res.status(500).send(err);
+      res.status(500).send({});
     }
     connection.query("SELECT id, password FROM users WHERE email = '" + email  + "'", function (err, rows) {
       if (err) {
@@ -75,14 +75,14 @@ exports.signIn = function(req, res) {
           bcrypt.compare(password, passhwordHash, function(err, result) {
             if(err) {
               connection.release();
-              res.status(500).send(err);
+              res.status(500).send({});
             } else {
               if(result) {
                   // Passwords match
                   var token = jwt.sign({userID : rows[0].id}, req.app.get('tokenString'), { expiresIn: 3600 }, function(err, token) {
                   if(err) {
                     connection.release();
-                    res.status(500).send(err);
+                    res.status(500).send({});
                   } else {
                     res.json({token: token, expiresIn: (Date.now() + 3600 * 1000)});
                   }
@@ -90,12 +90,12 @@ exports.signIn = function(req, res) {
               } else {
                 // Passwords don't match
                 connection.release();
-                res.status(401).send(err);
+                res.status(401).send({});
               }
             }
           });
         } else {
-          res.status(401).send(err);
+          res.status(401).send({});
         }
       }
     }); 
@@ -107,18 +107,14 @@ exports.logOut = function(req, res) {
   var token = req.headers['access-token'];
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err) {
-      connection.release();
-      res.status(500).send(err);
-    } else if (!user) {
-      connection.release();
-      res.status(401).send({message: 'Token is expired'});
+    if (err || !user) {
+      res.status(500).send({});
     } else {
 
       pool.getConnection(function(err,connection) {
         if (err) {
           connection.release();
-          res.status(500).send({message: 'DB connection error'});
+          res.status(500).send({});
         }
 
         connection.query("INSERT INTO invalid_tokens (id_user, token) VALUES ("
@@ -126,10 +122,10 @@ exports.logOut = function(req, res) {
 
           connection.release();
           if (err) {
-            res.status(500).send({ message: 'Logout error'});
+            res.status(500).send({});
           }
           else {
-            res.status(200).send('{}');
+            res.status(200).send({});
           }
         });
       });

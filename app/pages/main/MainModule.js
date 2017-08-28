@@ -1,17 +1,20 @@
 'use strict';
 
-angular.module('MainModule', ['ngRoute', 'BooksFactoryModule', 'PopularAuthorsModule', 'GenresModule'])
+angular.module('mainModule', ['ngRoute', 'bookFactoryModule', 'popularAuthorsModule', 'genresModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/main', {
-    templateUrl: 'pages/main/MainView.html',
+    templateUrl: 'pages/main/main.html',
     controller: 'MainController'
   });
 }])
 
-.controller('MainController', ['$scope', 'BooksFactory', function($scope, BooksFactory) {
-  BooksFactory.getMostPopular(6).then(function(response) {
+.controller('MainController', ['$scope', 'Book', function($scope, Book) {
+  $scope.message = null;
+  Book.getMostPopular(6).then(function(response) {
     $scope.books = response.data;
+  }, function(reason) {
+    $scope.message = 'Sorry, but something went wrong.';
   });
 }]);
 

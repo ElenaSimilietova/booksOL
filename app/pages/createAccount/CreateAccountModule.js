@@ -1,23 +1,23 @@
 'use strict';
 
-angular.module('CreateAccountModule', ['ngRoute', 'UsersFactoryModule'])
+angular.module('createAccountModule', ['ngRoute', 'userFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/create-account', {
-    templateUrl: 'pages/createAccount/CreateAccountView.html',
+    templateUrl: 'pages/createAccount/createAccount.html',
     controller: 'CreateAccountController'
   })
   .when('/users/create-account/success/:name', {
-    templateUrl: 'pages/createAccount/CreateAccountSuccessView.html',
+    templateUrl: 'pages/createAccount/createAccountSuccess.html',
     controller: 'CreateAccountSuccessController'
   })
   .when('/users/create-account/fail', {
-    templateUrl: 'pages/createAccount/CreateAccountFailView.html',
+    templateUrl: 'pages/createAccount/createAccountFail.html',
     controller: 'CreateAccountFailController'
   });
 }])
 
-.controller('CreateAccountController', ['$scope', '$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+.controller('CreateAccountController', ['$scope', '$location', 'User', function($scope, $location, User) {
   $scope.firstName = {'value': '',
                       'pattern': /^[a-z ,.'-]+$/i,
                       'message': 'Invalid first name'
@@ -49,15 +49,19 @@ angular.module('CreateAccountModule', ['ngRoute', 'UsersFactoryModule'])
   $scope.doPasswordsMatch = true;
   $scope.doesEmailExist = false;
 
+  $scope.message = null;
+
   $scope.emailValidate = function(isEmailValid) {
     if (isEmailValid) {
-      UsersFactory.checkEmail($scope.email.value).then(function(response) {
+      User.checkEmail($scope.email.value).then(function(response) {
         var count = response.data.count;
         if (count > 0) {
           $scope.doesEmailExist = true;
         } else {
           $scope.doesEmailExist = false;
         }
+      }, function(reason) {
+        $scope.message = 'Sorry, but something went wrong.';
       });
     }
   }
@@ -81,7 +85,7 @@ angular.module('CreateAccountModule', ['ngRoute', 'UsersFactoryModule'])
                   'role': 2 
       };
 
-      UsersFactory.saveUser(user).then(function(response) {
+      User.saveUser(user).then(function(response) {
         var path = '';
         if (response.status == 200) {
           path = '/success/' + encodeURIComponent(user.firstName + ' ' + user.lastName);
@@ -90,12 +94,15 @@ angular.module('CreateAccountModule', ['ngRoute', 'UsersFactoryModule'])
         }
         $location.path('/users/create-account' + path); 
         
+      }, function(reason) {
+        $scope.message = 'Sorry, but something went wrong.';
       });
     }
     else {
       angular.forEach($scope.createAccountForm.$error.required, function(field) {
           field.$setDirty();
       });
+      $scope.message = 'Please, fill all the fields properly.';
     }
   }
 

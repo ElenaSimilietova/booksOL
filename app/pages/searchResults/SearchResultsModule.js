@@ -1,23 +1,24 @@
 'use strict';
 
-angular.module('SearchResultsModule', ['ngRoute', 'SearchFactoryModule'])
+angular.module('searchResultsModule', ['ngRoute', 'searchFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/search-results/:str', {
-    templateUrl: 'pages/searchResults/SearchResultsView.html',
+    templateUrl: 'pages/searchResults/searchResults.html',
     controller: 'SearchResultsController'
   });
 }])
 
-.controller('SearchResultsController', ['$scope','$routeParams', 'SearchFactory', function($scope, $routeParams, SearchFactory) {
+.controller('SearchResultsController', ['$scope','$routeParams', 'Search', function($scope, $routeParams, Search) {
   var searchString = $routeParams.str;
   $scope.authors = {};
   $scope.books = {};
+  $scope.message = null;
   
-  SearchFactory.search(searchString).then(function(response) {
+  Search.search(searchString).then(function(response) {
     $scope.authors = response.data.authors;
     $scope.books = response.data.books;
-    $scope.message = null;
+    
     if ((Object.keys($scope.authors).length == 0) && (Object.keys($scope.books).length == 0)) {
       $scope.message = 'Sorry, no results';
     } else {

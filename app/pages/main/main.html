@@ -1,6 +1,9 @@
 <div class="main">
 	<div class="col-md-8">
 		<h2>The most popular</h2>
+		<div class="text-danger" ng-if="message">
+        	</br>{{message}}
+    	</div>
 		<div class="row">
 			<div class="col-md-6 book-general" ng-repeat="book in books">
 				<a href="/#book/{{book.id}}" id="{{book.name}}"><br>

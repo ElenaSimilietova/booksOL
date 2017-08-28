@@ -3,6 +3,9 @@
 
     <div class="col-sm-3 registration-form">
         <form name="createAccountForm" novalidate>
+        <div class="row text-danger" ng-if="message">
+            </br>{{message}}
+        </div>
         <div class="row field">
             <div class="col-xs-8 col-sm-6 formLabel">First name</div>
             <div class="col-xs-4 col-sm-6"><input type="text" name="firstName" ng-model="firstName.value" ng-pattern="firstName.pattern" required></div>

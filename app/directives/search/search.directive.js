@@ -1,4 +1,4 @@
-angular.module('SearchModule', ['OnEnterModule'])
+angular.module('searchModule', ['onEnterModule'])
 .directive('search', function() {
     return {
         restrict: 'AE',

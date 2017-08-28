@@ -1,4 +1,4 @@
-angular.module('PopularAuthorsModule', ['AuthorsFactoryModule'])
+angular.module('popularAuthorsModule', ['authorFactoryModule'])
 .directive('popularAuthors', function() {
     return {
         restrict: 'AE',
@@ -7,9 +7,12 @@ angular.module('PopularAuthorsModule', ['AuthorsFactoryModule'])
         templateUrl: './directives/popular-authors/index.html'
     };
 
-    function controller($scope, AuthorsFactory) {
-        AuthorsFactory.getMostPopular(5).then(function(response) {
+    function controller($scope, Author) {
+        $scope.message = null;
+        Author.getMostPopular(5).then(function(response) {
             $scope.authors = response.data;
+        }, function() {
+            $scope.message = 'Sorry, but something went wrong.';
         });
     }
 });

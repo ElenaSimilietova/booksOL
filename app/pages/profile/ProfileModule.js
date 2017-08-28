@@ -1,19 +1,23 @@
 'use strict';
 
-angular.module('ProfileModule', ['ngRoute', 'UsersFactoryModule'])
+// <<<<<<< HEAD
+// angular.module('ProfileModule', ['ngRoute', 'UsersFactoryModule'])
+// =======
+angular.module('profileModule', ['ngRoute', 'UsersFactoryModule'])
+// >>>>>>> 8376985d50b43d515af5e83c729cc5887d1a3510
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/profile', {
-    templateUrl: 'pages/profile/ProfileView.html',
+    templateUrl: 'pages/profile/profile.html',
     controller: 'ProfileController'
   });
 }])
 
 
-.controller('ProfileController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
+.controller('ProfileController', ['$scope','$location', 'User', function($scope, $location, User) {
  var userEmail = sessionStorage.getItem('userEmail');
  
- UsersFactory.getPayment(userEmail).then(function(response) {
+ User.getPayment(userEmail).then(function(response) {
 
        if (response.data.subscription  == 1) {
           $scope.subscriptionInfo = "Your subscription is over. To use Books OL service, please, subscribe again. You can pay for monthly or annual subscription below:"
@@ -43,7 +47,7 @@ angular.module('ProfileModule', ['ngRoute', 'UsersFactoryModule'])
     $location.path('/users/sign-in');
   };
 	 
- 	 UsersFactory.paymentPeriod(token, period).then(function(response) {
+ 	 User.paymentPeriod(token, period).then(function(response) {
    		$location.path('/users/profile');
   	});
   } 

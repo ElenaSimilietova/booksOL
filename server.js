@@ -24,6 +24,8 @@ app.get('/api/books/info/:id', books.getBookInfo);
 app.get('/api/books/popular/:num', books.getBooksMostPopular);
 app.get('/api/books/genre/:id', books.getBooksByGenre);
 app.get('/api/books/author/:id', books.getBooksByAuthor);
+app.post('/api/books/page/save', books.savePageIntoReadingList);
+app.delete('/api/books/page/delete', books.deletePagesFromReadingList);
 
 app.get('/api/genres', genres.getGenres);
 
@@ -32,9 +34,15 @@ app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
 app.get('/api/users/payment/:email', users.getPaymentPeriod);
 app.get('/api/users/email/check/:email', users.checkEmail);
 app.post('/api/users/save', users.saveUser);
-app.post('/api/users/sign-in', users.signIn);
-app.post('/api/users/log-out', users.logOut);
-app.post('/api/users/profile/', users.paymentPeriod);
+// <<<<<<< HEAD
+// app.post('/api/users/sign-in', users.signIn);
+// app.post('/api/users/log-out', users.logOut);
+// app.post('/api/users/profile/', users.paymentPeriod);
+// =======
+
+app.post('/api/sign-in', users.signIn);
+app.post('/api/log-out', users.logOut);
+// >>>>>>> 8376985d50b43d515af5e83c729cc5887d1a3510
 
 app.get('/api/search/:searchString', search.getSearchResults);
  

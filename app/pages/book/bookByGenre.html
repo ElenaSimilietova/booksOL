@@ -1,6 +1,12 @@
 <div class="main">
 <div class="col-md-8 book-by-genre">
-	<h2>{{genreName}}</h2>
+	<div class="row" ng-if="message">
+		</br>
+		<h2>{{genreName}}</h2>
+	</div>
+	<div class="row" ng-if="message">
+		{{message}}
+	</div>
     <div class="row">
     	<div class="col-md-6 book-general" ng-repeat="book in books">
         	<a href="/#book/{{book.id}}" id="{{book.name}}"><br>
@@ -10,7 +16,6 @@
     		</div>
         </div>
     </div>
-    {{messageNoResults}}
 </div>
 <div class="col-md-4">
     <popular-authors></popular-authors>
