@@ -48,25 +48,16 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
   }
 }])
 
-// <<<<<<< HEAD
-// .controller('LogOutController', ['$scope','$location', 'UsersFactory', function($scope, $location, UsersFactory) {
-//   var token = sessionStorage.getItem('token');
-//   var expiresIn = sessionStorage.getItem('expiresIn');
-//   sessionStorage.removeItem('token');
-//   sessionStorage.removeItem('expiresIn');
-//   sessionStorage.removeItem('period'); 
-//   sessionStorage.removeItem('userEmail'); 
-// =======
 .controller('LogOutController', ['$scope','$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
-// >>>>>>> 8376985d50b43d515af5e83c729cc5887d1a3510
-
   AuthenticationService.logOutUser().then(function(response) {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('period'); 
     $location.path('/main');
   }, function(reason) {
     // rejection
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('period'); 
     });
  }]);

@@ -21,23 +21,6 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   });
 }])
 
-// <<<<<<< HEAD
-// .controller('BookController', ['$scope','$routeParams', 'BooksFactory', function($scope, $routeParams, BooksFactory) {
-//  var period = sessionStorage.getItem('period');
-
-//  if(period == 'null' || period == null || period == 1){
-//     $scope.first = true;
-//     $scope.subscription = "Your subscription is over.";
-//  }
-//  else
-//  {
-//     $scope.first = false;
-//     $scope.subscription = "";
-//  }  
-
-//  var bookId = $routeParams.id;
-//   BooksFactory.getBook(bookId).then(function(response) {
-// =======
 .controller('BookController', ['$scope','$routeParams', 'Book', function($scope, $routeParams, Book) {
  
    var period = sessionStorage.getItem('period');
@@ -55,30 +38,21 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   var bookId = $routeParams.id;
   $scope.message = null;
   Book.getBook(bookId).then(function(response) {
-// >>>>>>> 8376985d50b43d515af5e83c729cc5887d1a3510
-    $scope.book = response.data;
+  $scope.book = response.data;
+
   }, function(reason) {
     $scope.message = 'Sorry, but something went wrong.';
   });
 }])
-// <<<<<<< HEAD
-// .controller('ReadController', ['$scope', '$routeParams', 'BooksFactory', 'UsersFactory', function($scope, $routeParams, BooksFactory) {
-   
-// =======
+
 .controller('ReadController', ['$scope','$routeParams', '$location', 'Book', 'ReadingList', function($scope, $routeParams, $location, Book, ReadingList) {
-// >>>>>>> 8376985d50b43d515af5e83c729cc5887d1a3510
   var bookId = $routeParams.id;
   $scope.bookId = bookId;
-// <<<<<<< HEAD
-//   BooksFactory.getInfo(bookId).then(function(response){
-
-// =======
   $scope.page = 1;
   $scope.newPage = 1;
   $scope.message = null;
 
   Book.getGeneralInfo(bookId).then(function(response) {
-// >>>>>>> 8376985d50b43d515af5e83c729cc5887d1a3510
     $scope.bookName = response.data.name;
     $scope.bookPagesNumber = response.data.pages_number;
 

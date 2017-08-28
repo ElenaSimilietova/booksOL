@@ -1,10 +1,6 @@
 'use strict';
 
-// <<<<<<< HEAD
-// angular.module('ProfileModule', ['ngRoute', 'UsersFactoryModule'])
-// =======
-angular.module('profileModule', ['ngRoute', 'UsersFactoryModule'])
-// >>>>>>> 8376985d50b43d515af5e83c729cc5887d1a3510
+angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/profile', {
