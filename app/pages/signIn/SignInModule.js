@@ -27,7 +27,6 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
       if(response.data.token && response.data.expiresIn) {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('expiresIn', response.data.expiresIn);
-        sessionStorage.setItem('userEmail', user.email);
         $location.path('/users/profile'); 
       }  
       else {
@@ -53,6 +52,7 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
     sessionStorage.removeItem('period'); 
+
     $location.path('/main');
   }, function(reason) {
     // rejection

@@ -27,21 +27,30 @@ app.factory('User', ['$http', function($http) {
         });
     }
 
-    User.paymentPeriod = function(token,period) {
+      User.subscribe = function(token, subscribePeriod) {
         
         $http.defaults.headers.post['access-token'] = token;
 
         return $http({
             method: 'POST',
-            url: urlBase + '/profile',
-            data: $.param({value: period.value}),
+            url: urlBase + '/subscription/',
+            data: $.param({subscribePeriod: subscribePeriod.value}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     }
 
 
-    User.getPayment = function(email) {
-        return $http.get(urlBase + '/payment/' + email);
+    User.getDueDate = function(token) {
+        
+        $http.defaults.headers.post['access-token'] = token;
+
+        return $http({
+            method: 'POST',
+            url: urlBase + '/subscription/dueDate',
+            data: $.param({}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
     }
 
 
