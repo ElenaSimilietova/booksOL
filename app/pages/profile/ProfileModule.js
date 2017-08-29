@@ -36,12 +36,14 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
 
        }, function(reason) {
       // rejection
+      if (reason.status == 500) {
+        $scope.message = 'Sorry, but something went wrong.';
+      } else 
       if (reason.status == 401) {
         $location.path('/sign-in');
       }    
        
     });
-
 
   $scope.submitPayment = function(value) {
 
@@ -55,6 +57,14 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
       $scope.subscriptionInfo = "Thanks for your subscription!";
       sessionStorage.setItem('dueDateOk', 0);
    		$location.path('/users/profile');
+      }
+      , function(reason) {
+      // rejection
+      if (reason.status == 500) {
+        $scope.message = 'Sorry, but something went wrong.';
+      } else if (reason.status == 401) {
+        $location.path('/users/sign-in');
+      }
   	});
   
   } 

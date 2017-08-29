@@ -143,20 +143,20 @@ exports.subscribe = function(req, res) {
       res.status(500).send(err);
     } else if (!user) {
       connection.release();
-      res.status(401).send({message: 'Token is expired'});
+      res.status(401).send({});
     } else {
 
       pool.getConnection(function(err,connection) {
         if (err) {
           connection.release();
-          res.status(500).send({message: 'DB connection error'});
+          res.status(500).send({});
         }
         connection.query("UPDATE users SET due_date = CURRENT_TIMESTAMP + INTERVAL '" + subscribeDueDate + "' MONTH WHERE ID = '" + user.userID + "'"
         , function (err, rows) {
 
           connection.release();
           if (err) {
-            res.status(500).send({ message: 'Query error'});
+            res.status(500).send({});
           }
           else {
             res.status(200).send('{}');
