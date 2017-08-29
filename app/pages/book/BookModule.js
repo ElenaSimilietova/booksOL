@@ -22,16 +22,15 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 }])
 
 .controller('BookController', ['$scope','$routeParams', 'Book', function($scope, $routeParams, Book) {
- 
-   var period = sessionStorage.getItem('period');
+  var dueDateOk = sessionStorage.getItem('dueDateOk');
 
-  if(period == 'null' || period == null || period == 1){
-    $scope.first = true;
+  if(dueDateOk != 0){
+    $scope.disableButton = true;
     $scope.subscription = "Your subscription is over.";
   }
   else
   {
-    $scope.first = false;
+    $scope.disableButton = false;
     $scope.subscription = "";
   }  
 

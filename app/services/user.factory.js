@@ -27,32 +27,20 @@ app.factory('User', ['$http', function($http) {
         });
     }
 
-      User.subscribe = function(token, subscribePeriod) {
-        
-        $http.defaults.headers.post['access-token'] = token;
-
+    User.subscribe = function(token, subscribeDueDate) {
+        $http.defaults.headers.put['access-token'] = token;
         return $http({
-            method: 'POST',
+            method: 'PUT',
             url: urlBase + '/subscription/',
-            data: $.param({subscribePeriod: subscribePeriod.value}),
+            data: $.param({subscribeDueDate: subscribeDueDate.value}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     }
 
-
-    User.getDueDate = function(token) {
-        
-        $http.defaults.headers.post['access-token'] = token;
-
-        return $http({
-            method: 'POST',
-            url: urlBase + '/subscription/dueDate',
-            data: $.param({}),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        });
-
-    }
-
+    User.getDueDate = function() {
+        $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
+        return $http.get(urlBase + '/subscription/getDueDate');
+    };
 
     return User;
 }]);
