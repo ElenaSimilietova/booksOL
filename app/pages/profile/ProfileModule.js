@@ -55,7 +55,6 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
       angular.element(document.getElementById('payMonthButton'))[0].disabled = true;
       angular.element(document.getElementById('payYearButton'))[0].disabled = true;
       $scope.subscriptionInfo = "Thanks for your subscription!";
-      sessionStorage.setItem('dueDateOk', 0);
    		$location.path('/users/profile');
       }
       , function(reason) {
@@ -63,7 +62,7 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
       if (reason.status == 500) {
         $scope.message = 'Sorry, but something went wrong.';
       } else if (reason.status == 401) {
-        $location.path('/users/sign-in');
+        $location.path('/sign-in');
       }
   	});
   
