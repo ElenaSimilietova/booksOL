@@ -26,12 +26,10 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 
   if(dueDateOk != 0){
     $scope.disableButton = true;
-    $scope.subscription = "Your subscription is over.";
   }
   else
   {
     $scope.disableButton = false;
-    $scope.subscription = "";
   }  
 
   var bookId = $routeParams.id;
