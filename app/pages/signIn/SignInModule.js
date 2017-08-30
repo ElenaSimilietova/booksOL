@@ -48,14 +48,16 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
 }])
 
 .controller('LogOutController', ['$scope','$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
-
   AuthenticationService.logOutUser().then(function(response) {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('dueDateOk'); 
+
     $location.path('/main');
   }, function(reason) {
     // rejection
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('dueDateOk'); 
     });
  }]);

@@ -22,17 +22,28 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 }])
 
 .controller('BookController', ['$scope','$routeParams', 'Book', function($scope, $routeParams, Book) {
+  var dueDateOk = sessionStorage.getItem('dueDateOk');
+
+  if(dueDateOk != 0){
+    $scope.disableButton = true;
+  }
+  else
+  {
+    $scope.disableButton = false;
+  }  
+
   var bookId = $routeParams.id;
   $scope.message = null;
   Book.getBook(bookId).then(function(response) {
-    $scope.book = response.data;
+  $scope.book = response.data;
+
   }, function(reason) {
     $scope.message = 'Sorry, but something went wrong.';
   });
 }])
+
 .controller('ReadController', ['$scope','$routeParams', '$location', 'Book', 'ReadingList', function($scope, $routeParams, $location, Book, ReadingList) {
   var bookId = $routeParams.id;
-
   $scope.bookId = bookId;
   $scope.page = 1;
   $scope.newPage = 1;

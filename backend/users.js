@@ -105,7 +105,7 @@ exports.signIn = function(req, res) {
 
 exports.logOut = function(req, res) {
   var token = req.headers['access-token'];
-  
+
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
     if (err || !user) {
       res.status(500).send({});
@@ -128,6 +128,71 @@ exports.logOut = function(req, res) {
             res.status(200).send({});
           }
         });
+      });
+    }
+  });
+};
+
+exports.subscribe = function(req, res) { 
+  var token = req.headers['access-token'];
+  var subscribeDueDate = req.body.subscribeDueDate;
+    
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err) {
+      connection.release();
+      res.status(500).send(err);
+    } else if (!user) {
+      connection.release();
+      res.status(401).send({});
+    } else {
+
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          connection.release();
+          res.status(500).send({});
+        }
+        connection.query("UPDATE users SET due_date = CURRENT_TIMESTAMP + INTERVAL '" + subscribeDueDate + "' MONTH WHERE ID = '" + user.userID + "'"
+        , function (err, rows) {
+
+          connection.release();
+          if (err) {
+            res.status(500).send({});
+          }
+          else {
+            res.status(200).send('{}');
+          }
+        });
+      });
+    }
+  });
+
+};
+
+exports.getDueDate = function(req, res) {
+  var token = req.headers['access-token'];
+  var result = {};
+
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(401).send({});
+    } else {
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          connection.release();
+          res.status(500).send({});
+        } else {
+            connection.query("SELECT id, first_name, last_name, due_date, IF (due_date < current_timestamp = 0, due_date, false) AS subscription, registration_date FROM users WHERE id = '" + user.userID + "'", function (err, rows) {
+            if (err) {
+              res.status(500).send({});
+              connection.release();
+            }
+            else {
+              result = rows[0];
+                res.json(result);
+                connection.release();
+            }
+          }); 
+        }
       });
     }
   });

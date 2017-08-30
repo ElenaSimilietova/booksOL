@@ -27,5 +27,20 @@ app.factory('User', ['$http', function($http) {
         });
     }
 
+    User.subscribe = function(token, subscribeDueDate) {
+        $http.defaults.headers.put['access-token'] = token;
+        return $http({
+            method: 'PUT',
+            url: urlBase + '/subscription/',
+            data: $.param({subscribeDueDate: subscribeDueDate.value}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    }
+
+    User.getDueDate = function() {
+        $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
+        return $http.get(urlBase + '/subscription/getDueDate');
+    };
+
     return User;
 }]);
