@@ -17,6 +17,7 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
   };
 
   User.getDueDate().then(function(response) {
+
         $scope.firstName =  response.data.first_name;        
 
        if (response.data.subscription  == false) {
@@ -51,11 +52,18 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
                   'value': value,
   };   
 	 
- 	User.subscribe(token, subscribeDueDate).then(function(response) {
-      angular.element(document.getElementById('payMonthButton'))[0].disabled = true;
-      angular.element(document.getElementById('payYearButton'))[0].disabled = true;
-      $scope.subscriptionInfo = "Thanks for your subscription!";
-   		$location.path('/users/profile');
+  User.subscribe(token, subscribeDueDate).then(function(response) {
+  
+      User.getDueDate().then(function(response) {        
+
+      if (response.data.subscription  != false) {
+        angular.element(document.getElementById('payMonthButton'))[0].disabled = true;
+        angular.element(document.getElementById('payYearButton'))[0].disabled = true;
+        $scope.subscriptionInfo = "Thanks for your subscription!";
+        $location.path('/users/profile');
+        sessionStorage.setItem('dueDateOk', 0);
+        }
+      });
       }
       , function(reason) {
       // rejection
@@ -65,7 +73,6 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
         $location.path('/sign-in');
       }
   	});
-  
   } 
   
 }]);
