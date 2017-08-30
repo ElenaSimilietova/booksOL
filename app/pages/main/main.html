@@ -6,10 +6,12 @@
     	</div>
 		<div class="row">
 			<div class="col-md-6 book-general" ng-repeat="book in books">
-				<a href="/#book/{{book.id}}" id="{{book.name}}"><br>
-				<img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails">
+				<br>
+				<a href="/#book/{{book.id}}"><img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails"></a>
 				<div class="col-md-6 book-text">
-					{{book.name}}</a><br>{{book.author}}
+					<a href="/#book/{{book.id}}" id="{{book.name}}">{{book.name}}</a>
+					<br>
+					<a href="/#book/author/{{book.id}}" id="{{book.author}}">{{book.author}}</a>
 				</div>
 			</div>
 		</div>

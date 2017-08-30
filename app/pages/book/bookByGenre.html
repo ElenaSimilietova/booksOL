@@ -1,19 +1,23 @@
 <div class="main">
 <div class="col-md-8 book-by-genre">
-	<div class="row" ng-if="message">
+	<div>
 		</br>
-		<h2>{{genreName}}</h2>
+		<h2>{{books[0].genre}}</h2>
 	</div>
 	<div class="row" ng-if="message">
-		{{message}}
+        <div class="col-md-6 book-general">
+	       {{message}}
+        </div>
 	</div>
     <div class="row">
     	<div class="col-md-6 book-general" ng-repeat="book in books">
-        	<a href="/#book/{{book.id}}" id="{{book.name}}"><br>
-    		<img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails">
-    		<div class="col-md-6 book-text">
-    			{{book.name}}</a><br>{{book.author}}
-    		</div>
+            <br>
+            <a href="/#book/{{book.id}}"><img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails"></a>
+            <div class="col-md-6">
+                <a href="/#book/{{book.id}}" id="{{book.name}}">{{book.name}}</a>
+                <br>
+                <a href="/#book/author/{{book.id}}" id="{{book.author}}">{{book.author}}</a>
+            </div>
         </div>
     </div>
 </div>
