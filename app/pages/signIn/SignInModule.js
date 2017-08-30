@@ -27,6 +27,7 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
       if(response.data.token && response.data.expiresIn) {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('expiresIn', response.data.expiresIn);
+
         $location.path('/users/profile'); 
       }  
       else {

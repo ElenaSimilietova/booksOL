@@ -12,68 +12,48 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
 .controller('ProfileController', ['$scope','$location', 'User', function($scope, $location, User) {
   var token = sessionStorage.getItem('token');
 
-  if (token == null) {
+  if (!token) {
     $location.path('/sign-in');
   };
 
-  User.getDueDate().then(function(response) {
+  User.getUser().then(function(response) {
+    $scope.firstName =  response.data.firstName;
+    $scope.dueDate = response.data.dueDate;
+    $scope.isSubscriptionValid = (Date.parse($scope.dueDate) > Date.now()) ? true : false;
+    
+    if (!$scope.isSubscriptionValid) {
+      $scope.subscriptionInfo = "Subscribe, if you want to be able to read BooksOL books. You can pay for a month or make annual subscription below:";   
+    } else {
+      $scope.subscriptionInfo = "Your subscription is valid until ";
+    }
 
-        $scope.firstName =  response.data.first_name;        
-
-       if (response.data.subscription  == false) {
-          $scope.subscriptionInfo = "To use Books OL service, please, subscribe again. You can pay for monthly or annual subscription below:"
-          angular.element(document.getElementById('payMonthButton'))[0].disabled = false;
-          angular.element(document.getElementById('payYearButton'))[0].disabled = false;
-          sessionStorage.setItem('dueDateOk', 1);
-       }
-       else
-       {
-          $scope.timestamp = response.data.due_date;
-          $scope.subscriptionInfo = "Your subscription is valid untill ";
-          angular.element(document.getElementById('payMonthButton'))[0].disabled = true;
-          angular.element(document.getElementById('payYearButton'))[0].disabled = true;
-          sessionStorage.setItem('dueDateOk', 0);
-       }
-
-       }, function(reason) {
+  }, function(reason) {
       // rejection
       if (reason.status == 500) {
         $scope.message = 'Sorry, but something went wrong.';
       } else 
       if (reason.status == 401) {
         $location.path('/sign-in');
-      }    
-       
-    });
+      }
+  });
 
   $scope.submitPayment = function(value) {
 
-  var subscribeDueDate = {
-                  'value': value,
-  };   
-	 
-  User.subscribe(token, subscribeDueDate).then(function(response) {
-  
-      User.getDueDate().then(function(response) {        
+    var subscribeDueDate = {'value': value};  
 
-      if (response.data.subscription  != false) {
-        angular.element(document.getElementById('payMonthButton'))[0].disabled = true;
-        angular.element(document.getElementById('payYearButton'))[0].disabled = true;
-        $scope.subscriptionInfo = "Thanks for your subscription!";
-        $location.path('/users/profile');
-        sessionStorage.setItem('dueDateOk', 0);
-        }
-      });
+    User.subscribe(subscribeDueDate).then(function(response) {
+
+      $scope.dueDate = response.data.dueDate;
+      $scope.isSubscriptionValid = (Date.parse($scope.dueDate) > Date.now()) ? true : false;
+
+      if (!$scope.isSubscriptionValid) {
+        $scope.subscriptionInfo = "Subscribe, if you want to be able to read BooksOL books. You can pay for a month or make annual subscription below:";   
+      } else {
+        $scope.subscriptionInfo = "Thank you for the subscription! Your subscription is valid until ";
       }
-      , function(reason) {
-      // rejection
-      if (reason.status == 500) {
-        $scope.message = 'Sorry, but something went wrong.';
-      } else if (reason.status == 401) {
-        $location.path('/sign-in');
-      }
-  	});
-  } 
+
+    });
+  }
   
 }]);
 

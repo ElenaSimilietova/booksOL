@@ -27,8 +27,13 @@ app.factory('User', ['$http', function($http) {
         });
     }
 
-    User.subscribe = function(token, subscribeDueDate) {
-        $http.defaults.headers.put['access-token'] = token;
+    User.getUser = function() {
+        $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
+        return $http.get('/api/user');
+    }
+
+    User.subscribe = function(subscribeDueDate) {
+        $http.defaults.headers.put['access-token'] = sessionStorage.getItem('token');
         return $http({
             method: 'PUT',
             url: urlBase + '/subscription/',
