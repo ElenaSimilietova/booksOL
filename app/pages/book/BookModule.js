@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule'])
+angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule', 'userFactoryModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/book/:id', {
@@ -21,21 +21,21 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   });
 }])
 
-.controller('BookController', ['$scope','$routeParams', 'Book', function($scope, $routeParams, Book) {
-  var dueDateOk = sessionStorage.getItem('dueDateOk');
-
-  if(dueDateOk != 0){
-    $scope.disableButton = true;
-  }
-  else
-  {
-    $scope.disableButton = false;
-  }  
-
+.controller('BookController', ['$scope','$routeParams', 'Book', 'User', function($scope, $routeParams, Book, User) {
   var bookId = $routeParams.id;
   $scope.message = null;
   Book.getBook(bookId).then(function(response) {
-  $scope.book = response.data;
+    $scope.book = response.data;
+    $scope.isSubscriptionValid = false;
+
+    if (sessionStorage.getItem('token')) {
+      User.getDueDate().then(function(dateResponse) {
+        $scope.dueDate = dateResponse.data.dueDate;
+        $scope.isSubscriptionValid = (Date.parse($scope.dueDate) > Date.now()) ? true : false;
+      }, function(reason) {
+
+      });
+    }
 
   }, function(reason) {
     $scope.message = 'Sorry, but something went wrong.';

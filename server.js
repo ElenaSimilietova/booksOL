@@ -31,6 +31,7 @@ app.get('/api/genres', genres.getGenres);
 
 app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
 
+app.get('/api/user', users.getUser);
 app.get('/api/users/subscription/getDueDate', users.getDueDate);
 app.get('/api/users/email/check/:email', users.checkEmail);
 app.post('/api/users/save', users.saveUser);
