@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
+angular.module('profileModule', ['ngRoute', 'userFactoryModule', 'subscriptionServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/profile', {
@@ -9,7 +9,7 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
   });
 }])
 
-.controller('ProfileController', ['$scope','$location', 'User', function($scope, $location, User) {
+.controller('ProfileController', ['$scope','$location', 'User', 'SubscriptionService', function($scope, $location, User, SubscriptionService) {
   var token = sessionStorage.getItem('token');
 
   if (!token) {
@@ -41,7 +41,7 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule'])
 
     var subscribeDueDate = {'value': value};  
 
-    User.subscribe(subscribeDueDate).then(function(response) {
+    SubscriptionService.subscribe(subscribeDueDate).then(function(response) {
 
       $scope.dueDate = response.data.dueDate;
       $scope.isSubscriptionValid = (Date.parse($scope.dueDate) > Date.now()) ? true : false;

@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule', 'userFactoryModule', 'booksRatingServiceModule'])
+angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule', 'subscriptionServiceModule', 'booksRatingServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/book/:id', {
@@ -23,7 +23,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 }])
 
 
-.controller('BookController', ['$scope','$routeParams', 'Book', 'BooksRating', 'User', function($scope, $routeParams, Book, BooksRating, User) {
+.controller('BookController', ['$scope','$routeParams', 'Book', 'BooksRating', 'SubscriptionService', function($scope, $routeParams, Book, BooksRating, SubscriptionService) {
 
   var bookId = $routeParams.id;
   var token = sessionStorage.getItem('token');
@@ -56,7 +56,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     $scope.isSubscriptionValid = false;
 
     if (sessionStorage.getItem('token')) {
-      User.getDueDate().then(function(dateResponse) {
+      SubscriptionService.getDueDate().then(function(dateResponse) {
         $scope.dueDate = dateResponse.data.dueDate;
         $scope.isSubscriptionValid = (Date.parse($scope.dueDate) > Date.now()) ? true : false;
       }, function(reason) {

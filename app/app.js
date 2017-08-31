@@ -23,7 +23,8 @@ angular.module('booksOL', [
   'accountLinksModule',
   'readingListServiceModule',
   'authenticationServiceModule',
-  'booksRatingServiceModule'
+  'booksRatingServiceModule',
+  'subscriptionServiceModule'
 ])
 .config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
   $locationProvider.hashPrefix('');
