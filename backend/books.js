@@ -138,7 +138,19 @@ exports.getBooksByGenre = function(req, res) {
         res.status(500).send(err);
       }
       else {
-        res.json(rows);
+        if (rows.length > 0){
+          res.json(rows);
+        }
+        else{
+          connection.query("SELECT g.name AS genre FROM genres g WHERE g.id = '" + [genreId] + "'", function (err, rows) {
+          if (err) {
+            res.status(500).send(err);
+          }
+          else {
+            res.json(rows);
+          }
+        });
+        }
       }
     }); 
   });
