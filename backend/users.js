@@ -66,12 +66,14 @@ exports.signIn = function(req, res) {
       connection.release();
       res.status(500).send({});
     }
-    connection.query("SELECT id, password FROM users WHERE email = '" + email  + "'", function (err, rows) {
+    connection.query("SELECT id, password, UNIX_TIMESTAMP(due_date) FROM users WHERE email = '" + email  + "'", function (err, rows) {
       if (err) {
         res.status(500).send(err);
       } else {
         if (rows.length > 0) {
+
           var passhwordHash = rows[0].password;
+          var dueDate =  rows[0].due_date;
           bcrypt.compare(password, passhwordHash, function(err, result) {
             if(err) {
               connection.release();
@@ -103,9 +105,36 @@ exports.signIn = function(req, res) {
 
 };
 
+exports.getUser = function(req, res) {
+  var token = req.headers['access-token'];
+
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(500).send({});
+    } else {
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          connection.release();
+          res.status(500).send({});
+        } else {
+          connection.query("SELECT first_name, last_name, due_date AS due_date FROM users WHERE id = " + user.userID, function (err, rows) {
+            if (err) {
+              connection.release();
+              res.status(401).send({});
+            } else {
+              res.json({firstName: rows[0].first_name, lastName: rows[0].last_name, dueDate: rows[0].due_date});
+            }
+          });
+        }
+
+      });
+    }
+  });
+};
+
 exports.logOut = function(req, res) {
   var token = req.headers['access-token'];
-  
+
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
     if (err || !user) {
       res.status(500).send({});
@@ -128,6 +157,76 @@ exports.logOut = function(req, res) {
             res.status(200).send({});
           }
         });
+      });
+    }
+  });
+};
+
+exports.subscribe = function(req, res) { 
+  var token = req.headers['access-token'];
+  var subscribeDueDate = req.body.subscribeDueDate;
+    
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err) {
+      connection.release();
+      res.status(500).send(err);
+    } else if (!user) {
+      connection.release();
+      res.status(401).send({});
+    } else {
+
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          connection.release();
+          res.status(500).send({});
+        }
+        connection.query("UPDATE users SET due_date = CURRENT_TIMESTAMP + INTERVAL '" + subscribeDueDate + "' MONTH WHERE id = " + 
+        user.userID, function (err, rows) {
+          
+          if (err) {
+            connection.release();
+            res.status(500).send({});
+          }
+          else {
+            connection.query("SELECT due_date FROM users WHERE id = " + user.userID, function(err, rows) {
+              connection.release();
+              if (err) {
+
+                res.status(500).send({});
+              } else {
+                res.json({dueDate: rows[0].due_date});
+              }
+            });
+          }
+        });
+      });
+    }
+  });
+
+};
+
+exports.getDueDate = function(req, res) {
+  var token = req.headers['access-token'];
+
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(401).send({});
+    } else {
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          connection.release();
+          res.status(500).send({});
+        } else {
+            connection.query("SELECT due_date AS dueDate FROM users WHERE id = '" + user.userID + "'", function (err, rows) {
+              connection.release();
+              if (err) {
+                res.status(500).send({});
+              }
+              else {
+                res.json(rows[0]);
+              }
+          }); 
+        }
       });
     }
   });

@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule', 'booksRatingServiceModule'])
+
+angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule', 'userFactoryModule', 'booksRatingServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/book/:id', {
@@ -21,7 +22,9 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   });
 }])
 
-.controller('BookController', ['$scope','$routeParams', 'Book', 'BooksRating', function($scope, $routeParams, Book, BooksRating) {
+
+.controller('BookController', ['$scope','$routeParams', 'Book', 'BooksRating', 'User', function($scope, $routeParams, Book, BooksRating, User) {
+
   var bookId = $routeParams.id;
   var token = sessionStorage.getItem('token');
   var expiresIn = sessionStorage.getItem('expiresIn'); 
@@ -50,13 +53,24 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     $('select').barrating('readonly', $scope.ratingReadonlyState);
     $('select').barrating('set', Math.round(response.data.rating));
 
+    $scope.isSubscriptionValid = false;
+
+    if (sessionStorage.getItem('token')) {
+      User.getDueDate().then(function(dateResponse) {
+        $scope.dueDate = dateResponse.data.dueDate;
+        $scope.isSubscriptionValid = (Date.parse($scope.dueDate) > Date.now()) ? true : false;
+      }, function(reason) {
+
+      });
+    }
+
   }, function(reason) {
     $scope.message = 'Sorry, but something went wrong.';
   });
 }])
+
 .controller('ReadController', ['$scope','$routeParams', '$location', 'Book', 'ReadingList', function($scope, $routeParams, $location, Book, ReadingList) {
   var bookId = $routeParams.id;
-
   $scope.bookId = bookId;
   $scope.page = 1;
   $scope.newPage = 1;

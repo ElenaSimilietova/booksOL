@@ -27,6 +27,7 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
       if(response.data.token && response.data.expiresIn) {
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('expiresIn', response.data.expiresIn);
+
         $location.path('/users/profile'); 
       }  
       else {
@@ -48,14 +49,16 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
 }])
 
 .controller('LogOutController', ['$scope','$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
-
   AuthenticationService.logOutUser().then(function(response) {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('dueDateOk'); 
+
     $location.path('/main');
   }, function(reason) {
     // rejection
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('dueDateOk'); 
     });
  }]);

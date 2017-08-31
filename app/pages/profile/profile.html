@@ -1,1 +1,20 @@
-<p>Here is you profile</p>
+<div class="main">
+	<div class="col-md-8">
+		<h2>Your Profile</h2>
+        <div class="row" ng-if="message">
+            </br>{{message}}
+        </div>
+		<div class="row">
+			<div class="col-md-10 profile-general">
+                <h2>Hello, {{firstName}}</h2>
+                <br>
+                {{subscriptionInfo}}<span ng-if="isSubscriptionValid">{{dueDate | date }}</span>	
+                </br></br>
+                <button class="btn btn-primary payMonthButton" id ="payMonthButton" ng-click="submitPayment(1)" ng-if="!isSubscriptionValid">Pay for a month</button>
+                <button class="btn btn-primary payYearButton" id ="payYearButton" ng-click="submitPayment(12)" ng-if="!isSubscriptionValid">Pay for a year</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+ 
