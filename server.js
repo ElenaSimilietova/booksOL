@@ -33,13 +33,14 @@ app.get('/api/genres', genres.getGenres);
 app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
 
 app.get('/api/user', users.getUser);
-app.get('/api/users/subscription/getDueDate', users.getDueDate);
 app.get('/api/users/email/check/:email', users.checkEmail);
 app.post('/api/users/save', users.saveUser);
 
 app.post('/api/sign-in', users.signIn);
 app.post('/api/log-out', users.logOut);
-app.put('/api/users/subscription/', users.subscribe);
+
+app.get('/api/subscription/getDueDate', users.getDueDate);
+app.put('/api/subscription/', users.subscribe);
 
 
 app.get('/api/search/:searchString', search.getSearchResults);
