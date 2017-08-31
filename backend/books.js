@@ -10,8 +10,9 @@ exports.getBookById = function(req, res) {
       connection.release();
       res.status(500).send({});
     }
-    connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_genre AS genreId, b.pages_number AS pagesNum, b.description " + 
-      " FROM books b, authors a, genres g WHERE b.id = " + id + " AND b.id_author = a.id AND b.id_genre = g.id", function (err, rows) {
+    connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_genre AS genreId, b.pages_number AS pagesNum, b.description, " + 
+      " CASE WHEN SUM(r.points)/COUNT(r.points) is NULL THEN 0 ELSE SUM(r.points)/COUNT(r.points) END AS 'rating'" +
+      " FROM books b LEFT JOIN books_ratings r ON b.id = r.id_book, authors a, genres g WHERE b.id = " + id + " AND b.id_author = a.id AND b.id_genre = g.id GROUP BY b.id", function (err, rows) {
       connection.release();
       if (err) {
         res.status(500).send({});
@@ -30,7 +31,9 @@ exports.getBooksMostPopular = function(req, res) {
       connection.release();
       res.status(500).send({});
     }
-    connection.query("SELECT b.id, b.name, a.name AS author, b.id_author, b.sum_points/b.votes_number as 'rating' FROM books b, authors a WHERE b.id_author = a.id ORDER BY rating DESC LIMIT " + [num], function (err, rows) {
+    connection.query("SELECT b.id, b.name, b.id_author, a.name AS author, CASE WHEN SUM(r.points)/COUNT(r.points) is NULL THEN 0 ELSE SUM(r.points)/COUNT(r.points) END as 'rating' " + 
+    " FROM authors a, books b LEFT JOIN books_ratings r ON b.id = r.id_book WHERE b.id_author = a.id GROUP BY b.id ORDER BY rating DESC LIMIT " + num, function (err, rows) {
+    
       connection.release();
       if (err) {
         res.status(500).send({});
@@ -196,7 +199,7 @@ exports.savePageIntoReadingList = function(req, res) {
                 " AND id_book = " + bookID, function (err, result) {
                   if (err) {
                     connection.release();
-                    res.status(500).send({ message: 'DB error' });
+                    res.status(500).send({});
                   } else {
                     res.status(200).send({});
                   }
@@ -206,7 +209,7 @@ exports.savePageIntoReadingList = function(req, res) {
                 bookID + ", " + page + ") ", function (err, result) {
                   if (err) {
                     connection.release();
-                    res.status(500).send({ message: 'DB error' });
+                    res.status(500).send({});
                   } else {
                     res.status(200).send({});
                   }
@@ -237,7 +240,7 @@ exports.deletePagesFromReadingList = function(req, res) {
         } else {
           connection.query("DELETE FROM reading_lists WHERE id_user = " + user.userID + " AND id_book = " + bookID, function (err, rows) {
             if (err) {
-              res.status(500).send({ message: 'Removing from list error'});
+              res.status(500).send({});
               connection.release();
             } else {
               res.status(200).send({});
@@ -247,4 +250,54 @@ exports.deletePagesFromReadingList = function(req, res) {
       });
     }
   });
+}
+
+exports.saveRating = function(req, res) {
+  var bookID = req.body.bookID,
+      points = req.body.rating;
+    
+  var token = req.headers['access-token'];
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(401).send({});
+    } else {
+      pool.getConnection(function(err,connection) {
+        if (err) {
+          res.status(500).send(err);
+          connection.release();
+        } else {
+          connection.query("UPDATE books_ratings SET points = " + points + " WHERE id_user = " + user.userID +
+          " AND id_book = " + bookID , function (err, rows) {
+            if (err) {
+              res.status(500).send({});
+              connection.release();
+            } else {
+              if (rows.affectedRows == 0) {
+                connection.query("INSERT INTO books_ratings (id_book, id_user, points) VALUES (" + bookID + ", " + user.userID +
+                ", " + points + " )" , function (err, rows2) {
+                  if (err) {
+                    res.status(500).send({});
+                    connection.release();
+                  } 
+                });
+              }
+
+              connection.query("SELECT CASE WHEN SUM(r.points)/COUNT(r.points) is NULL THEN 0 ELSE SUM(r.points)/COUNT(r.points) END AS 'rating' " + 
+              " FROM books_ratings r WHERE r.id_book = " + bookID + " GROUP BY r.id_book", function (err, rows) {
+              
+                connection.release();
+                if (err) {
+                  res.status(500).send({});
+                }
+                else {
+                  res.json(rows[0]);
+                }
+              }); 
+            }
+          });   
+        }
+      });
+    }
+  });
+
 }
