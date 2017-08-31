@@ -127,6 +127,34 @@ exports.getPageContent = function(req, res) {
 };
 
 exports.getBooksByGenre = function(req, res) {
+  var genreID = req.params.id;
+  pool.getConnection(function(err,connection) {
+    if (err) {
+      res.status(500).send({});
+    }
+    connection.query("SELECT name FROM genres WHERE id = " + genreID, function (err, rows) {
+      if (err) {
+        res.status(500).send({});
+        connection.release();
+      } else {
+        if (rows.length > 0) {
+          var genre = rows[0];
+
+          connection.query("SELECT b.id, b.name AS title, b.description, b.pages_number AS pagesNum, a.id AS authorID, a.name AS authorName  FROM books b, authors a  WHERE b.id_genre = " + genreID +
+            " AND b.id_author = a.id", function (err, rows) {
+
+              if (err) {
+                res.status(500).send({});
+              } else {
+                res.json({ genre: genre, books: rows });
+              }
+              connection.release();
+          });
+        } 
+      }
+    }); 
+  });
+  /*
   var genreId = req.params.id;
   pool.getConnection(function(err,connection) {
     if (err) {
@@ -153,7 +181,7 @@ exports.getBooksByGenre = function(req, res) {
         }
       }
     }); 
-  });
+  });*/
 };
 
 exports.getBooksByAuthor = function(req, res) {

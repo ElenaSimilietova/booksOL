@@ -171,6 +171,19 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 }])
 
 .controller('BookByGenreController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {
+  var genreID =  $routeParams.id;
+
+  Book.getBooksByGenre(genreID).then(function(response) {
+    $scope.genre = response.data.genre;
+    $scope.books = response.data.books;
+
+    if (Object.keys($scope.books).length == 0) {
+      $scope.message = 'Sorry, no results fot this genre.';
+    }
+  }, function(reason) {
+      $scope.message = 'Sorry, but something went wrong.';
+  });
+  /*
   var genreId =  $routeParams.id;
   $scope.message = null;
   
@@ -184,6 +197,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     }, function(reason) {
       $scope.message = 'Sorry, but something went wrong.';
   });
+  */
 }])
 
 .controller('BookByAuthorController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {
@@ -192,6 +206,10 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   Book.getBooksByAuthor(authorID).then(function(response) {
     $scope.author = response.data.author;
     $scope.books = response.data.books;
+
+    if (Object.keys($scope.books).length == 0) {
+      $scope.message = 'Sorry, no results fot this author.';
+    }
   }, function(reason) {
       $scope.message = 'Sorry, but something went wrong.';
   });

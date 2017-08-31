@@ -1,28 +1,29 @@
 <div class="main">
-<div class="col-md-8 book-by-genre">
-	<div>
-		</br>
-		<h2>{{books[0].genre}}</h2>
-	</div>
-	<div class="row" ng-if="message">
-        <div class="col-md-6 book-general">
-	       {{message}}
+    <div class="col-md-8">
+        <div class="row">
+            <h2>{{genre.name}}</h2>
         </div>
-	</div>
-    <div class="row">
-    	<div class="col-md-6 book-general" ng-repeat="book in books">
-            <br>
-            <a href="/#book/{{book.id}}"><img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails"></a>
-            <div class="col-md-6">
-                <a href="/#book/{{book.id}}" id="{{book.name}}">{{book.name}}</a>
-                <br>
-                <a href="/#book/author/{{book.id}}" id="{{book.author}}">{{book.author}}</a>
+        <div class="row" ng-if="message">
+            </br>{{message}}
+        </div>
+        <div class="row">
+            <div class="col-md-8 row" ng-repeat="book in books">
+                <div>
+                    </br>
+                    <a href="/#book/{{book.id}}">
+                        <img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.title}}" class="thumbnails">
+                    </a>
+                </div>
+                <div class="book-info">
+                    <p><a href="/#book/{{book.id}}">{{book.title}}</a></p>
+                    <p><a href="/#book/author/{{book.authorID}}">{{book.authorName}}</a></p>
+                    <p>{{book.description}}</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="col-md-4">
-    <popular-authors></popular-authors>
-    <genres></genres>
-</div>
+    <div class="col-md-4">
+        <popular-authors></popular-authors>
+        <genres></genres>
+    </div>
 </div>
