@@ -10,6 +10,15 @@
             <p class="details">Genre: <a href="#/books/{{book.genre}}/{{book.genreId}}">{{book.genre}}</a></p>
             <p class="pages-number">{{book.pagesNum}} pages</p>
             <p class="description">{{book.description}}</p>
+            <p><b>Rate the book:</b></p>
+            <select id="booksRating">
+                <option value=""></option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
             </br>
             <a href="/#/book/read/{{book.id}}" class="btn btn-primary btn-md active" ng-if="isSubscriptionValid" role="button">Read this book</a> 
         </div>

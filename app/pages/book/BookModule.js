@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule', 'userFactoryModule'])
+
+angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule', 'readingListServiceModule', 'userFactoryModule', 'booksRatingServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/book/:id', {
@@ -21,11 +22,37 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   });
 }])
 
-.controller('BookController', ['$scope','$routeParams', 'Book', 'User', function($scope, $routeParams, Book, User) {
+
+.controller('BookController', ['$scope','$routeParams', 'Book', 'BooksRating', 'User', function($scope, $routeParams, Book, BooksRating, User) {
+
   var bookId = $routeParams.id;
+  var token = sessionStorage.getItem('token');
+  var expiresIn = sessionStorage.getItem('expiresIn'); 
+  $scope.ratingReadonlyState = (token && expiresIn && expiresIn > Date.now()) ? false : true;
   $scope.message = null;
+  $(function() {
+    $('#booksRating').barrating({
+      theme: 'fontawesome-stars',
+      allowEmpty: true,
+      deselectable: false,
+      onSelect: function(value, text, event) {
+        if (typeof(event) !== 'undefined') {
+
+          // Saving points and receiving general rating for this book
+          BooksRating.savePoints(bookId, value).then(function(response) {
+            $('select').barrating('set', Math.round(response.data.rating));
+          }, function(reason) {});
+        }
+      }
+    });
+  });
+
   Book.getBook(bookId).then(function(response) {
     $scope.book = response.data;
+
+    $('select').barrating('readonly', $scope.ratingReadonlyState);
+    $('select').barrating('set', Math.round(response.data.rating));
+
     $scope.isSubscriptionValid = false;
 
     if (sessionStorage.getItem('token')) {
