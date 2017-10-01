@@ -21,9 +21,8 @@ angular.module('searchResultsModule', ['ngRoute', 'searchFactoryModule'])
     
     if ((Object.keys($scope.authors).length == 0) && (Object.keys($scope.books).length == 0)) {
       $scope.message = 'Sorry, no results';
-    } else {
-
-    }
+    } 
+    
     $scope.searchString = decodeURIComponent(searchString);
   }, function(reason) {
     // rejection

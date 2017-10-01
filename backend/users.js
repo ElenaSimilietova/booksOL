@@ -66,7 +66,8 @@ exports.signIn = function(req, res) {
       connection.release();
       res.status(500).send({});
     }
-    connection.query("SELECT id, password, UNIX_TIMESTAMP(due_date) FROM users WHERE email = '" + email  + "'", function (err, rows) {
+    connection.query("SELECT u.id, u.password, UNIX_TIMESTAMP(u.due_date), r.role FROM users u, roles r WHERE u.email = '" + email  + 
+    "' AND u.id_role = r.id", function (err, rows) {
       if (err) {
         res.status(500).send(err);
       } else {
@@ -81,7 +82,7 @@ exports.signIn = function(req, res) {
             } else {
               if(result) {
                   // Passwords match
-                  var token = jwt.sign({userID : rows[0].id}, req.app.get('tokenString'), { expiresIn: 3600 }, function(err, token) {
+                  var token = jwt.sign({userID : rows[0].id, role: rows[0].role}, req.app.get('tokenString'), { expiresIn: 3600 }, function(err, token) {
                   if(err) {
                     connection.release();
                     res.status(500).send({});

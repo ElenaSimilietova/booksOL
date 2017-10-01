@@ -6,7 +6,7 @@ app.factory('Book', ['$http', function($http) {
     var Book = {};
 
     Book.getBook = function(id) {
-        return $http.get(urlBase + '/' + id);
+        return $http.get(urlBase + '/id/' + id);
     };
 
     Book.getGeneralInfo = function(id) {
@@ -29,6 +29,16 @@ app.factory('Book', ['$http', function($http) {
 
     Book.getBooksByAuthor = function(id) {
       return $http.get(urlBase + '/author/' + id);
+    };
+
+    Book.getBooksByLetter = function(letter) {
+      $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
+      return $http.get(urlBase + '/letter/' + letter);
+    };
+
+    Book.getBooksMappingByLetter = function() {
+      $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
+      return $http.get(urlBase + '/letter');
     };
 
     return Book;

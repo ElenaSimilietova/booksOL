@@ -18,19 +18,27 @@ var search = require("./backend/search.js");
 
 app.set('tokenString', config.tokenString);
 
-app.get('/api/books/:id', books.getBookById);
+
+
+app.get('/api/books/id/:id', books.getBookById);
 app.get('/api/books/content/:id/:pageNum', books.getPageContent);
 app.get('/api/books/info/:id', books.getBookInfo);
 app.get('/api/books/popular/:num', books.getBooksMostPopular);
 app.get('/api/books/genre/:id', books.getBooksByGenre);
 app.get('/api/books/author/:id', books.getBooksByAuthor);
+app.get('/api/books/letter', books.getBooksMappingByLetter);
+app.get('/api/books/letter/:letter', books.getBooksByLetter);
+
 app.post('/api/books/page/save', books.savePageIntoReadingList);
 app.post('/api/books/rating', books.saveRating);
 app.delete('/api/books/page/delete', books.deletePagesFromReadingList);
 
 app.get('/api/genres', genres.getGenres);
+app.post('/api/genres/save', genres.saveGenre);
 
+app.get('/api/authors/all', authors.getAuthors);
 app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
+app.post('/api/authors/save', authors.saveAuthor);
 
 app.get('/api/user', users.getUser);
 app.get('/api/users/email/check/:email', users.checkEmail);
@@ -42,8 +50,9 @@ app.post('/api/log-out', users.logOut);
 app.get('/api/subscription/getDueDate', users.getDueDate);
 app.put('/api/subscription/', users.subscribe);
 
-
 app.get('/api/search/:searchString', search.getSearchResults);
+
+app.post('/books/upload', books.uploadBook);
  
 app.use(express.static(path.join(__dirname, 'app/')));
 

@@ -28,7 +28,20 @@ angular.module('signInModule', ['ngRoute', 'userFactoryModule', 'authenticationS
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('expiresIn', response.data.expiresIn);
 
-        $location.path('/users/profile'); 
+        var tokenArr = response.data.token.split('.');
+        var payload = JSON.parse(atob(tokenArr[1]));
+        
+        switch(payload.role) {
+          case 'administrator':
+            $location.path('/dashboard'); 
+            break;
+          case 'reader':
+            $location.path('/users/profile'); 
+            break;
+          default: 
+            $location.path('/users/profile'); 
+            break;
+        }
       }  
       else {
         $scope.message = "Something went wrong. Please, try to sign in again.";

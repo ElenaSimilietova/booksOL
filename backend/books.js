@@ -2,12 +2,16 @@ var fs = require("fs");
 var path = require('path');
 var pool = require('./db/db.js');
 var jwt = require("jsonwebtoken");
+var formidable = require('formidable');
+var PDFParser = require("./../node_modules/pdf2json/PDFParser");
 
 exports.getBookById = function(req, res) {
   var id = req.params.id;
+
   pool.getConnection(function(err,connection) {
     if (err) {
       connection.release();
+      console.log(err);
       res.status(500).send({});
     }
     connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_genre AS genreId, b.pages_number AS pagesNum, b.description, " + 
@@ -15,6 +19,7 @@ exports.getBookById = function(req, res) {
       " FROM books b LEFT JOIN books_ratings r ON b.id = r.id_book, authors a, genres g WHERE b.id = " + id + " AND b.id_author = a.id AND b.id_genre = g.id GROUP BY b.id", function (err, rows) {
       connection.release();
       if (err) {
+        console.log(err);
         res.status(500).send({});
       }
       else {
@@ -154,34 +159,6 @@ exports.getBooksByGenre = function(req, res) {
       }
     }); 
   });
-  /*
-  var genreId = req.params.id;
-  pool.getConnection(function(err,connection) {
-    if (err) {
-      res.status(500).send(err);
-    }
-    connection.query("SELECT b.id, b.name, a.name AS author, g.name AS genre FROM books b, authors a, genres g WHERE b.id_author = a.id AND b.id_genre = g.id AND g.id = '" + [genreId] + "'" + " ORDER BY name;", function (err, rows) {
-      connection.release();
-      if (err) {
-        res.status(500).send(err);
-      }
-      else {
-        if (rows.length > 0){
-          res.json(rows);
-        }
-        else{
-          connection.query("SELECT g.name AS genre FROM genres g WHERE g.id = '" + [genreId] + "'", function (err, rows) {
-          if (err) {
-            res.status(500).send(err);
-          }
-          else {
-            res.json(rows);
-          }
-        });
-        }
-      }
-    }); 
-  });*/
 };
 
 exports.getBooksByAuthor = function(req, res) {
@@ -341,3 +318,264 @@ exports.saveRating = function(req, res) {
   });
 
 }
+
+exports.getBooksByLetter = function(req, res) {
+  var letter = req.params.letter; 
+  var token = req.headers['access-token'];
+
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(401).send({});
+    } else {
+      pool.getConnection(function(err, connection) {
+        if (err) {
+          res.status(500).send(err);
+          connection.release();
+        } else {
+          connection.query("SELECT b.id, b.name AS title, b.id_author, a.name AS author" + 
+          " FROM authors a, books b WHERE SUBSTRING(b.name, 1, 1) = '" + letter + 
+          "' AND b.id_author = a.id ORDER BY b.name ASC ", function (err, rows) {
+            connection.release();
+            if (err) {
+              res.status(500).send({});
+            }
+            else {
+              res.json(rows);
+            }  
+          });
+        }
+      });
+    }
+  });
+}
+
+exports.getBooksMappingByLetter = function(req, res) {
+  var token = req.headers['access-token'];
+  
+  var alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(401).send({});
+    } else {
+      pool.getConnection(function(err, connection) {
+        if (err) {
+          res.status(500).send(err);
+          connection.release();
+        } else {
+          var promises = [];
+          alphabet.forEach(function(letter, alphabet) {
+            var p = new Promise((resolve, reject) => {
+              connection.query("SELECT count(name) AS count" + 
+              " FROM books WHERE SUBSTRING(name, 1, 1) = '" + letter + "'", function(err, rows) {
+
+                if (err) {
+                  res.status(500).send({});
+                }
+                else {
+                  var obj = {};
+                  obj[letter] = rows[0].count;
+                  resolve(obj);
+                }  
+              });
+            }); 
+            promises.push(p);
+          });
+
+          Promise.all(promises).then(function(values) {
+            connection.release();
+            res.json(values);
+          });
+        }
+      });
+    }
+  });
+}
+
+exports.uploadBook = function(req, res) {
+  var token = req.headers['access-token'];
+
+  var form = new formidable.IncomingForm();
+  var newBook = {};
+
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(401).send({});
+    } else {
+
+      form.parse(req, function(err, fields, files) {
+        if (err) {
+          // Check for and handle any errors here.
+           res.status(500).send({});
+           return;
+        }
+      });
+
+      // TODO: move path settings into config file
+      form.on('fileBegin', function (name, file){
+          console.log('file:' + name);
+          
+          switch(name) {
+            case 'bigImage':
+              file.path = path.join(__dirname, '/temp_uploads/', file.name);
+              newBook.bigImage = file.name;
+              break;
+            case 'smallImage':
+              file.path = path.join(__dirname, '/temp_uploads/', file.name);
+              newBook.smallImage = file.name;
+              break;
+            case 'pdf':
+              file.path = path.join(__dirname, '/books/_pdf/', file.name);
+              newBook.pdf = file.name;
+              break;
+            
+          }
+          
+      });
+
+      form.on('file', function (name, file) {
+          console.log('Uploaded ' + file.name);
+      });
+
+      form.on('field', function(name, value) {
+        switch(name) {
+          case 'title':
+            newBook.title = value;
+            break;
+          case 'author':
+            newBook.author = value;
+            break;
+          case 'genre':
+            newBook.genre = value;
+            break;
+          case 'description':
+            newBook.description = value;
+            break;
+        }
+      });
+
+      form.on('end', function() {
+
+        pool.getConnection(function(err, connection) {
+          if (err) {
+            res.status(500).send({});
+            connection.release();
+          } else {
+            connection.query("INSERT INTO books SET name = '" + newBook.title + "', id_author = " + newBook.author + 
+            ", id_genre = " + newBook.genre + ", description = '" + newBook.description + "'", function (err, result) {
+              if (err) {
+                res.status(500).send({});
+              }
+              else {
+                var bookID = result.insertId;
+                var error = false;
+
+                //Moving images into right folders and parsing pdf
+
+                var bigImageFileOld = path.join(__dirname, '/temp_uploads/', newBook.bigImage);
+                var smallImageFileOld = path.join(__dirname, '/temp_uploads/', newBook.smallImage);
+                var bigImageDir = path.join(__dirname, '/../app/images/books/big/');
+                var smallImageDir = path.join(__dirname, '/../app/images/books/small/');
+                var pdfFile =  path.join(__dirname, '/books/_pdf/', newBook.pdf);
+                
+                var promises = []; 
+                
+                // Moving big image into right folder
+                var promiseBigImage = new Promise((resolve, reject) => {
+                  fs.rename(bigImageFileOld, path.join(bigImageDir, bookID + '.jpg'), function (err) {
+                    if (err) {
+                      reject();
+                    }
+                    else {
+                      resolve();
+                    }
+                  });
+                });
+                promises.push(promiseBigImage);
+
+                // Moving small image into right folder
+                var promiseSmallImage = new Promise((resolve, reject) => {
+                  fs.rename(smallImageFileOld, path.join(smallImageDir, bookID + '.jpg'), function (err) {
+                    if (err) {
+                      reject();
+                    }
+                    else {
+                      resolve();
+                    }
+                  });
+                });
+                promises.push(promiseSmallImage);
+                
+                // Parsing a book
+                var promiseParseBook = new Promise((resolve, reject) => {
+
+                  var pdfParser = new PDFParser(this, 1);
+                  var destinationPath = 'books';
+                  var dirName = bookID;
+                  var txtFileName;
+
+                  pdfParser.on("pdfParser_dataError", errData => {
+                      console.log(errData.parserError);
+                  });
+                  pdfParser.on("pdfParser_dataReady", pdfData => {
+
+                    var dir = path.join(__dirname, destinationPath, dirName + '\\');
+
+                    if (!fs.existsSync(dir)) {
+                        fs.mkdirSync(dir, 0744);
+                    }
+                    
+                    for (page in pdfParser.data.Pages) {
+
+                        var result = '';
+                        y = 0;
+                        
+                        for (textBlock in pdfParser.data.Pages[page].Texts) {
+                            
+                            for(r in pdfParser.data.Pages[page].Texts[textBlock].R) {
+                                if (y < pdfParser.data.Pages[page].Texts[textBlock].y) {
+                                        result += '<br>';
+                                        y = pdfParser.data.Pages[page].Texts[textBlock].y;
+                                }
+                                result += decodeURIComponent(pdfParser.data.Pages[page].Texts[textBlock].R[r].T); 
+                            }
+                        }
+
+                        txtFileName = (parseInt(page) + 1) + '.txt';
+                        
+                        fs.writeFile(path.join(dir, txtFileName), result, 'utf8', (err) => {                     
+                            if (err) {
+                              reject();
+                            }
+                        });
+                      };
+                      resolve();      
+                  });
+
+                  pdfParser.loadPDF(pdfFile);
+                  
+                });
+
+                promises.push(promiseParseBook); 
+
+                Promise.all(promises).then(function() {
+                  console.log('done!');
+                  res.status(200).send({});
+                }, function() {
+                  console.log('reject!');
+                  res.status(500).send({});
+                });
+
+              }
+            });
+          }
+        });
+
+      });
+    }
+  });
+
+  return;
+}
+
