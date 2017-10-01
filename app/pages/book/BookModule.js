@@ -183,21 +183,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   }, function(reason) {
       $scope.message = 'Sorry, but something went wrong.';
   });
-  /*
-  var genreId =  $routeParams.id;
-  $scope.message = null;
   
-  Book.getBooksByGenre(genreId).then(function(response) {
-    $scope.books = response.data;
-
-    if (response.data[0].name == null)
-      $scope.message = 'There are no books in ' + response.data[0].genre + ' genre.';
-    else
-      $scope.message = '';     
-    }, function(reason) {
-      $scope.message = 'Sorry, but something went wrong.';
-  });
-  */
 }])
 
 .controller('BookByAuthorController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {

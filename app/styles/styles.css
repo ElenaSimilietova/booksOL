@@ -26,6 +26,10 @@ a.rightlink:hover {
   text-decoration: underline;
 }
 
+a.letter:hover {
+  cursor: pointer;
+}
+
 p.details {
   color:  #555555;
   font: normal 18px Georgia, serif;
@@ -172,6 +176,14 @@ div.registration-form {
   margin-top:20px;
 }
 
+div.books-by-letter {
+  padding: 15px 0px 0px 20px;
+}
+
+div.books-by-letter-item {
+  padding: 10px 0px 0px 0px;
+}
+
 span.page_num {
   margin: 0px 50px 0px 50px;
 }
@@ -213,4 +225,9 @@ input.new_page {
 .book-description{
   margin-left: 65px;
   padding-left: 2.3em;
+}
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
 }

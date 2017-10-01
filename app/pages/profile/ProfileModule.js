@@ -11,8 +11,9 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule', 'subscriptionSe
 
 .controller('ProfileController', ['$scope','$location', 'User', 'SubscriptionService', function($scope, $location, User, SubscriptionService) {
   var token = sessionStorage.getItem('token');
+  var expiresIn = sessionStorage.getItem('expiresIn');
 
-  if (!token) {
+  if (!token || !expiresIn || expiresIn < Date.now()) {
     $location.path('/sign-in');
   };
 
@@ -28,13 +29,13 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule', 'subscriptionSe
     }
 
   }, function(reason) {
-      // rejection
-      if (reason.status == 500) {
-        $scope.message = 'Sorry, but something went wrong.';
-      } else 
-      if (reason.status == 401) {
-        $location.path('/sign-in');
-      }
+    // rejection
+    if (reason.status == 500) {
+      $scope.message = 'Sorry, but something went wrong.';
+    } else 
+    if (reason.status == 401) {
+      $location.path('/sign-in');
+    }
   });
 
   $scope.submitPayment = function(value) {
