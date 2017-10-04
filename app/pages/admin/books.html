@@ -1,0 +1,40 @@
+<div class="main">
+	<div class="col-md-8">
+		</br>
+		<a class="bread-crumb" href="#/dashboard">Dashboard</a> <span class="bread-crumb-divider">/</span> 
+        <h2 style="display: inline;">Manage books</h2> 
+		</br></br>
+        <div class="row" ng-if="message">
+            </br><p class="text-info">{{message}}</p>
+        </div>
+		<div class="row" style="padding-left:15px;">
+			</br>
+			<a href="/#/dashboard/book/add" class="btn btn-primary btn-md active" role="button">Upload new book</a> 
+		</div>
+		<div class="row">
+			<div class="col-md-10 profile-general">
+				</br>
+				<h3>Choose letter to find book for editing:</h3>
+				<div class="col-md-2 book-general" ng-repeat="letter in alphabet">
+					<div ng-repeat="(key, value) in letter">
+						<a ng-click="showBooksList(key)" class="letter" ng-if="value > 0">{{key}}</a>
+						<b ng-if="value == 0">{{key}}</b>
+					</div>		
+				</div>
+			</div>
+		</div>
+		<div class="row text-info" style="padding-left:15px" ng-if="messageDeleteResult">
+			</br>{{messageDeleteResult}}
+		</div>
+		<div class="row books-by-letter" ng-if="keys(books).length > 0">
+			</br>
+			<div class="row books-by-letter-item" ng-repeat="book in books">
+				<div class="col-md-6"><b>{{book.title}}</b></div>
+				<div class="col-md-6"><!--<a href="#/dashboard/book/edit/{{book.id}}">edit</a>/--><a class="letter" ng-click="deleteBook(book.id)" style="co">delete</a></div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+

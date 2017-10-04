@@ -1,0 +1,132 @@
+<div class="main">
+	<div class="col-md-12"></br>
+		<a class="bread-crumb" href="#/dashboard">Dashboard</a> <span class="bread-crumb-divider">/</span> 
+        <a class="bread-crumb" href="#/dashboard/books">Manage books</a> <span class="bread-crumb-divider">/</span> 
+        <h2 style="display: inline;">Add book</h2>
+        
+		<div class="row" style="padding-left:15px;">
+            <div class="col-md-10 registration-form">
+                <form name="addBookForm" novalidate>
+                    <div class="row" ng-if="message">
+                        <p class="text-info">{{message}}</p>
+                    </div>
+                    <div class="row field">
+                        
+                        <div class="col-md-2 formLabel">Title</div> 
+                        <div class="col-md-10">
+                            <input type="text" name="title" ng-model="title.value" ng-pattern="title.pattern"  class="form-control" style="background-color: #eee;" required/>     
+                        </div>
+                    </div>
+                    <div class="row validation text-danger" ng-if="(!addBookForm.title.$valid) && addBookForm.title.$dirty">
+                        *{{title.message}}
+                    </div>
+                    <div class="row field">
+                        <div class="col-md-2 formLabel">Select author</div>
+                        <div class="col-md-10">
+                            <div class="col-md-4 nopadding">
+                                <select ng-model="author" ng-options="author.id as author.name for author in authors"  class="form-control" style="background-color: #eee;">
+                                    <option value="">- Select author -</option>    
+                                </select> 
+                            </div>
+                            <div class="col-md-2">
+                                or add new one
+                            </div>
+                            <div class="col-md-4 nopadding">
+                                <input type="text" ng-model="author2.value" ng-pattern="author2.pattern" class="form-control" style="background-color: #eee;"> 
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" ng-click="submitAuthor(author2.value)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row validation text-danger" ng-if="(!addBookForm.author.$valid) && addBookForm.author.$dirty">
+                        *{{author.message}}
+                    </div>
+                    <div class="row field">
+                        <div class="col-md-2 formLabel">Select genre</div>
+                        <div class="col-md-10">
+                            <div class="col-md-4 nopadding">
+                                <select ng-model="genre" ng-options="genre.id as genre.name for genre in genres" class="form-control" style="background-color: #eee;">
+                                    <option value="">- Select genre -</option>
+                                </select> 
+                            </div>
+                            <div class="col-md-2">or add new one 
+                            </div>
+                            <div class="col-md-4 nopadding">
+                                <input type="text" ng-model="genre2.value" ng-pattern="genre2.pattern" class="form-control" style="background-color: #eee;">
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" ng-click="submitGenre(genre2.value)">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row validation text-danger" ng-if="(!addBookForm.genre2.$valid) && addBookForm.genre2.$dirty">
+                        *{{genre.message}}
+                    </div>
+                    <div class="row field">
+                        <div class="col-md-2 formLabel">Description</div>
+                        <div class="col-md-10">
+                            <textarea ng-model="description.value" name="description" class="form-control" style="background-color: #eee;" ng-pattern="description.pattern" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row validation text-danger" ng-if="(!addBookForm.description.$valid) && addBookForm.description.$dirty">
+                        *{{description.message}}
+                    </div>
+
+                    <div class="row field">
+                        <div class="col-md-2 formLabel">Big image </div>
+                        <div class="col-md-10">
+                             <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary">
+                                        Browse&hellip; <input type="file" file-model="bigImage" name="bigImage" ng-model="bigImage.value" ng-pattern="bigImage.pattern" style="display: none;">
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" name="bigImageVisible" ng-model="bigImageVisible" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row validation text-danger" ng-if="(!addBookForm.bigImage.$valid) && addBookForm.bigImage.$dirty">
+                        *{{bigImage.message}}
+                    </div>
+                    <div class="row field">
+                        <div class="col-md-2 formLabel">Small image</div>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary">
+                                        Browse&hellip; <input type="file" file-model="smallImage" ng-model="smallImage.value" style="display: none;">
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" ng-model="smallImageVisible" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row validation text-danger" ng-if="(!addBookForm.smallImage.$valid) && addBookForm.smallImage.$dirty">
+                        *{{smallImage.message}}
+                    </div>
+                    <div class="row field">
+                        <div class="col-md-2 formLabel">PDF file</div>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary">
+                                        Browse&hellip; <input type="file" file-model="pdf" style="display: none;">
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" ng-model="pdfVisible" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row validation text-danger" ng-if="(!addBookForm.pdf.$valid) && addBookForm.pdf.$dirty">
+                        *{{pdf.message}}
+                    </div>
+                    <div class="row field">
+                        <div class="col-md-2 formLabel"></div>
+                        <div class="col-md-10"><button class="btn btn-primary createAccountButton" ng-click="submitForm(addBookForm,addBookForm.$valid)">Upload a book</button></div>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
