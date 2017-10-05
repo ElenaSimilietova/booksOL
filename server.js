@@ -26,7 +26,7 @@ app.get('/api/books/genre/:id', books.getBooksByGenre);
 app.get('/api/books/author/:id', books.getBooksByAuthor);
 app.get('/api/books/letter', books.getBooksMappingByLetter);
 app.get('/api/books/letter/:letter', books.getBooksByLetter);
-app.get('/api/books/readinglist', books.getData);
+app.get('/api/books/readinglist', books.getReadingListData);
 app.post('/api/books/page/save', books.savePageIntoReadingList);
 app.post('/api/books/rating', books.saveRating);
 app.delete('/api/books/page/delete', books.deletePagesFromReadingList);
