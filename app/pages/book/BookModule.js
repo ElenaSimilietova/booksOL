@@ -16,7 +16,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     templateUrl: 'pages/book/bookByGenre.html',
     controller: 'BookByGenreController'
   })
-  .when('/book/author/:id', {
+  .when('/books/author/:id', {
     templateUrl: 'pages/book/bookByAuthor.html',
     controller: 'BookByAuthorController'
   });

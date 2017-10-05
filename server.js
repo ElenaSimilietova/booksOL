@@ -36,7 +36,7 @@ app.get('/api/genres', genres.getGenres);
 app.post('/api/genres/save', genres.saveGenre);
 
 app.get('/api/authors/all', authors.getAuthors);
-app.get('/api/authors/popular/:num', authors.getAuthorsMostPopular);
+app.get('/api/authors/random/:num', authors.getRandom);
 app.post('/api/authors/save', authors.saveAuthor);
 
 app.get('/api/user', users.getUser);
