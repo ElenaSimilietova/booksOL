@@ -127,7 +127,8 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
     }
   
     Book.getPageContent(bookId, $scope.newPage).then(function(response) {
-      $scope.content = decodeURIComponent(response.data.content);
+      //$scope.content = decodeURIComponent(response.data.content);
+      $scope.content = response.data.content;
     }, function(reason) {
       // rejection
       if (reason.status == 500) {

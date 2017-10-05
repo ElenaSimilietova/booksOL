@@ -13,7 +13,7 @@
                 <button class="btn btn-primary payMonthButton" id ="payMonthButton" ng-click="submitPayment(1)" ng-if="!isSubscriptionValid">Pay for a month</button>
                 <button class="btn btn-primary payYearButton" id ="payYearButton" ng-click="submitPayment(12)" ng-if="!isSubscriptionValid">Pay for a year</button>
 
-                <div class="row" style="padding-left:15px">
+                <div class="row" style="padding-left:15px" ng-if="books.length > 0">
                     <div class="col-md-12">
                         <div class="row">
                             <h3 style="font-weight: normal !important">Your reading list:</h3>

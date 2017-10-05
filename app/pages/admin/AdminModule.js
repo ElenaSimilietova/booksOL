@@ -87,6 +87,7 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
 .controller('AdminBooksController', ['$scope', '$location', 'Book', function($scope, $location, Book) {
   var token = sessionStorage.getItem('token');
   var expiresIn = sessionStorage.getItem('expiresIn');
+  $scope.selectedLetter = null;
   $scope.books = {};
 
   if (!token || !expiresIn || expiresIn < Date.now()) {
@@ -113,6 +114,8 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   });
 
   $scope.showBooksList = function(letter) {
+    $scope.selectedLetter = letter;
+    $scope.messageDeleteResult = null;
     Book.getBooksByLetter(letter).then(function(response) {
 
       $scope.books = response.data;
@@ -132,6 +135,21 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   $scope.deleteBook = function(bookID) {
     Book.delete(bookID).then(function(response) {
       $scope.messageDeleteResult = 'The book was successfully deleted.';
+
+      Book.getBooksByLetter($scope.selectedLetter).then(function(response) {
+
+        $scope.books = response.data;
+
+      }, function(reason) {
+        // rejection
+        if (reason.status == 500) {
+          $scope.message = 'Sorry, but something went wrong.';
+        } else 
+        if (reason.status == 401) {
+          $location.path('/sign-in');
+        }
+      });
+
     }, function() {
       $scope.messageDeleteResult = 'The book wasn\'t deleted.';
     });

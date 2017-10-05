@@ -22,7 +22,12 @@ angular.module('accountLinksModule', ['userFactoryModule'])
                     }
 
                     User.getUser().then(function(result) {
-                        $scope.profileLabel = result.data.email;
+                        if (payload.role == 'administrator') {
+                            $scope.profileLabel = 'Go to dashboard';
+                        } else {
+                            $scope.profileLabel = result.data.email;
+                        }
+                        
                     }, function(reason) {
                         if (payload.role == 'administrator') {
                             $scope.profileLabel = 'Go to dashboard';

@@ -62,7 +62,6 @@ exports.getBookInfo = function(req, res) {
     } else {
       pool.getConnection(function(err,connection) {
         if (err) {
-          connection.release();
           res.status(500).send({});
         } else {
 
@@ -450,12 +449,14 @@ exports.uploadBook = function(req, res) {
 
         pool.getConnection(function(err, connection) {
           if (err) {
+            console.log(err);
             res.status(500).send({});
             connection.release();
           } else {
             connection.query("INSERT INTO books SET name = '" + newBook.title + "', id_author = " + newBook.author + 
             ", id_genre = " + newBook.genre + ", description = '" + newBook.description + "'", function (err, result) {
               if (err) {
+                console.log(err);
                 res.status(500).send({});
               }
               else {
@@ -538,6 +539,7 @@ exports.uploadBook = function(req, res) {
                         
                         fs.writeFile(path.join(dir, txtFileName), result, 'utf8', (err) => {                     
                             if (err) {
+                              console.log(err);
                               reject();
                             }
                         });
@@ -545,6 +547,7 @@ exports.uploadBook = function(req, res) {
 
                       connection.query("UPDATE books SET pages_number = " + pagesNumber + " WHERE id =" + bookID, function (err, result) {
                         if (err) {
+                          console.log(err);
                           reject();
                         }
                         else {
@@ -562,6 +565,7 @@ exports.uploadBook = function(req, res) {
                 Promise.all(promises).then(function() {
                   res.status(200).send({});
                 }, function() {
+                  console.log(err);
                   res.status(500).send({});
                 });
 

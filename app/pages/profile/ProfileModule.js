@@ -30,7 +30,6 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule', 'subscriptionSe
 
     ReadingList.getData().then(function(response) {
       $scope.books = response.data;
-
     }, function(reason) {
 
     });

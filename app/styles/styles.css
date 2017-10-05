@@ -40,6 +40,16 @@ a.bread-crumb:hover {
   font: normal 30px Georgia, serif;
 }
 
+a.main-author {
+  color: #555555;
+  font: normal 16px Georgia, serif !important;
+}
+
+span.main-author {
+  color: #555555;
+  font: normal 16px Georgia, serif !important;
+}
+
 span.bread-crumb-divider {
   color:  #555555;
   font: normal 30px Georgia, serif;
