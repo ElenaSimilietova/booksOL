@@ -4,8 +4,8 @@
 		<div class="text-danger" ng-if="message">
         	</br>{{message}}
     	</div>
-		<div class="row">
-			<div class="col-md-6 book-general" ng-repeat="book in books">
+		<div class="row" ng-repeat="row in books">
+			<div class="col-md-6 book-general" ng-repeat="book in row">
 				<br>
 				<a href="/#book/{{book.id}}"><img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails"></a>
 				<div class="col-md-6 book-text">

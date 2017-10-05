@@ -41,5 +41,21 @@ app.factory('Book', ['$http', function($http) {
       return $http.get(urlBase + '/letter');
     };
 
+    Book.delete = function(id) {
+      $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+      $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
+      // send user data
+      return $http({
+          method: 'DELETE',
+          url: urlBase + '/delete',
+          data: {
+              id: id
+          },
+          headers: {
+              'Content-type': 'application/json;charset=utf-8'
+          }
+      });
+    };
+
     return Book;
 }]);

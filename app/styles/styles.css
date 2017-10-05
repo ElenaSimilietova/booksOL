@@ -30,6 +30,21 @@ a.letter:hover {
   cursor: pointer;
 }
 
+a.bread-crumb {
+  color:  #555555;
+  font: normal 30px Georgia, serif !important;
+}
+
+a.bread-crumb:hover {
+  color:  #555555;
+  font: normal 30px Georgia, serif;
+}
+
+span.bread-crumb-divider {
+  color:  #555555;
+  font: normal 30px Georgia, serif;
+}
+
 p.details {
   color:  #555555;
   font: normal 18px Georgia, serif;

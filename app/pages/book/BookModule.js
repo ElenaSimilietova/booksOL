@@ -55,13 +55,21 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 
     $scope.isSubscriptionValid = false;
 
-    if (sessionStorage.getItem('token')) {
-      SubscriptionService.getDueDate().then(function(dateResponse) {
-        $scope.dueDate = dateResponse.data.dueDate;
-        $scope.isSubscriptionValid = (Date.parse($scope.dueDate) > Date.now()) ? true : false;
-      }, function(reason) {
+    var tokenArr = token.split('.');
+    var payload = JSON.parse(atob(tokenArr[1]));
+    
+    if((payload.role == 'administrator')) {
+      $scope.isSubscriptionValid = true;
+    } else {
+      if (sessionStorage.getItem('token')) {
+        SubscriptionService.getDueDate().then(function(dateResponse) {
+          $scope.dueDate = dateResponse.data.dueDate;
+          $scope.isSubscriptionValid = (Date.parse($scope.dueDate) > Date.now()) ? true : false;
+        }, function(reason) {
 
-      });
+        });
+      }
+
     }
 
   }, function(reason) {

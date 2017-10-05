@@ -5,15 +5,29 @@
             </br>{{message}}
         </div>
 		<div class="row">
-			<div class="col-md-10 profile-general">
-                <h3>Hello, {{firstName}}</h3>
+			<div class="col-md-12">
+                <h3 style="font-weight: normal !important">Hello, {{firstName}}!</h3>
                 <br>
                 {{subscriptionInfo}}<span ng-if="isSubscriptionValid">{{dueDate | date }}</span>	
                 </br></br>
                 <button class="btn btn-primary payMonthButton" id ="payMonthButton" ng-click="submitPayment(1)" ng-if="!isSubscriptionValid">Pay for a month</button>
                 <button class="btn btn-primary payYearButton" id ="payYearButton" ng-click="submitPayment(12)" ng-if="!isSubscriptionValid">Pay for a year</button>
+
+                <div class="row" style="padding-left:15px">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <h3 style="font-weight: normal !important">Your reading list:</h3>
+                        </div>
+                        <ol>
+                            <li ng-repeat="book in books" style="font-size:18px">
+                                {{book.author}}, "{{book.title}}" - <a href="#/book/read/{{book.id}}">go to page {{book.current_page}}</a>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
 			</div>
 		</div>
+        
 	</div>
 </div>
 

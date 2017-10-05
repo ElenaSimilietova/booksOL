@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('profileModule', ['ngRoute', 'userFactoryModule', 'subscriptionServiceModule'])
+angular.module('profileModule', ['ngRoute', 'userFactoryModule', 'subscriptionServiceModule', 'readingListServiceModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/users/profile', {
@@ -9,7 +9,7 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule', 'subscriptionSe
   });
 }])
 
-.controller('ProfileController', ['$scope','$location', 'User', 'SubscriptionService', function($scope, $location, User, SubscriptionService) {
+.controller('ProfileController', ['$scope','$location', 'User', 'SubscriptionService', 'ReadingList', function($scope, $location, User, SubscriptionService, ReadingList) {
   var token = sessionStorage.getItem('token');
   var expiresIn = sessionStorage.getItem('expiresIn');
 
@@ -27,6 +27,14 @@ angular.module('profileModule', ['ngRoute', 'userFactoryModule', 'subscriptionSe
     } else {
       $scope.subscriptionInfo = "Your subscription is valid until ";
     }
+
+    ReadingList.getData().then(function(response) {
+      $scope.books = response.data;
+
+    }, function(reason) {
+
+    });
+
 
   }, function(reason) {
     // rejection
