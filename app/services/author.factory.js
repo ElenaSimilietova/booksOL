@@ -6,7 +6,6 @@ app.factory('Author', ['$http', function($http) {
     var Author = {};
 
     Author.saveAuthor = function(author) {
-        alert(author);
         $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
         return $http({
             method: 'POST',

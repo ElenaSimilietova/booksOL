@@ -7,11 +7,11 @@
 		<div class="row" ng-repeat="row in books">
 			<div class="col-md-6 book-general" ng-repeat="book in row">
 				<br>
-				<a href="/#book/{{book.id}}"><img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails"></a>
+				<a href="#/books/{{book.id}}"><img ng-src="./images/books/small/{{book.id}}.jpg" alt="{{book.name}}" class="thumbnails"></a>
 				<div class="col-md-6 book-text">
-					<a href="/#book/{{book.id}}" id="{{book.name}}">{{book.name}}</a>
+					<a href="#/book/{{book.id}}" id="{{book.name}}">{{book.name}}</a>
 					<br>
-					<a href="/#book/author/{{book.id_author}}" id="{{book.author}}">{{book.author}}</a>
+					<span class="main-author">by</span> <a href="#/books/author/{{book.id_author}}" id="{{book.author}}" class="main-author">{{book.author}}</a>
 				</div>
 			</div>
 		</div>

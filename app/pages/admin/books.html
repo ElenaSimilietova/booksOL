@@ -30,7 +30,7 @@
 			</br>
 			<div class="row books-by-letter-item" ng-repeat="book in books">
 				<div class="col-md-6"><b>{{book.title}}</b></div>
-				<div class="col-md-6"><!--<a href="#/dashboard/book/edit/{{book.id}}">edit</a>/--><a class="letter" ng-click="deleteBook(book.id)" style="co">delete</a></div>
+				<div class="col-md-6"><!--<a href="#/dashboard/book/edit/{{book.id}}">edit</a>/--><a class="letter" ng-click="deleteBook(book.id, letter)">delete</a></div>
 			</div>
 			
 		</div>
