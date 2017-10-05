@@ -182,6 +182,7 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
   var genreID =  $routeParams.id;
 
   Book.getBooksByGenre(genreID).then(function(response) {
+
     $scope.genre = response.data.genre;
     $scope.books = response.data.books;
 
@@ -196,7 +197,6 @@ angular.module('bookModule', ['ngRoute', 'bookFactoryModule', 'pageContentModule
 
 .controller('BookByAuthorController', ['$scope','$routeParams','Book', function($scope, $routeParams, Book) {
   var authorID =  $routeParams.id;
-  
   Book.getBooksByAuthor(authorID).then(function(response) {
     $scope.author = response.data.author;
     $scope.books = response.data.books;
