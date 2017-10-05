@@ -72,6 +72,14 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   if (!token || !expiresIn || expiresIn < Date.now()) {
     $location.path('/sign-in');
   };
+
+  var tokenArr = token.split('.');
+  var payload = JSON.parse(atob(tokenArr[1]));
+  
+  if((payload.role != 'administrator')) {
+     $location.path('#/');
+  }
+  
   //TODO END
 
 }])
@@ -84,6 +92,13 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   if (!token || !expiresIn || expiresIn < Date.now()) {
     $location.path('/sign-in');
   };
+
+  var tokenArr = token.split('.');
+  var payload = JSON.parse(atob(tokenArr[1]));
+  
+  if((payload.role != 'administrator')) {
+     $location.path('#/');
+  }
 
   Book.getBooksMappingByLetter().then(function(response) {
     $scope.alphabet = response.data;
@@ -113,6 +128,14 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
     });
     
   }
+
+  $scope.deleteBook = function(bookID) {
+    Book.delete(bookID).then(function(response) {
+      $scope.messageDeleteResult = 'The book was successfully deleted.';
+    }, function() {
+      $scope.messageDeleteResult = 'The book wasn\'t deleted.';
+    });
+  }
 }])
 
 .controller('AdminUsersController', [function() {
@@ -122,6 +145,14 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   if (!token || !expiresIn || expiresIn < Date.now()) {
     $location.path('/sign-in');
   };
+
+  var tokenArr = token.split('.');
+  var payload = JSON.parse(atob(tokenArr[1]));
+  
+  if((payload.role != 'administrator')) {
+     $location.path('#/');
+  }
+
 }])
 
 .controller('AdminBooksEditController', [function() {
@@ -131,6 +162,14 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   if (!token || !expiresIn || expiresIn < Date.now()) {
     $location.path('/sign-in');
   };
+
+  var tokenArr = token.split('.');
+  var payload = JSON.parse(atob(tokenArr[1]));
+  
+  if((payload.role != 'administrator')) {
+     $location.path('#/');
+  }
+
 }])
 
 .controller('AdminBooksAddResultController', ['$scope', '$location', '$routeParams', function ($scope, $location, $routeParams) {
@@ -140,6 +179,13 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   if (!token || !expiresIn || expiresIn < Date.now()) {
     $location.path('/sign-in');
   };
+
+  var tokenArr = token.split('.');
+  var payload = JSON.parse(atob(tokenArr[1]));
+  
+  if((payload.role != 'administrator')) {
+     $location.path('#/');
+  }
 
   $scope.result = $routeParams.res;
 
@@ -152,6 +198,13 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   if (!token || !expiresIn || expiresIn < Date.now()) {
     $location.path('/sign-in');
   };
+
+  var tokenArr = token.split('.');
+  var payload = JSON.parse(atob(tokenArr[1]));
+  
+  if((payload.role != 'administrator')) {
+     $location.path('#/');
+  }
 
   $scope.title = {'value': '',
                   'pattern': /([^\s])/,
@@ -174,7 +227,7 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
   };
 
   $scope.bigImage = {'value': '',
-                     'pattern': /([^\s])/,
+                     'pattern': /\.(gif|jpg|jpeg|png)$/i,
                      'message': 'Invalid image'
   };
 
@@ -238,21 +291,17 @@ angular.module('adminModule', ['ngRoute', 'bookFactoryModule', 'authorFactoryMod
         genre = $scope.genre,
         description = $scope.description.value,
         pdf = $scope.pdf;
-    
-    bookUpload.upload(title, author, genre, description, bigImage, smallImage, pdf).then(function(response) {
-
-      $location.path('/dashboard/book/add/result/success');
-
-    }, function(reason) {
-      $location.path('/dashboard/book/add/result/fail');
-    }); 
-
+  
     if (isFormValid) {
-      alert('valid!');
+      bookUpload.upload(title, author, genre, description, bigImage, smallImage, pdf).then(function(response) {
+
+        $location.path('/dashboard/book/add/result/success');
+
+      }, function(reason) {
+        $location.path('/dashboard/book/add/result/fail');
+      });
       
-    } else {
-      //alert('not valid!');
-    }
+    } 
     
   }
 

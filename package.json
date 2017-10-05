@@ -18,5 +18,8 @@
   },
   "scripts": {
     "start": "node server"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.2"
   }
 }

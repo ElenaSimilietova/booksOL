@@ -37,5 +37,10 @@ app.service('ReadingList', ['$http', function($http) {
         });
     }
 
+    ReadingList.getData = function() {
+        $http.defaults.headers.common['access-token'] = sessionStorage.getItem('token');
+        return $http.get(urlBase + '/readinglist');
+    };
+
     return ReadingList;
 }]);

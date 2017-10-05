@@ -18,8 +18,6 @@ var search = require("./backend/search.js");
 
 app.set('tokenString', config.tokenString);
 
-
-
 app.get('/api/books/id/:id', books.getBookById);
 app.get('/api/books/content/:id/:pageNum', books.getPageContent);
 app.get('/api/books/info/:id', books.getBookInfo);
@@ -28,10 +26,11 @@ app.get('/api/books/genre/:id', books.getBooksByGenre);
 app.get('/api/books/author/:id', books.getBooksByAuthor);
 app.get('/api/books/letter', books.getBooksMappingByLetter);
 app.get('/api/books/letter/:letter', books.getBooksByLetter);
-
+app.get('/api/books/readinglist', books.getData);
 app.post('/api/books/page/save', books.savePageIntoReadingList);
 app.post('/api/books/rating', books.saveRating);
 app.delete('/api/books/page/delete', books.deletePagesFromReadingList);
+app.delete('/api/books/delete', books.deleteBook);
 
 app.get('/api/genres', genres.getGenres);
 app.post('/api/genres/save', genres.saveGenre);

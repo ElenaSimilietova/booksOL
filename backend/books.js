@@ -4,6 +4,7 @@ var pool = require('./db/db.js');
 var jwt = require("jsonwebtoken");
 var formidable = require('formidable');
 var PDFParser = require("./../node_modules/pdf2json/PDFParser");
+var rimraf = require('rimraf');
 
 exports.getBookById = function(req, res) {
   var id = req.params.id;
@@ -103,29 +104,20 @@ exports.getPageContent = function(req, res) {
           connection.release();
           res.status(500).send({});
         }
-        connection.query("SELECT file FROM books WHERE id = " + [id], function (err, rows) {
-          
+        var dirName = id;
+
+        fs.readFile(path.join(__dirname, booksFolder, dirName, pageNum + '.txt'), 'utf8', (err, data) => {
           if (err) {
-            connection.release();
             res.status(500).send({});
           }
-          else {
-            var dirName = rows[0].file;
+          // Check, if book is in the reading lists table, update there current page information
+          connection.query("UPDATE reading_lists SET current_page = " + pageNum + " WHERE id_user = " + 
+          user.userID + " AND id_book = " + id, function (err, rows) {
+            res.json({'content': data});
+            connection.release();
+          });
 
-            fs.readFile(path.join(__dirname, booksFolder, dirName, pageNum + '.txt'), 'utf8', (err, data) => {
-              if (err) {
-                res.status(500).send({});
-              }
-              // Check, if book is in the reading lists table, update there current page information
-              connection.query("UPDATE reading_lists SET current_page = " + pageNum + " WHERE id_user = " + 
-              user.userID + " AND id_book = " + id, function (err, rows) {
-                res.json({'content': data});
-                connection.release();
-              });
-    
-            });
-          }
-        }); 
+        });
       });
     }
   });
@@ -414,7 +406,6 @@ exports.uploadBook = function(req, res) {
 
       // TODO: move path settings into config file
       form.on('fileBegin', function (name, file){
-          console.log('file:' + name);
           
           switch(name) {
             case 'bigImage':
@@ -521,6 +512,7 @@ exports.uploadBook = function(req, res) {
                   pdfParser.on("pdfParser_dataReady", pdfData => {
 
                     var dir = path.join(__dirname, destinationPath, dirName + '\\');
+                    var pagesNumber = pdfParser.data.Pages.length;
 
                     if (!fs.existsSync(dir)) {
                         fs.mkdirSync(dir, 0744);
@@ -550,7 +542,15 @@ exports.uploadBook = function(req, res) {
                             }
                         });
                       };
-                      resolve();      
+
+                      connection.query("UPDATE books SET pages_number = " + pagesNumber + " WHERE id =" + bookID, function (err, result) {
+                        if (err) {
+                          reject();
+                        }
+                        else {
+                          resolve();   
+                        }
+                      });
                   });
 
                   pdfParser.loadPDF(pdfFile);
@@ -560,10 +560,8 @@ exports.uploadBook = function(req, res) {
                 promises.push(promiseParseBook); 
 
                 Promise.all(promises).then(function() {
-                  console.log('done!');
                   res.status(200).send({});
                 }, function() {
-                  console.log('reject!');
                   res.status(500).send({});
                 });
 
@@ -577,5 +575,66 @@ exports.uploadBook = function(req, res) {
   });
 
   return;
+}
+
+exports.deleteBook = function(req, res) {
+  var bookID = req.body.id;
+  var token = req.headers['access-token'];
+
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(401).send({});
+    } else {
+      pool.getConnection(function(err, connection) {
+        if (err) {
+          res.status(500).send(err);
+          connection.release();
+        } else {
+          connection.query("DELETE FROM books WHERE id = " + bookID, function(err, result) {
+            if (err) {
+                res.status(500).send({});
+              }
+              else {
+                rimraf(path.join(__dirname, '\\books\\', bookID + '\\'), function () { 
+                  console.log('done'); 
+                  res.status(200).send({});
+                });
+              }
+
+          });
+        }
+      });
+    }
+  });
+
+}
+
+exports.getData = function(req, res) {
+  var token = req.headers['access-token'];
+
+  jwt.verify(token, req.app.get('tokenString'), function(err, user) {
+    if (err || !user) {
+      res.status(401).send({});
+    } else {
+      pool.getConnection(function(err, connection) {
+        if (err) {
+          res.status(500).send(err);
+          connection.release();
+        } else {
+          connection.query("SELECT b.name as title, b.id, b.id_author, a.name as author, r.current_page FROM books b, authors a, reading_lists r " + 
+            "WHERE b.id_author = a.id AND b.id = r.id_book AND r.id_user = " + user.userID, function(err, rows) {
+            if (err) {
+                res.status(500).send({});
+              }
+              else {
+                res.json(rows);
+              }
+
+          });
+        }
+      });
+    }
+  });
+
 }
 
