@@ -15,7 +15,7 @@ exports.getBookById = function(req, res) {
       console.log(err);
       res.status(500).send({});
     }
-    connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_genre AS genreId, b.pages_number AS pagesNum, b.description, " + 
+    connection.query("SELECT a.name AS author, g.name AS genre, b.id, b.name, b.id_author, b.id_genre, b.pages_number AS pagesNum, b.description, " + 
       " CASE WHEN SUM(r.points)/COUNT(r.points) is NULL THEN 0 ELSE SUM(r.points)/COUNT(r.points) END AS 'rating'" +
       " FROM books b LEFT JOIN books_ratings r ON b.id = r.id_book, authors a, genres g WHERE b.id = " + id + " AND b.id_author = a.id AND b.id_genre = g.id GROUP BY b.id", function (err, rows) {
       connection.release();

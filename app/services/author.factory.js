@@ -18,8 +18,8 @@ app.factory('Author', ['$http', function($http) {
         });
     }
 
-    Author.getMostPopular = function(num) {
-        return $http.get(urlBase + '/popular/' + num);
+    Author.getRandom = function(num) {
+        return $http.get(urlBase + '/random/' + num);
     }
 
     Author.getAll = function() {

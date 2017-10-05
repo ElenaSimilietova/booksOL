@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mainModule', ['ngRoute', 'bookFactoryModule', 'popularAuthorsModule', 'genresModule'])
+angular.module('mainModule', ['ngRoute', 'bookFactoryModule', 'randomAuthorsModule', 'genresModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/main', {

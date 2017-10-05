@@ -10,8 +10,8 @@
         </div>
         <div class="col-md-8 book-description">
             <h3>{{book.name}}</h3>
-            <p class="details">Author: <a href="">{{book.author}}</a></p>
-            <p class="details">Genre: <a href="#/books/{{book.genre}}/{{book.genreId}}">{{book.genre}}</a></p>
+            <p class="details">Author: <a href="#/books/author/{{book.id_author}}">{{book.author}}</a></p>
+            <p class="details">Genre: <a href="#/books/genre/{{book.id_genre}}">{{book.genre}}</a></p>
             <p class="pages-number">{{book.pagesNum}} pages</p>
             <p class="description">{{book.description}}</p>
             <p><b>Rate the book:</b></p>
@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <popular-authors></popular-authors>
+        <random-authors></random-authors>
         <genres></genres>
     </div>
 

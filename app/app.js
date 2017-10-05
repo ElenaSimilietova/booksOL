@@ -13,7 +13,7 @@ angular.module('booksOL', [
   'profileModule',
   'adminModule',
   'bookFactoryModule',
-  'popularAuthorsModule',
+  'randomAuthorsModule',
   'authorFactoryModule',
   'genresModule',
   'genreFactoryModule',
