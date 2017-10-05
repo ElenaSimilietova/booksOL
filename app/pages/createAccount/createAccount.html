@@ -1,28 +1,28 @@
 <div class="main">
     <h2>Create an account</h2>
 
-    <div class="col-sm-3 registration-form">
+    <div class="col-sm-4 registration-form">
         <form name="createAccountForm" novalidate>
         <div class="row text-danger" ng-if="message">
             </br>{{message}}
         </div>
         <div class="row field">
             <div class="col-xs-8 col-sm-6 formLabel">First name</div>
-            <div class="col-xs-4 col-sm-6"><input type="text" name="firstName" ng-model="firstName.value" ng-pattern="firstName.pattern" required></div>
+            <div class="col-xs-4 col-sm-6"><input type="text" name="firstName" ng-model="firstName.value" ng-pattern="firstName.pattern" class="form-control" style="background-color: #eee;"  required></div>
         </div>
         <div class="row validation text-danger" ng-if="(!createAccountForm.firstName.$valid) && createAccountForm.firstName.$dirty">
             *{{firstName.message}}
         </div>
         <div class="row field">
             <div class="col-xs-8 col-sm-6 formLabel">Last name</div>
-            <div class="col-xs-4 col-sm-6"><input type="text" name="lastName" ng-model="lastName.value" ng-pattern="lastName.pattern" required></div>
+            <div class="col-xs-4 col-sm-6"><input type="text" name="lastName" ng-model="lastName.value" ng-pattern="lastName.pattern" class="form-control" style="background-color: #eee;"  required></div>
         </div>
         <div class="row validation text-danger" ng-if="(!createAccountForm.lastName.$valid) && createAccountForm.lastName.$dirty">
             *{{lastName.message}}
         </div>
         <div class="row field">
             <div class="col-xs-8 col-sm-6 formLabel">Email</div>
-            <div class="col-xs-4 col-sm-6"><input type="text" name="email" ng-model="email.value" ng-pattern="email.pattern" ng-blur="emailValidate(createAccountForm.email.$valid)" required></div>
+            <div class="col-xs-4 col-sm-6"><input type="text" name="email" ng-model="email.value" ng-pattern="email.pattern" ng-blur="emailValidate(createAccountForm.email.$valid)" class="form-control" style="background-color: #eee;"  required></div>
         </div>
         <div class="row validation text-danger" ng-if="(!createAccountForm.email.$valid) && createAccountForm.email.$dirty">
             *{{email.messageValid}}
@@ -32,14 +32,14 @@
         </div>
         <div class="row field">
             <div class="col-xs-8 col-sm-6 formLabel">Password</div>
-            <div class="col-xs-4 col-sm-6"><input type="password" name="password1" ng-model="password1.value" ng-pattern="password1.pattern" required></div>
+            <div class="col-xs-4 col-sm-6"><input type="password" name="password1" ng-model="password1.value" ng-pattern="password1.pattern" class="form-control" style="background-color: #eee;"  required></div>
         </div>
         <div class="row validation text-danger" ng-if="(!createAccountForm.password1.$valid) && createAccountForm.password1.$dirty">
             *{{password1.message}}
         </div>
         <div class="row field">
             <div class="col-xs-8 col-sm-6 formLabel">Confirm password</div>
-            <div class="col-xs-4 col-sm-6"><input type="password" name="password2" ng-model="password2.value" ng-change="passwordValidate()" required></div>
+            <div class="col-xs-4 col-sm-6"><input type="password" name="password2" ng-model="password2.value" ng-change="passwordValidate()" class="form-control" style="background-color: #eee;"  required></div>
         </div>
         <div class="row validation text-danger" ng-if="(!createAccountForm.password2.$valid) && createAccountForm.password2.$dirty">
             *{{password2.messageValid}}
