@@ -210,7 +210,7 @@ button.createAccountButton {
 
 button.signInButton {
   width:180px;
-  font-size: 18px;
+  font-size: 18px !important;
 }
 
 input.search {
