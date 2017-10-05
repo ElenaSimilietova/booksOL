@@ -316,7 +316,7 @@ exports.getBooksByLetter = function(req, res) {
   var token = req.headers['access-token'];
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err || !user) {
+    if (err || !user || user.role!='administrator') {
       res.status(401).send({});
     } else {
       pool.getConnection(function(err, connection) {
@@ -348,7 +348,7 @@ exports.getBooksMappingByLetter = function(req, res) {
                   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
   
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err || !user) {
+    if (err || !user || user.role!='administrator') {
       res.status(401).send({});
     } else {
       pool.getConnection(function(err, connection) {
@@ -392,7 +392,7 @@ exports.uploadBook = function(req, res) {
   var newBook = {};
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err || !user) {
+    if (err || !user || user.role!='administrator') {
       res.status(401).send({});
     } else {
 
@@ -582,7 +582,7 @@ exports.deleteBook = function(req, res) {
   var token = req.headers['access-token'];
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err || !user) {
+    if (err || !user || user.role!='administrator') {
       res.status(401).send({});
     } else {
       pool.getConnection(function(err, connection) {
@@ -609,7 +609,7 @@ exports.deleteBook = function(req, res) {
 
 }
 
-exports.getData = function(req, res) {
+exports.getReadingListData = function(req, res) {
   var token = req.headers['access-token'];
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
