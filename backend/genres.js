@@ -24,7 +24,8 @@ exports.saveGenre = function(req, res) {
   var token = req.headers['access-token'];
 
   jwt.verify(token, req.app.get('tokenString'), function(err, user) {
-    if (err || !user) {
+    console.log(user);
+    if (err || !user || user.role!='administrator') {
       res.status(401).send({});
     } else {
       pool.getConnection(function(err,connection) {
