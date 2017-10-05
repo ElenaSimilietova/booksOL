@@ -118,12 +118,12 @@ exports.getUser = function(req, res) {
           connection.release();
           res.status(500).send({});
         } else {
-          connection.query("SELECT first_name, last_name, due_date AS due_date FROM users WHERE id = " + user.userID, function (err, rows) {
+          connection.query("SELECT first_name, last_name, email, due_date AS due_date FROM users WHERE id = " + user.userID, function (err, rows) {
             if (err) {
               connection.release();
               res.status(401).send({});
             } else {
-              res.json({firstName: rows[0].first_name, lastName: rows[0].last_name, dueDate: rows[0].due_date});
+              res.json({firstName: rows[0].first_name, lastName: rows[0].last_name, email: rows[0].email, dueDate: rows[0].due_date});
             }
           });
         }
