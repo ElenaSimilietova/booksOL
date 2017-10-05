@@ -1,5 +1,5 @@
 angular.module('accountLinksModule', ['userFactoryModule'])
-.directive('accountLinks', ['$location', function(location) {
+.directive('accountLinks', ['$location', 'User', function(location, User) {
     return {
         restrict: 'AE',
         templateUrl: './directives/account-links/index.html',
@@ -20,6 +20,16 @@ angular.module('accountLinksModule', ['userFactoryModule'])
                     if (payload.role == 'administrator') {
                         $scope.isAdmin = true;
                     }
+
+                    User.getUser().then(function(result) {
+                        $scope.profileLabel = result.data.email;
+                    }, function(reason) {
+                        if (payload.role == 'administrator') {
+                            $scope.profileLabel = 'Go to dashboard';
+                        } else {
+                            $scope.profileLabel = 'Go to profile';
+                        }
+                    });
                 } 
             });
         }
